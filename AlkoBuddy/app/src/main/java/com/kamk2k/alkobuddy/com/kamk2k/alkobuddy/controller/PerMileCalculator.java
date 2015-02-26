@@ -3,6 +3,8 @@ package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.UserAlcoState;
 
+import java.util.Date;
+
 /**
  * Created by PC on 2015-02-25.
  */
@@ -13,7 +15,7 @@ public class PerMileCalculator {
     private static final float ALCOHOL_VOLUME_TO_WEIGHT_RATIO = 1.25f;  // ml to grams
     private static final float ALCOHOL_DECAY_RATE_FOR_MEN = 11f;    //in grams for hour
     private static final float ALCOHOL_DECAY_RATE_FOR_WOMEN = 9f;    //in grams for hour
-    private static final int MS_IN_ONE_HOUR = 60*60*1000;    //in grams for hour
+    private static final int MS_IN_ONE_HOUR = 60*60*1000;
 
 
     private UserAlcoState userState;
@@ -23,23 +25,57 @@ public class PerMileCalculator {
     }
 
     public void drink(DrinkItem drink) {
-        // implementacja wzoru Erika Widmarka
+        calculateAlcoholDecay();
+        float alcoholWeight = userState.getEthanolGramsInBlood() + calculateAlcoholWeightInDrink(drink);
+        userState.setEthanolGramsInBlood(alcoholWeight);
+        calculateCurrentPerMiles();
+        calculateCurrentTimeToSober();
+    }
 
-        float alcoholWeight = calculateAlcoholWeight(drink);
+    public void processAlco() {
+        calculateAlcoholDecay();
+        calculateCurrentPerMiles();
+        calculateCurrentTimeToSober();
+    }
+
+    private void calculateAlcoholDecay() {
+        Date currentTime = new Date();
+        long timeSinceLastUpdate = currentTime.getTime() - userState.getLastUpdate().getTime();
+        float newEthanolsInBloodValue;
+        if(userState.getSex() == UserAlcoState.Sex.MALE) {
+            newEthanolsInBloodValue = userState.getEthanolGramsInBlood() - (timeSinceLastUpdate * ALCOHOL_DECAY_RATE_FOR_MEN / MS_IN_ONE_HOUR);
+        } else {
+            newEthanolsInBloodValue = userState.getEthanolGramsInBlood() - (timeSinceLastUpdate * ALCOHOL_DECAY_RATE_FOR_WOMEN / MS_IN_ONE_HOUR);
+        }
+        //to avoid negative values
+        if(newEthanolsInBloodValue < 0) newEthanolsInBloodValue = 0;
+        userState.setEthanolGramsInBlood(newEthanolsInBloodValue);
+        userState.setLastUpdate(currentTime);
+    }
+
+    private void calculateCurrentPerMiles() {
+        float alcoholWeight = userState.getEthanolGramsInBlood();
         float perMile = 0;
-        long timeToSober = 0;
         if(userState.getSex() == UserAlcoState.Sex.MALE) {
             perMile = alcoholWeight / (WATER_K_FACTOR_FOR_MEN * userState.getWeight());
-            timeToSober = (long)((alcoholWeight * MS_IN_ONE_HOUR) / ALCOHOL_DECAY_RATE_FOR_MEN);
         } else {
             perMile = alcoholWeight / (WATER_K_FACTOR_FOR_WOMEN * userState.getWeight());
-            timeToSober = (long)(alcoholWeight * ALCOHOL_DECAY_RATE_FOR_WOMEN * MS_IN_ONE_HOUR);
         }
         userState.setCurrentPerMile(perMile);
+    }
+
+    private void calculateCurrentTimeToSober() {
+        float alcoholWeight = userState.getEthanolGramsInBlood();
+        long timeToSober = 0;
+        if(userState.getSex() == UserAlcoState.Sex.MALE) {
+            timeToSober = (long)((alcoholWeight * MS_IN_ONE_HOUR) / ALCOHOL_DECAY_RATE_FOR_MEN);
+        } else {
+            timeToSober = (long)(alcoholWeight * ALCOHOL_DECAY_RATE_FOR_WOMEN * MS_IN_ONE_HOUR);
+        }
         userState.setTimeToSoberInMs(timeToSober);
     }
 
-    private float calculateAlcoholWeight(DrinkItem drink) {
+    private float calculateAlcoholWeightInDrink(DrinkItem drink) {
         return (drink.getBeerVolume() * drink.getBeerPercentage() +
                 drink.getWineVolume() * drink.getWinePercentage() +
                 drink.getVodkaVolume() * drink.getVodkaPercentage() +

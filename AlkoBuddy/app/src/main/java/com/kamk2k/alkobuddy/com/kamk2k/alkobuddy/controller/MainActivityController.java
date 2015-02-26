@@ -31,8 +31,9 @@ public class MainActivityController {
     }
 
     public static void processStatusUpdate() {
-        if(mPerMileCalculator != null) {
-            
+        if(mPerMileCalculator != null && mStatusDisplayer != null) {
+            mPerMileCalculator.processAlco();
+            mStatusDisplayer.update();
         }
     }
 }

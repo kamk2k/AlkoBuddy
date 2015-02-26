@@ -1,5 +1,7 @@
 package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model;
 
+import java.util.Date;
+
 /**
  * Created by PC on 2015-02-25.
  */
@@ -8,12 +10,13 @@ public class UserAlcoState {
     public enum Sex{MALE, FEMALE};
 
     public static UserAlcoState generateMock() {
-        return new UserAlcoState(Sex.MALE, 70, 0, 0);
+        return new UserAlcoState(Sex.MALE, 70, new Date(), 0, 0);
     }
 
-    public UserAlcoState(Sex sex, int weight, float currentPerMile, long timeToSoberInMs) {
+    public UserAlcoState(Sex sex, int weight, Date lastUpdate, float currentPerMile, long timeToSoberInMs) {
         this.sex = sex;
         this.weight = weight;
+        this.lastUpdate = lastUpdate;
         this.currentPerMile = currentPerMile;
         this.timeToSoberInMs = timeToSoberInMs;
     }
@@ -23,8 +26,26 @@ public class UserAlcoState {
     private int weight;
 
     //User state
+    private Date lastUpdate;
+    private float ethanolGramsInBlood;
     private float currentPerMile;
     private long timeToSoberInMs;
+
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public float getEthanolGramsInBlood() {
+        return ethanolGramsInBlood;
+    }
+
+    public void setEthanolGramsInBlood(float ethanolGramsInBlood) {
+        this.ethanolGramsInBlood = ethanolGramsInBlood;
+    }
 
     public Sex getSex() {
         return sex;
