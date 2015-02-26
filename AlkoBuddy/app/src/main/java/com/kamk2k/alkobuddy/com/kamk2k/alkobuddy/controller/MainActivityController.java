@@ -1,5 +1,10 @@
 package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.UserAlcoState;
 
 /**
@@ -23,5 +28,11 @@ public class MainActivityController {
 
     public static StatusDisplayer getStatusDisplayerInstance() {
         return mStatusDisplayer;
+    }
+
+    public static void processStatusUpdate() {
+        if(mPerMileCalculator != null) {
+            
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.kamk2k.alkobuddy;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.MainActivityController;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusToCreatePagerAdapter;
+import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusUpdateService;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.UserAlcoState;
 
 import butterknife.InjectView;
@@ -32,8 +34,14 @@ public class MainActivity extends ActionBarActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mFragmentPagerAdapter);
+        startUpdateService();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopUpdateService();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -57,5 +65,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void startUpdateService() {
+        Intent intent = new Intent(this, StatusUpdateService.class);
+        startService(intent);
+    }
+
+    private void stopUpdateService() {
+        Intent intent = new Intent(this, StatusUpdateService.class);
+        stopService(intent);
+    }
 
 }

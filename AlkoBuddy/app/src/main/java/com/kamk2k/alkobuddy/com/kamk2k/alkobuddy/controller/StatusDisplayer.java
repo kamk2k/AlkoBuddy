@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.UserAlcoState;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 /**
  * Created by PC on 2015-02-25.
  */
@@ -21,8 +24,14 @@ public class StatusDisplayer {
     //TODO text formattin
     public void update() {
         Log.d(TAG, "update()");
-        statusTextContainer.setPerMileText(Float.toString(userState.getCurrentPerMile()));
-        statusTextContainer.setTimeToSober(Long.toString(userState.getTimeToSoberInMs()));
+        String perMileText = String.format("%.2f", userState.getCurrentPerMile());
+        Date date = new Date();
+        date.setTime(date.getTime() + userState.getTimeToSoberInMs());
+        DateFormat df = DateFormat.getDateTimeInstance();
+        String timeToSoberText = df.format(date);
+
+        statusTextContainer.setPerMileText(perMileText);
+        statusTextContainer.setTimeToSober(timeToSoberText);
     }
 
     public UserAlcoState getUserState() {
