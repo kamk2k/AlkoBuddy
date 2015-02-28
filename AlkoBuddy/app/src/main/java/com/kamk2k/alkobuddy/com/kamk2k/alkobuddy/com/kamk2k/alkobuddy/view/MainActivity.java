@@ -1,22 +1,16 @@
 package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.MainActivityController;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusToCreatePagerAdapter;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusUpdateService;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.UserAlcoState;
 
 import butterknife.InjectView;
 
@@ -29,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivityController.init(UserAlcoState.generateMock());
+        MainActivityController.init(this);
         setContentView(R.layout.activity_main);
         mFragmentPagerAdapter = new StatusToCreatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -42,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         stopUpdateService();
+        MainActivityController.saveUserStateFromFile();
     }
 
     @Override
