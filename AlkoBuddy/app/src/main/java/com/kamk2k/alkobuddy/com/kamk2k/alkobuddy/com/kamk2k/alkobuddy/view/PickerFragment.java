@@ -1,16 +1,15 @@
-package com.kamk2k.alkobuddy;
+package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.DrinksGridAdapter;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.MainActivityController;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.DrinkItem;

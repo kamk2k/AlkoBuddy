@@ -1,9 +1,12 @@
 package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by PC on 2015-02-23.
  */
-public class DrinkItem {
+public class DrinkItem implements Parcelable {
 
     private int id;
     private String name;
@@ -128,4 +131,46 @@ public class DrinkItem {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeInt(this.beerVolume);
+        dest.writeFloat(this.beerPercentage);
+        dest.writeInt(this.wineVolume);
+        dest.writeFloat(this.winePercentage);
+        dest.writeInt(this.vodkaVolume);
+        dest.writeFloat(this.vodkaPercentage);
+        dest.writeInt(this.customVolume);
+        dest.writeFloat(this.customPercentage);
+    }
+
+    private DrinkItem(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.beerVolume = in.readInt();
+        this.beerPercentage = in.readFloat();
+        this.wineVolume = in.readInt();
+        this.winePercentage = in.readFloat();
+        this.vodkaVolume = in.readInt();
+        this.vodkaPercentage = in.readFloat();
+        this.customVolume = in.readInt();
+        this.customPercentage = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<DrinkItem> CREATOR = new Parcelable.Creator<DrinkItem>() {
+        public DrinkItem createFromParcel(Parcel source) {
+            return new DrinkItem(source);
+        }
+
+        public DrinkItem[] newArray(int size) {
+            return new DrinkItem[size];
+        }
+    };
 }

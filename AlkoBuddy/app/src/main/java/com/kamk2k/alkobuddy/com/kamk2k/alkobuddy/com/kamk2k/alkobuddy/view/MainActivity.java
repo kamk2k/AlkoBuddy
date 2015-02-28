@@ -1,4 +1,4 @@
-package com.kamk2k.alkobuddy;
+package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.MainActivityController;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusToCreatePagerAdapter;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusUpdateService;

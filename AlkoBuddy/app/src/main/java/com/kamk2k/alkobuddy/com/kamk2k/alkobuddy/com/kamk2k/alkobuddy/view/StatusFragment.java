@@ -1,4 +1,4 @@
-package com.kamk2k.alkobuddy;
+package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.MainActivityController;
 import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusTextContainer;
 
