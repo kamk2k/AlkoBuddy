@@ -1,14 +1,13 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller;
+package com.kamk2k.alkobuddy.view.utils;
 
 import android.content.Context;
-import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.kamk2k.alkobuddy.R;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.DrinkItem;
+import com.kamk2k.alkobuddy.model.DrinkItem;
 
 import java.util.ArrayList;
 

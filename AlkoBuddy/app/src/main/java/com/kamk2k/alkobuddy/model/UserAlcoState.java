@@ -1,4 +1,4 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model;
+package com.kamk2k.alkobuddy.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

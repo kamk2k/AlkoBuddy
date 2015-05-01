@@ -1,29 +1,38 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view;
+package com.kamk2k.alkobuddy.view;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kamk2k.alkobuddy.R;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.MainActivityController;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusToCreatePagerAdapter;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.StatusUpdateService;
+import com.kamk2k.alkobuddy.presenter.utils.MVPActivityPresenter;
+import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
+import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
+import com.kamk2k.alkobuddy.view.utils.MVPRetainWorkerFragment;
+import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
+import com.kamk2k.alkobuddy.presenter.service.StatusUpdateService;
 
 import butterknife.InjectView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends MVPActivityView {
+
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     @InjectView(R.id.pager) ViewPager mViewPager;
     StatusToCreatePagerAdapter mFragmentPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(MVPRetainWorkerFragment.getRetainedPresenter(TAG) == null) {
+            presenter = new MainActivityPresenter(this);
+            MVPRetainWorkerFragment.registerPresenterToRetain(TAG, presenter);
+        } else {
+            presenter = (MVPActivityPresenter)MVPRetainWorkerFragment.getRetainedPresenter(TAG);
+        }
         super.onCreate(savedInstanceState);
-        MainActivityController.init(this);
         setContentView(R.layout.activity_main);
         mFragmentPagerAdapter = new StatusToCreatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -36,7 +45,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         stopUpdateService();
-        MainActivityController.saveUserStateFromFile();
     }
 
     @Override

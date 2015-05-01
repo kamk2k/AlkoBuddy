@@ -1,4 +1,4 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller;
+package com.kamk2k.alkobuddy.view.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

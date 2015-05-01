@@ -1,9 +1,13 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller;
+package com.kamk2k.alkobuddy.presenter.logic;
 
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.DrinkItem;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.UserAlcoState;
+import com.kamk2k.alkobuddy.model.DrinkItem;
+import com.kamk2k.alkobuddy.model.UserAlcoState;
+import com.kamk2k.alkobuddy.model.events.DrinkEvent;
+import com.kamk2k.alkobuddy.model.events.ProcessAlkoEvent;
 
 import java.util.Date;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by PC on 2015-02-25.
@@ -22,9 +26,10 @@ public class PerMileCalculator {
 
     public PerMileCalculator(UserAlcoState userState) {
         this.userState = userState;
+        EventBus.getDefault().registerSticky(this);
     }
 
-    public void drink(DrinkItem drink) {
+    private void drink(DrinkItem drink) {
         calculateAlcoholDecay();
         float alcoholWeight = userState.getEthanolGramsInBlood() + calculateAlcoholWeightInDrink(drink);
         userState.setEthanolGramsInBlood(alcoholWeight);
@@ -32,7 +37,7 @@ public class PerMileCalculator {
         calculateCurrentTimeToSober();
     }
 
-    public void processAlco() {
+    private void processAlco() {
         calculateAlcoholDecay();
         calculateCurrentPerMiles();
         calculateCurrentTimeToSober();
@@ -81,5 +86,13 @@ public class PerMileCalculator {
                 drink.getVodkaVolume() * drink.getVodkaPercentage() +
                 drink.getCustomVolume() * drink.getCustomPercentage()) /
                 ALCOHOL_VOLUME_TO_WEIGHT_RATIO;
+    }
+
+    public void onEvent(DrinkEvent event){
+        drink(event.getDrink());
+    }
+
+    public void onEvent(ProcessAlkoEvent event){
+        processAlco();
     }
 }

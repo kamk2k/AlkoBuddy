@@ -1,4 +1,4 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view;
+package com.kamk2k.alkobuddy.view;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.kamk2k.alkobuddy.R;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.DrinksGridAdapter;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller.MainActivityController;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.model.DrinkItem;
+import com.kamk2k.alkobuddy.view.utils.DrinkClickListener;
+import com.kamk2k.alkobuddy.view.utils.DrinksGridAdapter;
+import com.kamk2k.alkobuddy.model.DrinkItem;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -85,7 +85,7 @@ public class PickerFragment extends Fragment {
             drinksGridAdapter.addItem(DrinkItem.generateMock());
         }
         drinksGridView.setAdapter(drinksGridAdapter);
-        drinksGridView.setOnItemClickListener(MainActivityController.getDrinkClickListenerInstance());
+        drinksGridView.setOnItemClickListener(new DrinkClickListener());
         return root;
     }
 

@@ -1,4 +1,4 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller;
+package com.kamk2k.alkobuddy.presenter.utils;
 
 import android.app.Activity;
 import android.content.Context;

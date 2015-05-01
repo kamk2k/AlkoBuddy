@@ -5,5 +5,5 @@
     android:layout_height="match_parent"
     android:numColumns="4"
     android:animateLayoutChanges="true"
-    tools:context="com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view.PickerFragment">
+    tools:context="com.kamk2k.alkobuddy.view.PickerFragment">
 </GridView>

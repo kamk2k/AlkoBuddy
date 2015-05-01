@@ -1,11 +1,11 @@
-package com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.controller;
+package com.kamk2k.alkobuddy.view.utils;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view.StatusFragment;
-import com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.com.kamk2k.alkobuddy.view.CreateDrinkFragment;
+import com.kamk2k.alkobuddy.view.StatusFragment;
+import com.kamk2k.alkobuddy.view.CreateDrinkFragment;
 
 /**
  * Created by PC on 2015-02-23.
