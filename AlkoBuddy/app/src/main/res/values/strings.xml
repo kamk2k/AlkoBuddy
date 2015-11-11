@@ -3,8 +3,17 @@
 
     <string name="app_name">AlkoBuddy</string>
     <string name="hello_world">Hello world!</string>
+    <string name="action_reset">Reset</string>
     <string name="action_settings">Settings</string>
     <string name="promil">‰</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sex">Sex</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="weight">Weight</string>
+    <string name="kg_abbreviation">kg</string>
+
+    <string name="sex_preference_key">sex_preference</string>
+    <string name="weight_preference_key">weight_preference</string>
 
 </resources>

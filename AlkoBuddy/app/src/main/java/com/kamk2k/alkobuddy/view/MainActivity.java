@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kamk2k.alkobuddy.R;
+import com.kamk2k.alkobuddy.model.events.ResetDrinkState;
 import com.kamk2k.alkobuddy.presenter.utils.MVPActivityPresenter;
 import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
@@ -14,7 +15,10 @@ import com.kamk2k.alkobuddy.view.utils.MVPRetainWorkerFragment;
 import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
 import com.kamk2k.alkobuddy.presenter.service.StatusUpdateService;
 
+import javax.inject.Inject;
+
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends MVPActivityView {
@@ -22,7 +26,7 @@ public class MainActivity extends MVPActivityView {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     @InjectView(R.id.pager) ViewPager mViewPager;
-    StatusToCreatePagerAdapter mFragmentPagerAdapter;
+    @Inject StatusToCreatePagerAdapter mFragmentPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,6 @@ public class MainActivity extends MVPActivityView {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mFragmentPagerAdapter = new StatusToCreatePagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mFragmentPagerAdapter);
@@ -63,7 +66,11 @@ public class MainActivity extends MVPActivityView {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
+        } else if(id == R.id.action_reset) {
+            EventBus.getDefault().post(new ResetDrinkState());
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,5 +1,7 @@
 package com.kamk2k.alkobuddy.model;
 
+import java.util.Date;
+
 /**
  * Created by PC on 2015-05-01.
  */
@@ -15,5 +17,12 @@ public class UserStateProvider {
 
     public static void setUserState(UserAlcoState userState) {
         UserStateProvider.userState = userState;
+    }
+
+    public static void resetUserState(UserAlcoState state) {
+        state.setEthanolGramsInBlood(0);
+        state.setTimeToSoberInMs(0);
+        state.setCurrentPerMile(0);
+        state.setLastUpdate(new Date());
     }
 }

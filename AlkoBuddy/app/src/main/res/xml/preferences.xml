@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="@string/sex_preference_key"
+        android:title="@string/sex"
+        android:entries="@array/sex_entries"
+        android:entryValues="@array/sex_values"
+        android:summary="%s" />
+
+    <EditTextPreference
+        android:key="@string/weight_preference_key"
+        android:title="@string/weight"
+        android:inputType="numberDecimal"
+        android:defaultValue="70"/>
+
+</PreferenceScreen>

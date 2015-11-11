@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.kamk2k.alkobuddy.view.StatusFragment;
 import com.kamk2k.alkobuddy.view.CreateDrinkFragment;
 
+import javax.inject.Inject;
+
 /**
  * Created by PC on 2015-02-23.
  */
@@ -15,6 +17,7 @@ public class StatusToCreatePagerAdapter extends FragmentPagerAdapter {
     StatusFragment mStatusFragment = new StatusFragment();
     CreateDrinkFragment mCreateDrinkFragment = new CreateDrinkFragment();
 
+    @Inject
     public StatusToCreatePagerAdapter(FragmentManager fm) {
         super(fm);
     }

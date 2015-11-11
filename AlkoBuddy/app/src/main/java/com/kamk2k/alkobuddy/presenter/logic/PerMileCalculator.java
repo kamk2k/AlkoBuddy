@@ -14,6 +14,8 @@ import de.greenrobot.event.EventBus;
  */
 public class PerMileCalculator {
 
+    // based on: http://en.wikipedia.org/wiki/Blood_alcohol_content
+
     private static final float WATER_K_FACTOR_FOR_MEN = 0.7f;
     private static final float WATER_K_FACTOR_FOR_WOMEN = 0.6f;
     private static final float ALCOHOL_VOLUME_TO_WEIGHT_RATIO = 1.25f;  // ml to grams
@@ -27,6 +29,46 @@ public class PerMileCalculator {
     public PerMileCalculator(UserAlcoState userState) {
         this.userState = userState;
         EventBus.getDefault().registerSticky(this);
+    }
+
+    public long timeMsToPerMile(float desiredPerMile) {
+        float alcoholWeight = userState.getEthanolGramsInBlood();
+        float desiredAlcoholWeight = alcoholPerMilesForGrams(desiredPerMile);
+        long timeToPerMile = 0;
+        if(userState.getSex() == UserAlcoState.Sex.MALE) {
+            timeToPerMile = (long)((alcoholWeight - desiredAlcoholWeight) * MS_IN_ONE_HOUR * ALCOHOL_DECAY_RATE_FOR_MEN);
+        } else {
+            timeToPerMile = (long)((alcoholWeight - desiredAlcoholWeight) * ALCOHOL_DECAY_RATE_FOR_WOMEN * MS_IN_ONE_HOUR);
+        }
+        if(timeToPerMile < 0)
+            timeToPerMile = 0;
+        return timeToPerMile;
+    }
+
+    public float perMilesAtTime(Date when) {
+        Date currentTime = new Date();
+        long timeDiff = when.getTime() - currentTime.getTime();
+        float newEthanolInBloodValue;
+        if(userState.getSex() == UserAlcoState.Sex.MALE) {
+            newEthanolInBloodValue = userState.getEthanolGramsInBlood() - (timeDiff * ALCOHOL_DECAY_RATE_FOR_MEN / MS_IN_ONE_HOUR);
+        } else {
+            newEthanolInBloodValue = userState.getEthanolGramsInBlood() - (timeDiff * ALCOHOL_DECAY_RATE_FOR_WOMEN / MS_IN_ONE_HOUR);
+        }
+        //to avoid negative values
+        if(newEthanolInBloodValue < 0) newEthanolInBloodValue = 0;
+        return alcoholPerMilesForGrams(newEthanolInBloodValue);
+    }
+
+    public float drinkLimitInGrams(Date timeLimit, float perMileLimit) {
+        float gramLimit = alcoholGramsForPerMile(perMileLimit);
+        float alcoholDecayed = 0;
+        long timeDiff = timeLimit.getTime() - new Date().getTime();
+        if(userState.getSex() == UserAlcoState.Sex.MALE) {
+            alcoholDecayed = timeDiff * ALCOHOL_DECAY_RATE_FOR_MEN / MS_IN_ONE_HOUR;
+        } else {
+            alcoholDecayed = timeDiff * ALCOHOL_DECAY_RATE_FOR_WOMEN / MS_IN_ONE_HOUR;
+        }
+        return gramLimit + alcoholDecayed - userState.getEthanolGramsInBlood();
     }
 
     private void drink(DrinkItem drink) {
@@ -60,20 +102,14 @@ public class PerMileCalculator {
 
     private void calculateCurrentPerMiles() {
         float alcoholWeight = userState.getEthanolGramsInBlood();
-        float perMile = 0;
-        if(userState.getSex() == UserAlcoState.Sex.MALE) {
-            perMile = alcoholWeight / (WATER_K_FACTOR_FOR_MEN * userState.getWeight());
-        } else {
-            perMile = alcoholWeight / (WATER_K_FACTOR_FOR_WOMEN * userState.getWeight());
-        }
-        userState.setCurrentPerMile(perMile);
+        userState.setCurrentPerMile((alcoholPerMilesForGrams(alcoholWeight)));
     }
 
     private void calculateCurrentTimeToSober() {
         float alcoholWeight = userState.getEthanolGramsInBlood();
         long timeToSober = 0;
         if(userState.getSex() == UserAlcoState.Sex.MALE) {
-            timeToSober = (long)((alcoholWeight * MS_IN_ONE_HOUR) / ALCOHOL_DECAY_RATE_FOR_MEN);
+            timeToSober = (long)(alcoholWeight * MS_IN_ONE_HOUR * ALCOHOL_DECAY_RATE_FOR_MEN);
         } else {
             timeToSober = (long)(alcoholWeight * ALCOHOL_DECAY_RATE_FOR_WOMEN * MS_IN_ONE_HOUR);
         }
@@ -86,6 +122,26 @@ public class PerMileCalculator {
                 drink.getVodkaVolume() * drink.getVodkaPercentage() +
                 drink.getCustomVolume() * drink.getCustomPercentage()) /
                 ALCOHOL_VOLUME_TO_WEIGHT_RATIO;
+    }
+
+    private float alcoholGramsForPerMile(float perMile) {
+        float calculatedWeight = 0;
+        if(userState.getSex() == UserAlcoState.Sex.MALE) {
+            calculatedWeight = WATER_K_FACTOR_FOR_MEN * userState.getWeight() * perMile;
+        } else {
+            calculatedWeight = WATER_K_FACTOR_FOR_WOMEN * userState.getWeight() * perMile;
+        }
+        return calculatedWeight;
+    }
+
+    private float alcoholPerMilesForGrams(float grams) {
+        float perMile = 0;
+        if(userState.getSex() == UserAlcoState.Sex.MALE) {
+            perMile = grams / (WATER_K_FACTOR_FOR_MEN * userState.getWeight());
+        } else {
+            perMile = grams / (WATER_K_FACTOR_FOR_WOMEN * userState.getWeight());
+        }
+        return perMile;
     }
 
     public void onEvent(DrinkEvent event){
