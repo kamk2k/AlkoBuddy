@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name="com.kamk2k.alkobuddy.view.utils.App"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">

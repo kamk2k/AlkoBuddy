@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.inject.Inject;
+
 /**
  * Created by PC on 2015-02-28.
  */
@@ -20,6 +22,7 @@ public class StorageControler {
     Thread worker;
     WriteObjectToFile writer;
 
+    @Inject
     public StorageControler(Context context) {
         mContext = context;
 

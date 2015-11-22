@@ -13,6 +13,8 @@ import com.kamk2k.alkobuddy.presenter.utils.MVPActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.utils.StorageControler;
 import com.kamk2k.alkobuddy.view.utils.MVPRetainWorkerFragment;
 
+import javax.inject.Inject;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -22,9 +24,12 @@ public class MainActivityPresenter implements MVPActivityPresenter {
 
     private static UserAlcoState mUserAlcoState;
 
-    private PerMileCalculator mPerMileCalculator;
-    private StorageControler mStorageControler;
+    @Inject
+    protected PerMileCalculator mPerMileCalculator;
+    @Inject
+    protected StorageControler mStorageControler;
 
+    @Inject
     public MainActivityPresenter(Context context) {
         mStorageControler = new StorageControler(context);
         mUserAlcoState = UserStateProvider.getUserState();

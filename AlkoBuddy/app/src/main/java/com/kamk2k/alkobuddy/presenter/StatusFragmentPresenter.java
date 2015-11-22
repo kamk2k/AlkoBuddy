@@ -13,6 +13,8 @@ import com.kamk2k.alkobuddy.view.utils.MVPRetainWorkerFragment;
 import java.text.DateFormat;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -22,10 +24,12 @@ public class StatusFragmentPresenter implements MVPFragmentPresenter {
 
     private static final String TAG = StatusFragmentPresenter.class.getSimpleName();
 
-    private UserAlcoState userState;
+    @Inject
+    protected UserAlcoState userState;
 
+    @Inject
     public StatusFragmentPresenter(Context context) {
-        this.userState = UserStateProvider.getUserState();
+//        this.userState = UserStateProvider.getUserState();
         EventBus.getDefault().registerSticky(this);
     }
 

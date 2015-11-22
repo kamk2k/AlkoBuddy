@@ -5,11 +5,14 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.kamk2k.alkobuddy.presenter.utils.MVPActivityPresenter;
 
+import javax.inject.Inject;
+
 /**
  * Created by PC on 2015-05-01.
  */
 public class MVPActivityView extends ActionBarActivity {
 
+    @Inject
     protected MVPActivityPresenter presenter;
 
     @Override

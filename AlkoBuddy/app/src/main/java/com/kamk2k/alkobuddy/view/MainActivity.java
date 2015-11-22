@@ -8,7 +8,14 @@ import android.view.MenuItem;
 
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.events.ResetDrinkState;
+import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.presenter.dagger.ApplicationModule;
+import com.kamk2k.alkobuddy.presenter.dagger.DaggerApplicationComponent;
+import com.kamk2k.alkobuddy.presenter.dagger.DaggerMainActivityComponent;
+import com.kamk2k.alkobuddy.presenter.dagger.MainActivityComponent;
+import com.kamk2k.alkobuddy.presenter.dagger.PresentersModule;
 import com.kamk2k.alkobuddy.presenter.utils.MVPActivityPresenter;
+import com.kamk2k.alkobuddy.view.utils.App;
 import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.view.utils.MVPRetainWorkerFragment;
@@ -30,12 +37,20 @@ public class MainActivity extends MVPActivityView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(MVPRetainWorkerFragment.getRetainedPresenter(TAG) == null) {
-            presenter = new MainActivityPresenter(this);
-            MVPRetainWorkerFragment.registerPresenterToRetain(TAG, presenter);
-        } else {
-            presenter = (MVPActivityPresenter)MVPRetainWorkerFragment.getRetainedPresenter(TAG);
-        }
+//        if(MVPRetainWorkerFragment.getRetainedPresenter(TAG) == null) {
+//            presenter = new MainActivityPresenter(this);
+//            MVPRetainWorkerFragment.registerPresenterToRetain(TAG, presenter);
+//        } else {
+//            presenter = (MVPActivityPresenter)MVPRetainWorkerFragment.getRetainedPresenter(TAG);
+//        }
+        MainActivityComponent component = DaggerMainActivityComponent
+                .builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
+//        ApplicationComponent component = DaggerApplicationComponent.builder().
+//                presentersModule(new PresentersModule(App.getApplication())).build();
+        component.inject(this);
+//        App.getApplicationComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mViewPager = (ViewPager) findViewById(R.id.pager);
