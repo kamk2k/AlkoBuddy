@@ -8,17 +8,11 @@ import android.view.MenuItem;
 
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.events.ResetDrinkState;
-import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
-import com.kamk2k.alkobuddy.presenter.dagger.ApplicationModule;
-import com.kamk2k.alkobuddy.presenter.dagger.DaggerApplicationComponent;
-import com.kamk2k.alkobuddy.presenter.dagger.DaggerMainActivityComponent;
-import com.kamk2k.alkobuddy.presenter.dagger.MainActivityComponent;
-import com.kamk2k.alkobuddy.presenter.dagger.PresentersModule;
-import com.kamk2k.alkobuddy.presenter.utils.MVPActivityPresenter;
-import com.kamk2k.alkobuddy.view.utils.App;
-import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
-import com.kamk2k.alkobuddy.view.utils.MVPRetainWorkerFragment;
+import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.presenter.dagger.MainActivityModule;
+import com.kamk2k.alkobuddy.presenter.dagger.MainActivityComponent;
+import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
 import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
 import com.kamk2k.alkobuddy.presenter.service.StatusUpdateService;
 
@@ -32,37 +26,29 @@ public class MainActivity extends MVPActivityView {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    @InjectView(R.id.pager) ViewPager mViewPager;
-    @Inject StatusToCreatePagerAdapter mFragmentPagerAdapter;
+    @InjectView(R.id.pager)
+    ViewPager mViewPager;
+    @Inject
+    MainActivityPresenter presenter;
+    StatusToCreatePagerAdapter mFragmentPagerAdapter;
+    private MainActivityComponent mMainActivityComponent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-//        if(MVPRetainWorkerFragment.getRetainedPresenter(TAG) == null) {
-//            presenter = new MainActivityPresenter(this);
-//            MVPRetainWorkerFragment.registerPresenterToRetain(TAG, presenter);
-//        } else {
-//            presenter = (MVPActivityPresenter)MVPRetainWorkerFragment.getRetainedPresenter(TAG);
-//        }
-        MainActivityComponent component = DaggerMainActivityComponent
-                .builder()
-                .applicationModule(new ApplicationModule(this))
-                .build();
-//        ApplicationComponent component = DaggerApplicationComponent.builder().
-//                presentersModule(new PresentersModule(App.getApplication())).build();
-        component.inject(this);
-//        App.getApplicationComponent().inject(this);
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mFragmentPagerAdapter);
         startUpdateService();
+        presenter.onCreate();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        stopUpdateService();
+    public void injectActivity(ApplicationComponent component) {
+        mMainActivityComponent = component.plus(new MainActivityModule(this));
+        mMainActivityComponent.inject(this);
+        mFragmentPagerAdapter = mMainActivityComponent.getStatusToCreatePagerAdapter();
     }
 
     @Override
@@ -99,6 +85,37 @@ public class MainActivity extends MVPActivityView {
     private void stopUpdateService() {
         Intent intent = new Intent(this, StatusUpdateService.class);
         stopService(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopUpdateService();
+        presenter.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
 
 }

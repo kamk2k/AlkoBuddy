@@ -1,9 +1,7 @@
 package com.kamk2k.alkobuddy.presenter.dagger;
 
-import android.app.Application;
-
 import com.kamk2k.alkobuddy.view.MainActivity;
-import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
+import com.kamk2k.alkobuddy.view.StatusFragment;
 
 import javax.inject.Singleton;
 
@@ -14,9 +12,11 @@ import dagger.Component;
  */
 @Singleton
 @Component(modules = {
-        PresentersModule.class,
+        PresentersModule.class
     })
 public interface ApplicationComponent {
     void inject(MainActivity mainActivity);
-    MainActivityComponent newMainActivityComponent(ApplicationModule applicationModule);
+    void inject(StatusFragment statusFragment);
+    MainActivityComponent plus(MainActivityModule mainActivityModule);
+
 }

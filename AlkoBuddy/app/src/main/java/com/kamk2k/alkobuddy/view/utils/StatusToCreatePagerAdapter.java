@@ -17,7 +17,6 @@ public class StatusToCreatePagerAdapter extends FragmentPagerAdapter {
     StatusFragment mStatusFragment = new StatusFragment();
     CreateDrinkFragment mCreateDrinkFragment = new CreateDrinkFragment();
 
-    @Inject
     public StatusToCreatePagerAdapter(FragmentManager fm) {
         super(fm);
     }

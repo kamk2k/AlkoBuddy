@@ -20,8 +20,10 @@ public class App extends Application {
     public void onCreate() {
         INSTANCE = this;
         super.onCreate();
-        mApplicationComponent = DaggerApplicationComponent.builder().
-                presentersModule(new PresentersModule(this)).build();
+        mApplicationComponent = DaggerApplicationComponent
+                .builder()
+                .presentersModule(new PresentersModule(this))
+                .build();
     }
 
     public static Application getApplication() {
