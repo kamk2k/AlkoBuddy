@@ -1,52 +1,37 @@
 package com.kamk2k.alkobuddy.view;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.net.Uri;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
 import com.kamk2k.alkobuddy.R;
-import com.kamk2k.alkobuddy.view.utils.DrinkClickListener;
-import com.kamk2k.alkobuddy.view.utils.DrinksGridAdapter;
+import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.view.utils.DrinksAdapter;
 import com.kamk2k.alkobuddy.model.DrinkItem;
+import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PickerFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PickerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class PickerFragment extends Fragment {
+public class PickerFragment extends MVPFragmentView {
 
     private static final String TAG = PickerFragment.class.getSimpleName();
+    public static final int NUMBER_OF_GRID_COLUMS = 4;
 
-    @InjectView(R.id.drinks_list) GridView drinksGridView;
-
-    private DrinksGridAdapter drinksGridAdapter;
-
-    private OnFragmentInteractionListener mListener;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment PickerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PickerFragment newInstance(String param1, String param2) {
-        PickerFragment fragment = new PickerFragment();
-        return fragment;
-    }
+    @Inject
+    Context mContext;
+    @InjectView(R.id.drinks_list)
+    RecyclerView mDrinksRecyclerView;
+    private RecyclerView.LayoutManager mDrinksLayoutManager;
+    @Inject
+    DrinksAdapter drinksAdapter;
 
     public PickerFragment() {
         // Required empty public constructor
@@ -58,51 +43,26 @@ public class PickerFragment extends Fragment {
     }
 
     @Override
+    public void injectFragment(ApplicationComponent component) {
+        component.inject(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.picker_fragment, container, false);
         ButterKnife.inject(this, root);
-        drinksGridAdapter = new DrinksGridAdapter(getActivity());
+
+
+        mDrinksRecyclerView.setHasFixedSize(true);
+        mDrinksLayoutManager = new GridLayoutManager(mContext, NUMBER_OF_GRID_COLUMS);
+        mDrinksRecyclerView.setLayoutManager(mDrinksLayoutManager);
+
         for(int i = 0; i < 20; i++) {
-            drinksGridAdapter.addItem(DrinkItem.generateMock());
+            drinksAdapter.addItem(DrinkItem.generateMock());
         }
-        drinksGridView.setAdapter(drinksGridAdapter);
-        drinksGridView.setOnItemClickListener(new DrinkClickListener());
+        mDrinksRecyclerView.setAdapter(drinksAdapter);
         return root;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }
