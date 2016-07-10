@@ -3,6 +3,8 @@ package com.kamk2k.alkobuddy.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.kamk2k.alkobuddy.presenter.logic.AlcoholGramsToPerMileConverter;
+
 import java.util.Date;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Date;
  */
 public class UserAlcoState implements Parcelable {
 
-    public enum Sex{MALE, FEMALE};
+    public enum Sex{MALE, FEMALE}
 
     public static UserAlcoState generateMock() {
         return new UserAlcoState(Sex.MALE, 70, new Date(), 0, 0);
@@ -22,6 +24,7 @@ public class UserAlcoState implements Parcelable {
         this.lastUpdate = lastUpdate;
         this.currentPerMile = currentPerMile;
         this.timeToSoberInMs = timeToSoberInMs;
+        this.ethanolGramsInBlood = AlcoholGramsToPerMileConverter.alcoholGramsForPerMile(currentPerMile, this);
     }
 
     // User info
