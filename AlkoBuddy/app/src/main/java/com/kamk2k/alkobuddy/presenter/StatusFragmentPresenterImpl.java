@@ -41,6 +41,9 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
     }
 
     public void onEvent(UpdateEvent event){
+        if(event.getUserAlcoState() != null) {
+            userState = event.getUserAlcoState();
+        }
         update();
     }
 

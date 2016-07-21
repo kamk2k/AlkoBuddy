@@ -8,17 +8,19 @@ import java.util.Date;
 /**
  * Created by PC on 2015-02-25.
  */
-public class PerMileCalculator {
+public class UserStateChangeHandler {
 
     private UserAlcoState userState;
 
-    public PerMileCalculator(UserAlcoState userState) {
+    public UserStateChangeHandler(UserAlcoState userState) {
         this.userState = userState;
     }
 
-    public void drink(DrinkItem drink, Date currentTime) {
+    public void onDrink(DrinkItem drink, Date currentTime) {
+        subtractProcessedAlcohol(currentTime);
         addAlcoholGramsFromDrink(drink);
-        processAlco(currentTime);
+        updateAlcoholPerMiles();
+        updateTimeToSober();
     }
 
     private void addAlcoholGramsFromDrink(DrinkItem drink) {
@@ -28,28 +30,27 @@ public class PerMileCalculator {
         userState.setEthanolGramsInBlood(alcoholWeight);
     }
 
-    public void processAlco(Date currentTime) {
-        calculateAlcoholDecay(currentTime);
+    public void processAlcohol(Date currentTime) {
+        subtractProcessedAlcohol(currentTime);
         updateAlcoholPerMiles();
-        calculateCurrentTimeToSober();
+        updateTimeToSober();
     }
 
-    public void calculateAlcoholDecay(Date currentTime) {
+    private void subtractProcessedAlcohol(Date currentTime) {
         long timeSinceLastUpdate = currentTime.getTime() - userState.getLastUpdate().getTime();
-        float newEthanolsInBloodValue = UserStateCalculator.getAlcoholWeightAfterDecay(timeSinceLastUpdate, userState);
-        //to avoid negative values
+        float newEthanolsInBloodValue = UserStateCalculator.getAlcoholWeightAfterTime(timeSinceLastUpdate, userState);
         userState.setEthanolGramsInBlood(newEthanolsInBloodValue);
         userState.setLastUpdate(currentTime);
     }
 
-    public void updateAlcoholPerMiles() {
+    private void updateAlcoholPerMiles() {
         float alcoholWeight = userState.getEthanolGramsInBlood();
         userState.setCurrentPerMile((AlcoholGramsToPerMileConverter.alcoholPerMilesForGrams(alcoholWeight, userState)));
     }
 
-    public void calculateCurrentTimeToSober() {
+    private void updateTimeToSober() {
         float alcoholWeight = userState.getEthanolGramsInBlood();
-        long timeToSober = UserStateCalculator.getTimeLengthToProcessAlcohol(alcoholWeight, userState);
+        long timeToSober = UserStateCalculator.getTimePeriodToProcessAlcohol(alcoholWeight, userState);
         userState.setTimeToSoberInMs(timeToSober);
     }
 

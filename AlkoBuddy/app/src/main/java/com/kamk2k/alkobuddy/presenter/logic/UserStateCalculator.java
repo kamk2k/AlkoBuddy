@@ -17,7 +17,7 @@ public class UserStateCalculator {
         float alcoholWeight = userState.getEthanolGramsInBlood();
         float desiredAlcoholWeight = AlcoholGramsToPerMileConverter.alcoholPerMilesForGrams
                 (desiredPerMile, userState);
-        long timeToPerMile = getTimeLengthToProcessAlcohol((alcoholWeight - desiredAlcoholWeight), userState);
+        long timeToPerMile = getTimePeriodToProcessAlcohol((alcoholWeight - desiredAlcoholWeight), userState);
         if(timeToPerMile < 0)
             timeToPerMile = 0;
         return timeToPerMile;
@@ -26,14 +26,14 @@ public class UserStateCalculator {
     public static float perMilesAtTime(Date when, UserAlcoState userState) {
         Date currentTime = new Date();
         long timeDiff = when.getTime() - currentTime.getTime();
-        float newEthanolInBloodValue = getAlcoholWeightAfterDecay(timeDiff, userState);
+        float newEthanolInBloodValue = getAlcoholWeightAfterTime(timeDiff, userState);
         if(newEthanolInBloodValue < 0) newEthanolInBloodValue = 0;
         return AlcoholGramsToPerMileConverter.alcoholPerMilesForGrams(newEthanolInBloodValue, userState);
     }
 
     public static float drinkLimitInGrams(Date timeLimit, float perMileLimit, UserAlcoState userState) {
         float gramLimit = AlcoholGramsToPerMileConverter.alcoholGramsForPerMile(perMileLimit, userState);
-        float alcoholDecayed = 0;
+        float alcoholDecayed;
         long timeDiff = timeLimit.getTime() - new Date().getTime();
         if(userState.getSex() == UserAlcoState.Sex.MALE) {
             alcoholDecayed = timeDiff * ALCOHOL_DECAY_RATE_FOR_MEN / MS_IN_ONE_HOUR;
@@ -43,7 +43,7 @@ public class UserStateCalculator {
         return gramLimit + alcoholDecayed - userState.getEthanolGramsInBlood();
     }
 
-    public static long getTimeLengthToProcessAlcohol(float alcoholWeight, UserAlcoState userState) {
+    public static long getTimePeriodToProcessAlcohol(float alcoholWeight, UserAlcoState userState) {
         if(userState.getSex() == UserAlcoState.Sex.MALE) {
             return (long)(alcoholWeight * MS_IN_ONE_HOUR / ALCOHOL_DECAY_RATE_FOR_MEN);
         } else {
@@ -51,12 +51,12 @@ public class UserStateCalculator {
         }
     }
 
-    public static float getAlcoholWeightAfterDecay(long timeSinceLastUpdate, UserAlcoState userState) {
+    public static float getAlcoholWeightAfterTime(long timePeriod, UserAlcoState userState) {
         float currentAlcoholWeight;
         if(userState.getSex() == UserAlcoState.Sex.MALE) {
-            currentAlcoholWeight = userState.getEthanolGramsInBlood() - (timeSinceLastUpdate * ALCOHOL_DECAY_RATE_FOR_MEN / MS_IN_ONE_HOUR);
+            currentAlcoholWeight = userState.getEthanolGramsInBlood() - (timePeriod * ALCOHOL_DECAY_RATE_FOR_MEN / MS_IN_ONE_HOUR);
         } else {
-            currentAlcoholWeight = userState.getEthanolGramsInBlood() - (timeSinceLastUpdate * ALCOHOL_DECAY_RATE_FOR_WOMEN / MS_IN_ONE_HOUR);
+            currentAlcoholWeight = userState.getEthanolGramsInBlood() - (timePeriod * ALCOHOL_DECAY_RATE_FOR_WOMEN / MS_IN_ONE_HOUR);
         }
         if(currentAlcoholWeight < 0) currentAlcoholWeight = 0;
         return currentAlcoholWeight;

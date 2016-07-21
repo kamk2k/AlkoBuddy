@@ -22,6 +22,6 @@ public class DrinkClickListener implements AdapterView.OnItemClickListener {
         Log.d(TAG, "You have clicked it!!!");
         DrinkItem clickedDrink = (DrinkItem) parent.getItemAtPosition(position);
         EventBus.getDefault().post(new DrinkEvent(clickedDrink));
-        EventBus.getDefault().post(new UpdateEvent());
+        EventBus.getDefault().post(new UpdateEvent(null));
     }
 }

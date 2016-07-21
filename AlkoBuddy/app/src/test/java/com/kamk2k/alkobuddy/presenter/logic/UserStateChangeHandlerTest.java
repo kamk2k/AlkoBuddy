@@ -1,7 +1,5 @@
 package com.kamk2k.alkobuddy.presenter.logic;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 
@@ -13,14 +11,13 @@ import java.util.Date;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 /**
  * Created by kksiazek on 09.07.16.
  */
 
-public class PerMileCalculatorTest {
+public class UserStateChangeHandlerTest {
 
     @Mock
     private UserAlcoState userAlcoState;
@@ -48,7 +45,7 @@ public class PerMileCalculatorTest {
         when(drinkItem.getWineVolume()).thenReturn(0);
         when(drinkItem.getVodkaVolume()).thenReturn(0);
 
-        new PerMileCalculator(userAlcoState).drink(drinkItem, currentTime);
+        new UserStateChangeHandler(userAlcoState).onDrink(drinkItem, currentTime);
 
 //        verify(userAlcoState).setEthanolGramsInBlood(0);
 //        verify(userAlcoState).setLastUpdate(currentTime);
@@ -80,7 +77,7 @@ public class PerMileCalculatorTest {
         when(drinkItem.getWineVolume()).thenReturn(100);
         when(drinkItem.getVodkaVolume()).thenReturn(0);
 
-        new PerMileCalculator(userAlcoState).drink(drinkItem, currentTime);
+        new UserStateChangeHandler(userAlcoState).onDrink(drinkItem, currentTime);
 
 //        verify(userAlcoState).setEthanolGramsInBlood(0);
 //        verify(userAlcoState).setLastUpdate(currentTime);
@@ -113,7 +110,7 @@ public class PerMileCalculatorTest {
         when(drinkItem.getWineVolume()).thenReturn(0);
         when(drinkItem.getVodkaVolume()).thenReturn(100);
 
-        new PerMileCalculator(userAlcoState).drink(drinkItem, currentTime);
+        new UserStateChangeHandler(userAlcoState).onDrink(drinkItem, currentTime);
 
 //        verify(userAlcoState).setEthanolGramsInBlood(0);
 //        verify(userAlcoState).setLastUpdate(currentTime);

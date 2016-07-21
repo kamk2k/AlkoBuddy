@@ -22,10 +22,10 @@
         <service
             android:name=".presenter.service.StatusUpdateService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
 
         <receiver
-            android:name=".view.utils.MainBroadcastReceiver"
+            android:name=".presenter.utils.MainBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

@@ -6,10 +6,14 @@ import com.google.gson.Gson;
 import com.kamk2k.alkobuddy.Constants;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
+import com.kamk2k.alkobuddy.model.events.DrinkEvent;
+import com.kamk2k.alkobuddy.model.events.ProcessAlkoEvent;
 import com.kamk2k.alkobuddy.model.events.ResetDrinkState;
 import com.kamk2k.alkobuddy.model.events.UpdateEvent;
-import com.kamk2k.alkobuddy.presenter.logic.PerMileCalculator;
+import com.kamk2k.alkobuddy.presenter.logic.UserStateChangeHandler;
 import com.kamk2k.alkobuddy.presenter.utils.StorageControler;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -23,7 +27,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     private static UserAlcoState mUserAlcoState;
 
     @Inject
-    protected PerMileCalculator mPerMileCalculator;
+    protected UserStateChangeHandler mUserStateChangeHandler;
     @Inject
     protected StorageControler mStorageControler;
 
@@ -31,7 +35,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     public MainActivityPresenterImpl(Context context) {
         mStorageControler = new StorageControler(context);
         mUserAlcoState = UserStateProvider.getUserState();
-        mPerMileCalculator = new PerMileCalculator(mUserAlcoState);
+        mUserStateChangeHandler = new UserStateChangeHandler(mUserAlcoState);
     }
 
     public void loadUserStateFromFile() {
@@ -48,9 +52,18 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         mStorageControler.saveObjectData(json, Constants.USER_STATE_STORAGE_FILE);
     }
 
+    public void onEvent(DrinkEvent event){
+        mUserStateChangeHandler.onDrink(event.getDrink(), new Date());
+    }
+
     public void onEvent(ResetDrinkState event){
         UserStateProvider.resetUserState(mUserAlcoState);
-        EventBus.getDefault().post(new UpdateEvent());
+        EventBus.getDefault().post(new UpdateEvent(mUserAlcoState));
+    }
+
+    public void onEvent(ProcessAlkoEvent event) {
+        mUserStateChangeHandler.processAlcohol(new Date());
+        EventBus.getDefault().post(new UpdateEvent(mUserAlcoState));
     }
 
     @Override

@@ -1,20 +1,21 @@
-package com.kamk2k.alkobuddy.view.utils;
+package com.kamk2k.alkobuddy.presenter.utils;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.kamk2k.alkobuddy.model.events.ProcessAlkoEvent;
+
+import de.greenrobot.event.EventBus;
+
 public class MainBroadcastReceiver extends BroadcastReceiver {
 
     private final String TAG = MainBroadcastReceiver.class.getSimpleName();
 
-    public MainBroadcastReceiver() {
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive() : " + intent.getAction());
-        //TODO PerMileCalculator.process
+        EventBus.getDefault().post(new ProcessAlkoEvent());
     }
 }

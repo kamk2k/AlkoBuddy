@@ -69,7 +69,7 @@ public class DrinksAdapter extends RecyclerView.Adapter<DrinksAdapter.ViewHolder
             public void onClick(View v) {
                 DrinkItem clickedDrink = drinksListContent.get(position);
                 EventBus.getDefault().post(new DrinkEvent(clickedDrink));
-                EventBus.getDefault().post(new UpdateEvent());
+                EventBus.getDefault().post(new UpdateEvent(null));
             }
         });
     }

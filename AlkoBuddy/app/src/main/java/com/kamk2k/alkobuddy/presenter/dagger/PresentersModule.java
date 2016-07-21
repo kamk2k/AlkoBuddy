@@ -9,7 +9,7 @@ import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenterImpl;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenterImpl;
-import com.kamk2k.alkobuddy.presenter.logic.PerMileCalculator;
+import com.kamk2k.alkobuddy.presenter.logic.UserStateChangeHandler;
 import com.kamk2k.alkobuddy.presenter.utils.StorageControler;
 
 import javax.inject.Singleton;
@@ -55,8 +55,8 @@ public class PresentersModule {
 
     @Singleton
     @Provides
-    PerMileCalculator providePerMileCalculator(UserAlcoState userAlcoState) {
-        return new PerMileCalculator(userAlcoState);
+    UserStateChangeHandler providePerMileCalculator(UserAlcoState userAlcoState) {
+        return new UserStateChangeHandler(userAlcoState);
     }
 
     @Singleton
