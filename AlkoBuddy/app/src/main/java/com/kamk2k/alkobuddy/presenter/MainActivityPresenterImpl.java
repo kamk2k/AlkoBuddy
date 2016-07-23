@@ -1,6 +1,7 @@
 package com.kamk2k.alkobuddy.presenter;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.google.gson.Gson;
 import com.kamk2k.alkobuddy.Constants;
@@ -24,23 +25,34 @@ import de.greenrobot.event.EventBus;
  */
 public class MainActivityPresenterImpl implements MainActivityPresenter {
 
+    private static final int UPDATE_DELAY = 10000;
     private static UserAlcoState mUserAlcoState;
 
-    @Inject
-    protected UserStateChangeHandler mUserStateChangeHandler;
-    @Inject
-    protected StorageControler mStorageControler;
+    protected UserStateChangeHandler userStateChangeHandler;
+    protected StorageControler storageControler;
+    protected Handler updateHandler;
+    private UpdateRunnable updateRunnable;
+
+    private class UpdateRunnable implements Runnable {
+        @Override
+        public void run() {
+            updateUserStateData();
+        }
+    }
 
     @Inject
-    public MainActivityPresenterImpl(Context context) {
-        mStorageControler = new StorageControler(context);
+    public MainActivityPresenterImpl(StorageControler storageControler,
+                                     UserStateChangeHandler userStateChangeHandler, Handler updateHandler) {
+        this.storageControler = storageControler;
+        this.userStateChangeHandler = userStateChangeHandler;
+        this.updateHandler = updateHandler;
+        updateRunnable = new UpdateRunnable();
         mUserAlcoState = UserStateProvider.getUserState();
-        mUserStateChangeHandler = new UserStateChangeHandler(mUserAlcoState);
     }
 
     public void loadUserStateFromFile() {
         Gson gson = new Gson();
-        UserAlcoState state = gson.fromJson((String)mStorageControler.readObjectData(Constants.USER_STATE_STORAGE_FILE), UserAlcoState.class);
+        UserAlcoState state = gson.fromJson((String) storageControler.readObjectData(Constants.USER_STATE_STORAGE_FILE), UserAlcoState.class);
         if(state != null) {
             UserStateProvider.setUserState(state);
         }
@@ -49,20 +61,21 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     public void saveUserStateToFile() {
         Gson gson = new Gson();
         String json = gson.toJson(mUserAlcoState);
-        mStorageControler.saveObjectData(json, Constants.USER_STATE_STORAGE_FILE);
+        storageControler.saveObjectData(json, Constants.USER_STATE_STORAGE_FILE);
+    }
+
+    private void updateUserStateData() {
+        userStateChangeHandler.processAlcohol(new Date());
+        EventBus.getDefault().post(new UpdateEvent(mUserAlcoState));
+        updateHandler.postDelayed(updateRunnable, UPDATE_DELAY);
     }
 
     public void onEvent(DrinkEvent event){
-        mUserStateChangeHandler.onDrink(event.getDrink(), new Date());
+        userStateChangeHandler.onDrink(event.getDrink(), new Date());
     }
 
     public void onEvent(ResetDrinkState event){
         UserStateProvider.resetUserState(mUserAlcoState);
-        EventBus.getDefault().post(new UpdateEvent(mUserAlcoState));
-    }
-
-    public void onEvent(ProcessAlkoEvent event) {
-        mUserStateChangeHandler.processAlcohol(new Date());
         EventBus.getDefault().post(new UpdateEvent(mUserAlcoState));
     }
 
@@ -80,6 +93,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     @Override
     public void onStart() {
         loadUserStateFromFile();
+        updateUserStateData();
     }
 
     @Override

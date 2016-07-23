@@ -14,7 +14,6 @@ import com.kamk2k.alkobuddy.presenter.dagger.MainActivityModule;
 import com.kamk2k.alkobuddy.presenter.dagger.MainActivityComponent;
 import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
 import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
-import com.kamk2k.alkobuddy.presenter.service.StatusUpdateService;
 
 import javax.inject.Inject;
 
@@ -40,7 +39,6 @@ public class MainActivity extends MVPActivityView {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mFragmentPagerAdapter);
-        startUpdateService();
         presenter.onCreate();
     }
 
@@ -77,16 +75,6 @@ public class MainActivity extends MVPActivityView {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startUpdateService() {
-        Intent intent = new Intent(this, StatusUpdateService.class);
-        startService(intent);
-    }
-
-    private void stopUpdateService() {
-        Intent intent = new Intent(this, StatusUpdateService.class);
-        stopService(intent);
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -108,7 +96,6 @@ public class MainActivity extends MVPActivityView {
     @Override
     protected void onStop() {
         super.onStop();
-        stopUpdateService();
         presenter.onStop();
     }
 

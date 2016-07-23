@@ -2,6 +2,7 @@ package com.kamk2k.alkobuddy.presenter.dagger;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
@@ -61,7 +62,14 @@ public class PresentersModule {
 
     @Singleton
     @Provides
-    MainActivityPresenter provideMainActivityPresenter(Context context) {
-        return new MainActivityPresenterImpl(context);
+    Handler provideHandler() {
+        return new Handler();
+    }
+
+    @Singleton
+    @Provides
+    MainActivityPresenter provideMainActivityPresenter(StorageControler storageControler,
+                                                       UserStateChangeHandler userStateChangeHandler, Handler updateHandler) {
+        return new MainActivityPresenterImpl(storageControler, userStateChangeHandler, updateHandler);
     }
 }

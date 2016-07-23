@@ -19,19 +19,6 @@
         </activity>
         <activity android:name=".view.SettingsActivity"/>
 
-        <service
-            android:name=".presenter.service.StatusUpdateService"
-            android:enabled="true"
-            android:exported="true"/>
-
-        <receiver
-            android:name=".presenter.utils.MainBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.kamk2k.alkobuddy.STATUS_UPDATE" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>
