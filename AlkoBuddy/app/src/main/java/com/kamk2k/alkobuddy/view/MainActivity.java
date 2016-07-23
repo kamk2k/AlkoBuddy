@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kamk2k.alkobuddy.R;
-import com.kamk2k.alkobuddy.model.events.ResetDrinkState;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.MainActivityModule;
@@ -18,7 +17,6 @@ import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
 import javax.inject.Inject;
 
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends MVPActivityView {
@@ -69,7 +67,7 @@ public class MainActivity extends MVPActivityView {
             startActivity(intent);
             return true;
         } else if(id == R.id.action_reset) {
-            EventBus.getDefault().post(new ResetDrinkState());
+            presenter.resetDrinkState();
         }
 
         return super.onOptionsItemSelected(item);

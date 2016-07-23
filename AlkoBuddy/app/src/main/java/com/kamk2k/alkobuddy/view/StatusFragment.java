@@ -10,13 +10,11 @@ import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
-import com.kamk2k.alkobuddy.model.events.ChangeStatusTextEvent;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by PC on 2015-02-23.

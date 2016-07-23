@@ -56,8 +56,8 @@ public class PresentersModule {
 
     @Singleton
     @Provides
-    UserStateChangeHandler providePerMileCalculator(UserAlcoState userAlcoState) {
-        return new UserStateChangeHandler(userAlcoState);
+    UserStateChangeHandler providePerMileCalculator(UserAlcoState userAlcoState, StatusFragmentPresenter statusFragmentPresenter) {
+        return new UserStateChangeHandler(userAlcoState, statusFragmentPresenter);
     }
 
     @Singleton

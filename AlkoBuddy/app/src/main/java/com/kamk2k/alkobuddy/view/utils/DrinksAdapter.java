@@ -9,14 +9,11 @@ import android.widget.ImageView;
 
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
-import com.kamk2k.alkobuddy.model.events.DrinkEvent;
-import com.kamk2k.alkobuddy.model.events.UpdateEvent;
+import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by PC on 2015-02-23.
@@ -25,7 +22,8 @@ public class DrinksAdapter extends RecyclerView.Adapter<DrinksAdapter.ViewHolder
 
     // TODO: 09.01.16 Add persisting (Realm maybe?)
     ArrayList<DrinkItem> drinksListContent = new ArrayList<>();
-    Context mContext;
+    Context context;
+    MainActivityPresenter mainActivityPresenter;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -39,8 +37,9 @@ public class DrinksAdapter extends RecyclerView.Adapter<DrinksAdapter.ViewHolder
     }
 
     @Inject
-    public DrinksAdapter(Context mContext) {
-        this.mContext = mContext;
+    public DrinksAdapter(Context context, MainActivityPresenter mainActivityPresenter) {
+        this.context = context;
+        this.mainActivityPresenter = mainActivityPresenter;
     }
 
     public void addItem(DrinkItem drink) {
@@ -68,8 +67,7 @@ public class DrinksAdapter extends RecyclerView.Adapter<DrinksAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 DrinkItem clickedDrink = drinksListContent.get(position);
-                EventBus.getDefault().post(new DrinkEvent(clickedDrink));
-                EventBus.getDefault().post(new UpdateEvent(null));
+                mainActivityPresenter.drinkClicked(clickedDrink);
             }
         });
     }

@@ -5,15 +5,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.kamk2k.alkobuddy.model.UserAlcoState;
-import com.kamk2k.alkobuddy.model.events.UpdateEvent;
 import com.kamk2k.alkobuddy.view.StatusView;
 
 import java.text.DateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by PC on 2015-02-25.
@@ -30,12 +27,21 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
     @Inject
     public StatusFragmentPresenterImpl(Context context, UserAlcoState userState) {
         this.userState = userState;
-        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
     public void setMVPView(StatusView mvpView) {
         statusView = mvpView;
+    }
+
+    @Override
+    public void updateStatus(UserAlcoState userAlcoState) {
+        if(userState != null) {
+            userState = userAlcoState;
+        }
+        if(statusView != null) {
+            update();
+        }
     }
 
     //TODO text formattin
@@ -53,13 +59,6 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
         Date date = new Date();
         date.setTime(date.getTime() + userState.getTimeToSoberInMs());
         return date;
-    }
-
-    public void onEvent(UpdateEvent event){
-        if(event.getUserAlcoState() != null) {
-            userState = event.getUserAlcoState();
-        }
-        update();
     }
 
     @Override

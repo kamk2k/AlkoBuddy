@@ -2,6 +2,7 @@ package com.kamk2k.alkobuddy.presenter.logic;
 
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
+import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 
 import org.junit.Test;
 import org.mockito.Mock;
@@ -45,7 +46,9 @@ public class UserStateChangeHandlerTest {
         when(drinkItem.getWineVolume()).thenReturn(0);
         when(drinkItem.getVodkaVolume()).thenReturn(0);
 
-        new UserStateChangeHandler(userAlcoState).onDrink(drinkItem, currentTime);
+        StatusFragmentPresenter statusFragmentPresenter = Mockito.mock(StatusFragmentPresenter.class);
+
+        new UserStateChangeHandler(userAlcoState, statusFragmentPresenter).onDrink(drinkItem, currentTime);
 
 //        verify(userAlcoState).setEthanolGramsInBlood(0);
 //        verify(userAlcoState).setLastUpdate(currentTime);
@@ -77,7 +80,9 @@ public class UserStateChangeHandlerTest {
         when(drinkItem.getWineVolume()).thenReturn(100);
         when(drinkItem.getVodkaVolume()).thenReturn(0);
 
-        new UserStateChangeHandler(userAlcoState).onDrink(drinkItem, currentTime);
+        StatusFragmentPresenter statusFragmentPresenter = Mockito.mock(StatusFragmentPresenter.class);
+
+        new UserStateChangeHandler(userAlcoState, statusFragmentPresenter).onDrink(drinkItem, currentTime);
 
 //        verify(userAlcoState).setEthanolGramsInBlood(0);
 //        verify(userAlcoState).setLastUpdate(currentTime);
@@ -110,7 +115,9 @@ public class UserStateChangeHandlerTest {
         when(drinkItem.getWineVolume()).thenReturn(0);
         when(drinkItem.getVodkaVolume()).thenReturn(100);
 
-        new UserStateChangeHandler(userAlcoState).onDrink(drinkItem, currentTime);
+        StatusFragmentPresenter statusFragmentPresenter = Mockito.mock(StatusFragmentPresenter.class);
+
+        new UserStateChangeHandler(userAlcoState, statusFragmentPresenter).onDrink(drinkItem, currentTime);
 
 //        verify(userAlcoState).setEthanolGramsInBlood(0);
 //        verify(userAlcoState).setLastUpdate(currentTime);

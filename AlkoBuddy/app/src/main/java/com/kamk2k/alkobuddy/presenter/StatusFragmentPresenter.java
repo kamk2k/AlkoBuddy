@@ -1,5 +1,6 @@
 package com.kamk2k.alkobuddy.presenter;
 
+import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.presenter.utils.MVPFragmentPresenter;
 import com.kamk2k.alkobuddy.view.StatusView;
 
@@ -8,4 +9,5 @@ import com.kamk2k.alkobuddy.view.StatusView;
  */
 public interface StatusFragmentPresenter extends MVPFragmentPresenter {
     void setMVPView(StatusView mvpView);
+    void updateStatus(UserAlcoState userAlcoState);
 }

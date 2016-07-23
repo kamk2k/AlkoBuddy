@@ -2,6 +2,8 @@ package com.kamk2k.alkobuddy.presenter.logic;
 
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
+import com.kamk2k.alkobuddy.model.UserStateProvider;
+import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 
 import java.util.Date;
 
@@ -11,9 +13,11 @@ import java.util.Date;
 public class UserStateChangeHandler {
 
     private UserAlcoState userState;
+    private StatusFragmentPresenter statusFragmentPresenter;
 
-    public UserStateChangeHandler(UserAlcoState userState) {
+    public UserStateChangeHandler(UserAlcoState userState, StatusFragmentPresenter statusFragmentPresenter) {
         this.userState = userState;
+        this.statusFragmentPresenter = statusFragmentPresenter;
     }
 
     public void onDrink(DrinkItem drink, Date currentTime) {
@@ -21,6 +25,20 @@ public class UserStateChangeHandler {
         addAlcoholGramsFromDrink(drink);
         updateAlcoholPerMiles();
         updateTimeToSober();
+        statusFragmentPresenter.updateStatus(userState);
+    }
+
+    public UserAlcoState getUserState() {
+        return userState;
+    }
+
+    public void setUserState(UserAlcoState userState) {
+        this.userState = userState;
+    }
+
+    public void resetUserState() {
+        UserStateProvider.resetUserState(userState);
+        statusFragmentPresenter.updateStatus(userState);
     }
 
     private void addAlcoholGramsFromDrink(DrinkItem drink) {
@@ -34,6 +52,7 @@ public class UserStateChangeHandler {
         subtractProcessedAlcohol(currentTime);
         updateAlcoholPerMiles();
         updateTimeToSober();
+        statusFragmentPresenter.updateStatus(userState);
     }
 
     private void subtractProcessedAlcohol(Date currentTime) {
