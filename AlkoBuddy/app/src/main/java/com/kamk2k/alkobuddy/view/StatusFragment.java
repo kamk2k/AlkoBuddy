@@ -21,7 +21,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by PC on 2015-02-23.
  */
-public class StatusFragment extends MVPFragmentView {
+public class StatusFragment extends MVPFragmentView implements StatusView {
 
     public static final String TAG = StatusFragment.class.getSimpleName();
 
@@ -30,6 +30,16 @@ public class StatusFragment extends MVPFragmentView {
     @Inject StatusFragmentPresenter presenter;
 
     public StatusFragment() {
+    }
+
+    @Override
+    public void displayPerMileText(String perMileText) {
+        perMileTextView.setText(perMileText);
+    }
+
+    @Override
+    public void displayTimeToSoberText(String timeToSoberText) {
+        timeToSoberTextView.setText(timeToSoberText);
     }
 
     @Override
@@ -43,18 +53,13 @@ public class StatusFragment extends MVPFragmentView {
     @Override
     public void injectFragment(ApplicationComponent component) {
         component.inject(this);
-    }
-
-    public void onEvent(ChangeStatusTextEvent event){
-        perMileTextView.setText(event.getPerMileText());
-        timeToSoberTextView.setText(event.getTimeToSoberText());
+        presenter.setMVPView(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         presenter.onStart();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -73,7 +78,6 @@ public class StatusFragment extends MVPFragmentView {
     public void onStop() {
         super.onStop();
         presenter.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.kamk2k.alkobuddy.presenter.utils.MVPFragmentPresenter;
 /**
  * Created by PC on 2015-05-01.
  */
-public abstract class MVPFragmentView extends Fragment{
+public abstract class MVPFragmentView extends Fragment implements MVPView{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
