@@ -29,7 +29,7 @@ public class UserStateChangeHandlerTest {
     public void testSoberMaleDrink() {
 
         Date currentTime = new Date();
-        UserAlcoState userAlcoState = new UserAlcoState(UserAlcoState.Sex.MALE, 80, currentTime, 0f, 0);
+        UserAlcoState userAlcoState = new UserAlcoState(UserAlcoState.SEX_MALE, 80, currentTime, 0f, 0);
 //        userAlcoState.setCurrentPerMile(0f);
 //        userAlcoState.setSex(UserAlcoState.Sex.MALE);
 //        userAlcoState.setEthanolGramsInBlood(0f);
@@ -63,7 +63,7 @@ public class UserStateChangeHandlerTest {
     public void testSoberFealeDrink() {
 
         Date currentTime = new Date();
-        UserAlcoState userAlcoState = new UserAlcoState(UserAlcoState.Sex.FEMALE, 60, currentTime, 0f, 0);
+        UserAlcoState userAlcoState = new UserAlcoState(UserAlcoState.SEX_FEMALE, 60, currentTime, 0f, 0);
 //        userAlcoState.setCurrentPerMile(0f);
 //        userAlcoState.setSex(UserAlcoState.Sex.MALE);
 //        userAlcoState.setEthanolGramsInBlood(0f);
@@ -97,7 +97,7 @@ public class UserStateChangeHandlerTest {
     public void testDrunkMaleDrink() {
 
         Date currentTime = new Date();
-        UserAlcoState userAlcoState = new UserAlcoState(UserAlcoState.Sex.MALE, 80, currentTime, 2f, 0);
+        UserAlcoState userAlcoState = new UserAlcoState(UserAlcoState.SEX_MALE, 80, currentTime, 2f, 0);
         assertEquals(112, userAlcoState.getEthanolGramsInBlood(), 0.1f);
 //        userAlcoState.setCurrentPerMile(0f);
 //        userAlcoState.setSex(UserAlcoState.Sex.MALE);
@@ -131,7 +131,7 @@ public class UserStateChangeHandlerTest {
     @Test
     public void testAlcoholGramsToPerMilesForMen() {
         UserAlcoState userAlcoState = Mockito.mock(UserAlcoState.class);
-        when(userAlcoState.getSex()).thenReturn(UserAlcoState.Sex.MALE);
+        when(userAlcoState.getSex()).thenReturn(UserAlcoState.SEX_MALE);
         when(userAlcoState.getWeight()).thenReturn(80);
 
         float perMile = AlcoholGramsToPerMileConverter.alcoholPerMilesForGrams(10, userAlcoState);
@@ -142,7 +142,7 @@ public class UserStateChangeHandlerTest {
     @Test
     public void testAlcoholGramsToPerMilesForWomen() {
         UserAlcoState userAlcoState = Mockito.mock(UserAlcoState.class);
-        when(userAlcoState.getSex()).thenReturn(UserAlcoState.Sex.FEMALE);
+        when(userAlcoState.getSex()).thenReturn(UserAlcoState.SEX_FEMALE);
         when(userAlcoState.getWeight()).thenReturn(60);
 
         float perMile = AlcoholGramsToPerMileConverter.alcoholPerMilesForGrams(10, userAlcoState);
@@ -153,7 +153,7 @@ public class UserStateChangeHandlerTest {
     @Test
     public void testPerMilesToAlcoholGramsForMen() {
         UserAlcoState userAlcoState = Mockito.mock(UserAlcoState.class);
-        when(userAlcoState.getSex()).thenReturn(UserAlcoState.Sex.MALE);
+        when(userAlcoState.getSex()).thenReturn(UserAlcoState.SEX_MALE);
         when(userAlcoState.getWeight()).thenReturn(80);
 
         float perMile = AlcoholGramsToPerMileConverter.alcoholGramsForPerMile(1, userAlcoState);
@@ -164,7 +164,7 @@ public class UserStateChangeHandlerTest {
     @Test
     public void testPerMilesToAlcoholGramsForWomen() {
         UserAlcoState userAlcoState = Mockito.mock(UserAlcoState.class);
-        when(userAlcoState.getSex()).thenReturn(UserAlcoState.Sex.FEMALE);
+        when(userAlcoState.getSex()).thenReturn(UserAlcoState.SEX_FEMALE);
         when(userAlcoState.getWeight()).thenReturn(60);
 
         float perMile = AlcoholGramsToPerMileConverter.alcoholGramsForPerMile(1, userAlcoState);

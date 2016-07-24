@@ -11,12 +11,12 @@ import com.kamk2k.alkobuddy.presenter.MainActivityPresenterImpl;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenterImpl;
 import com.kamk2k.alkobuddy.presenter.logic.UserStateChangeHandler;
-import com.kamk2k.alkobuddy.presenter.utils.StorageControler;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 
 /**
  * Created by PC on 2015-11-21.
@@ -44,12 +44,6 @@ public class PresentersModule {
 
     @Singleton
     @Provides
-    StorageControler provideStorageControler(Context context) {
-        return new StorageControler(context);
-    }
-
-    @Singleton
-    @Provides
     StatusFragmentPresenter provideStatusFragmentPresenter(Context context, UserAlcoState userAlcoState) {
         return new StatusFragmentPresenterImpl(context, userAlcoState);
     }
@@ -66,10 +60,15 @@ public class PresentersModule {
         return new Handler();
     }
 
+    @Provides
+    Realm provideRealm() {
+        return Realm.getDefaultInstance();
+    }
+
     @Singleton
     @Provides
-    MainActivityPresenter provideMainActivityPresenter(StorageControler storageControler,
-                                                       UserStateChangeHandler userStateChangeHandler, Handler updateHandler) {
-        return new MainActivityPresenterImpl(storageControler, userStateChangeHandler, updateHandler);
+    MainActivityPresenter provideMainActivityPresenter(UserStateChangeHandler userStateChangeHandler,
+                                                       Handler updateHandler, Realm realm) {
+        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler, realm);
     }
 }

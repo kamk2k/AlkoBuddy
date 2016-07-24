@@ -2,23 +2,31 @@ package com.kamk2k.alkobuddy.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntRange;
 
 import com.kamk2k.alkobuddy.presenter.logic.AlcoholGramsToPerMileConverter;
 
 import java.util.Date;
 
+import io.realm.RealmModel;
+import io.realm.annotations.RealmClass;
+
 /**
  * Created by PC on 2015-02-25.
  */
-public class UserAlcoState implements Parcelable {
+@RealmClass
+public class UserAlcoState implements RealmModel, Parcelable {
 
-    public enum Sex{MALE, FEMALE}
+    public static final int SEX_MALE = 0;
+    public static final int SEX_FEMALE = 1;
 
     public static UserAlcoState generateMock() {
-        return new UserAlcoState(Sex.MALE, 70, new Date(), 0, 0);
+        return new UserAlcoState(SEX_MALE, 70, new Date(), 0, 0);
     }
 
-    public UserAlcoState(Sex sex, int weight, Date lastUpdate, float currentPerMile, long timeToSoberInMs) {
+    public UserAlcoState() {}
+
+    public UserAlcoState(int sex, int weight, Date lastUpdate, float currentPerMile, long timeToSoberInMs) {
         this.sex = sex;
         this.weight = weight;
         this.lastUpdate = lastUpdate;
@@ -28,7 +36,9 @@ public class UserAlcoState implements Parcelable {
     }
 
     // User info
-    private Sex sex;
+    //// TODO: 24.07.16 write test for intRange condition
+    @IntRange(from = 0, to = 1)
+    private int sex;
     private int weight;
 
     //User state
@@ -53,11 +63,12 @@ public class UserAlcoState implements Parcelable {
         this.ethanolGramsInBlood = ethanolGramsInBlood;
     }
 
-    public Sex getSex() {
+    @IntRange(from = 0, to = 1)
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(@IntRange(from = 0, to = 1) int sex) {
         this.sex = sex;
     }
 
@@ -92,7 +103,7 @@ public class UserAlcoState implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.sex == null ? -1 : this.sex.ordinal());
+        dest.writeInt(this.sex);
         dest.writeInt(this.weight);
         dest.writeLong(lastUpdate != null ? lastUpdate.getTime() : -1);
         dest.writeFloat(this.ethanolGramsInBlood);
@@ -101,8 +112,7 @@ public class UserAlcoState implements Parcelable {
     }
 
     private UserAlcoState(Parcel in) {
-        int tmpSex = in.readInt();
-        this.sex = tmpSex == -1 ? null : Sex.values()[tmpSex];
+        this.sex = in.readInt();
         this.weight = in.readInt();
         long tmpLastUpdate = in.readLong();
         this.lastUpdate = tmpLastUpdate == -1 ? null : new Date(tmpLastUpdate);
