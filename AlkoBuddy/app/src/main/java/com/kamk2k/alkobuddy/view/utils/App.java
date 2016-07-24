@@ -2,11 +2,11 @@ package com.kamk2k.alkobuddy.view.utils;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.DaggerApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.PresentersModule;
-
-import junit.framework.Assert;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 /**
  * Created by PC on 2015-11-21.
@@ -20,6 +20,12 @@ public class App extends Application {
     public void onCreate() {
         INSTANCE = this;
         super.onCreate();
+        // TODO: 24.07.16 initialize stetho only in debug builds
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
         mApplicationComponent = DaggerApplicationComponent
                 .builder()
                 .presentersModule(new PresentersModule(this))
