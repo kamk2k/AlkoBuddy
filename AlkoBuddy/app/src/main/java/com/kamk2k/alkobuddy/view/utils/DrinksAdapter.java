@@ -15,43 +15,30 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
+
 /**
  * Created by PC on 2015-02-23.
  */
-public class DrinksAdapter extends RecyclerView.Adapter<DrinksAdapter.ViewHolder> {
+public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, DrinksAdapter.ViewHolder> {
 
-    // TODO: 09.01.16 Add persisting (Realm maybe?)
-    ArrayList<DrinkItem> drinksListContent = new ArrayList<>();
     Context context;
     MainActivityPresenter mainActivityPresenter;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         public ImageView mImageView;
-
         public ViewHolder(ImageView imageView) {
             super(imageView);
             mImageView = imageView;
         }
-
     }
 
     @Inject
-    public DrinksAdapter(Context context, MainActivityPresenter mainActivityPresenter) {
+    public DrinksAdapter(Context context, MainActivityPresenter mainActivityPresenter, OrderedRealmCollection<DrinkItem> data) {
+        super(context, data, true);
         this.context = context;
         this.mainActivityPresenter = mainActivityPresenter;
-    }
-
-    public void addItem(DrinkItem drink) {
-        drinksListContent.add(drink);
-    }
-
-    public Object getItem(int position) {
-        if(position < drinksListContent.size()) {
-            return drinksListContent.get(position);
-        } else {
-            return null;
-        }
     }
 
     @Override
@@ -66,19 +53,9 @@ public class DrinksAdapter extends RecyclerView.Adapter<DrinksAdapter.ViewHolder
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DrinkItem clickedDrink = drinksListContent.get(position);
+                DrinkItem clickedDrink = getItem(position);
                 mainActivityPresenter.drinkClicked(clickedDrink);
             }
         });
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemCount() {
-        return drinksListContent.size();
     }
 }

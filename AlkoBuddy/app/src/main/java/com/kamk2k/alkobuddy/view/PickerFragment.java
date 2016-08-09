@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.view.utils.DrinksAdapter;
-import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import dagger.Lazy;
 
 
 public class PickerFragment extends MVPFragmentView {
@@ -31,7 +31,7 @@ public class PickerFragment extends MVPFragmentView {
     RecyclerView mDrinksRecyclerView;
     private RecyclerView.LayoutManager mDrinksLayoutManager;
     @Inject
-    DrinksAdapter drinksAdapter;
+    Lazy<DrinksAdapter> drinksAdapter;
 
     public PickerFragment() {
         // Required empty public constructor
@@ -58,10 +58,7 @@ public class PickerFragment extends MVPFragmentView {
         mDrinksLayoutManager = new GridLayoutManager(mContext, NUMBER_OF_GRID_COLUMS);
         mDrinksRecyclerView.setLayoutManager(mDrinksLayoutManager);
 
-        for(int i = 0; i < 20; i++) {
-            drinksAdapter.addItem(DrinkItem.generateMock());
-        }
-        mDrinksRecyclerView.setAdapter(drinksAdapter);
+        mDrinksRecyclerView.setAdapter(drinksAdapter.get());
         return root;
     }
 

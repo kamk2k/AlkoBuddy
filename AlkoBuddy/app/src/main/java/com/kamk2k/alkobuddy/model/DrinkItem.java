@@ -3,11 +3,16 @@ package com.kamk2k.alkobuddy.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import io.realm.RealmModel;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by PC on 2015-02-23.
  */
-public class DrinkItem implements Parcelable {
 
+public class DrinkItem implements RealmModel, Parcelable {
+
+    @PrimaryKey
     private int id;
     private String name;
     private int beerVolume;
@@ -21,6 +26,9 @@ public class DrinkItem implements Parcelable {
 
     public static DrinkItem generateMock() {
         return new DrinkItem(1, "Piwo", 500, 0.08f, 0, 0, 0, 0, 0, 0);
+    }
+
+    public DrinkItem() {
     }
 
     public DrinkItem(int id, String name, int beerVolume, float beerPercentage, int wineVolume,
@@ -45,11 +53,7 @@ public class DrinkItem implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if(o instanceof DrinkItem) {
-            return id == ((DrinkItem)o).id;
-        } else {
-            return false;
-        }
+        return o instanceof DrinkItem && id == ((DrinkItem) o).id;
     }
 
     public int getBeerVolume() {

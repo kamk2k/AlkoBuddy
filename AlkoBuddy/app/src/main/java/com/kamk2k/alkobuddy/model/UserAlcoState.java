@@ -36,7 +36,6 @@ public class UserAlcoState implements RealmModel, Parcelable {
     }
 
     // User info
-    //// TODO: 24.07.16 write test for intRange condition
     @IntRange(from = 0, to = 1)
     private int sex;
     private int weight;

@@ -3,6 +3,7 @@ package com.kamk2k.alkobuddy.view.utils;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
+import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.DaggerApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.PresentersModule;
@@ -25,6 +26,13 @@ public class App extends Application {
         super.onCreate();
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
                 .deleteRealmIfMigrationNeeded()
+                .initialData(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        // TODO: 09.08.16 make generator for default drinks
+                        realm.copyToRealm(DrinkItem.generateMock());
+                    }
+                })
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
         // TODO: 24.07.16 initialize stetho only in debug builds

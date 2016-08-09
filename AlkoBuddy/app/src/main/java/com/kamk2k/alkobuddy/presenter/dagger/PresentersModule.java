@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
@@ -16,6 +17,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 
 /**
@@ -63,6 +65,11 @@ public class PresentersModule {
     @Provides
     Realm provideRealm() {
         return Realm.getDefaultInstance();
+    }
+
+    @Provides
+    OrderedRealmCollection<DrinkItem> provideDrinkItemsData(Realm realm) {
+        return realm.where(DrinkItem.class).findAll();
     }
 
     @Singleton
