@@ -9,6 +9,7 @@ import com.kamk2k.alkobuddy.view.StatusView;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -49,9 +50,14 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
         Log.d(TAG, "update()");
         String perMileText = String.format("%.2f", userState.getCurrentPerMile());
         Date dateToSober = getDateToSober();
+        // TODO: 02.10.16 clean it!
+        long toSoberIntervalInMs = dateToSober.getTime() - new Date().getTime();
+        final long hr = TimeUnit.MILLISECONDS.toHours(toSoberIntervalInMs);
+        final long min = TimeUnit.MILLISECONDS.toMinutes(toSoberIntervalInMs - TimeUnit.HOURS.toMillis(hr));
+        String intervalText = String.format("%d h : %02d min", hr, min);
         String timeToSoberText = DISPLAYED_TO_SOBER_DATE_FORMAT.format(dateToSober);
         statusView.displayPerMileText(perMileText);
-        statusView.displayTimeToSoberText(timeToSoberText);
+        statusView.displayTimeToSoberText(intervalText);
     }
 
     @NonNull

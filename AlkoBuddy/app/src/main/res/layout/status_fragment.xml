@@ -38,7 +38,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
+        <com.robinhood.ticker.TickerView
             android:id="@+id/time_to_sober_text_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
