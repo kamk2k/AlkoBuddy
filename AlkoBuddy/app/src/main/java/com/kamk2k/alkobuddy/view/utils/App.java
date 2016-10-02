@@ -3,6 +3,7 @@ package com.kamk2k.alkobuddy.view.utils;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
+import com.kamk2k.alkobuddy.BaseRealmModule;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.DaggerApplicationComponent;
@@ -17,6 +18,7 @@ import io.realm.RealmConfiguration;
  */
 public class App extends Application {
 
+    public static final String BASE_REALM_NAME = "BASE_REALM";
     private static Application INSTANCE;
     private static ApplicationComponent mApplicationComponent;
 
@@ -25,7 +27,10 @@ public class App extends Application {
         INSTANCE = this;
         super.onCreate();
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
+                .name(BASE_REALM_NAME)
                 .deleteRealmIfMigrationNeeded()
+                .schemaVersion(0)
+                .modules(new BaseRealmModule())
                 .initialData(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {

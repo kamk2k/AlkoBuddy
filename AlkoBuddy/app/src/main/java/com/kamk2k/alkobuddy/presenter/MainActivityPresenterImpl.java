@@ -78,7 +78,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
 
     @Override
     public void onDestroy() {
-
+        realm.close();
     }
 
     @Override

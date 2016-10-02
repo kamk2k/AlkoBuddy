@@ -5,11 +5,12 @@ import android.os.Parcelable;
 
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 
 /**
  * Created by PC on 2015-02-23.
  */
-
+@RealmClass
 public class DrinkItem implements RealmModel, Parcelable {
 
     @PrimaryKey
