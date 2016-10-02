@@ -39,6 +39,7 @@ dependencies {
     debugCompile 'com.uphyca:stetho_realm:0.9.0'
     compile files('libs/butterknife-6.1.0.jar')
     compile 'io.realm:android-adapters:1.3.0'
+    compile 'com.robinhood.ticker:ticker:1.1.0'
 
     apt 'com.google.dagger:dagger-compiler:2.2'
     compile 'com.google.dagger:dagger:2.2'

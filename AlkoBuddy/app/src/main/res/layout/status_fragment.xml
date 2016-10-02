@@ -17,17 +17,18 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
+        <com.robinhood.ticker.TickerView
             android:id="@+id/promil_text_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp" />
+            android:textSize="22dp"
+            tools:text="0,80"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/promil"
-            android:textSize="22sp" />
+            android:textSize="22dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,6 +42,7 @@
             android:id="@+id/time_to_sober_text_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp" />
+            android:textSize="22dp"
+            tools:text="Never"/>
     </LinearLayout>
 </LinearLayout>
