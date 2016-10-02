@@ -19,6 +19,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by PC on 2015-11-21.
@@ -63,19 +64,17 @@ public class PresentersModule {
     }
 
     @Provides
-    Realm provideRealm() {
-        return Realm.getDefaultInstance();
-    }
-
-    @Provides
-    OrderedRealmCollection<DrinkItem> provideDrinkItemsData(Realm realm) {
-        return realm.where(DrinkItem.class).findAll();
+    OrderedRealmCollection<DrinkItem> provideDrinkItemsData() {
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<DrinkItem> results = realm.where(DrinkItem.class).findAll();
+        realm.close();
+        return results;
     }
 
     @Singleton
     @Provides
     MainActivityPresenter provideMainActivityPresenter(UserStateChangeHandler userStateChangeHandler,
-                                                       Handler updateHandler, Realm realm) {
-        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler, realm);
+                                                       Handler updateHandler) {
+        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler);
     }
 }

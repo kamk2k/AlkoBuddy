@@ -19,6 +19,7 @@ import io.realm.RealmConfiguration;
 public class App extends Application {
 
     public static final String BASE_REALM_NAME = "BASE_REALM";
+    public static final int REALM_SCHEMA_VERSION = 0;
     private static Application INSTANCE;
     private static ApplicationComponent mApplicationComponent;
 
@@ -29,7 +30,7 @@ public class App extends Application {
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
                 .name(BASE_REALM_NAME)
                 .deleteRealmIfMigrationNeeded()
-                .schemaVersion(0)
+                .schemaVersion(REALM_SCHEMA_VERSION)
                 .modules(new BaseRealmModule())
                 .initialData(new Realm.Transaction() {
                     @Override

@@ -1,6 +1,7 @@
 package com.kamk2k.alkobuddy.presenter;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
@@ -44,10 +45,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     }
 
     @Inject
-    public MainActivityPresenterImpl(UserStateChangeHandler userStateChangeHandler, Handler updateHandler, Realm realm) {
+    public MainActivityPresenterImpl(UserStateChangeHandler userStateChangeHandler, Handler updateHandler) {
         this.userStateChangeHandler = userStateChangeHandler;
         this.updateHandler = updateHandler;
-        this.realm = realm;
+        realm = Realm.getDefaultInstance();
         updateRunnable = new UpdateRunnable();
         userStateChangeHandler.setUserState(UserStateProvider.getUserState());
     }
