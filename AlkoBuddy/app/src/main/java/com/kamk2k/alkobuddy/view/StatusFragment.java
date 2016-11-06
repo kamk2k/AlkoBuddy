@@ -14,8 +14,8 @@ import com.robinhood.ticker.TickerView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by PC on 2015-02-23.
@@ -24,9 +24,9 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
 
     public static final String TAG = StatusFragment.class.getSimpleName();
 
-    @InjectView(R.id.promil_text_field)
+    @BindView(R.id.promil_text_field)
     TickerView perMileTextView;
-    @InjectView(R.id.time_to_sober_text_field)
+    @BindView(R.id.time_to_sober_text_field)
     TickerView timeToSoberTextView;
     @Inject
     StatusFragmentPresenter presenter;
@@ -48,7 +48,7 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.status_fragment, container, false);
-        ButterKnife.inject(this, root);
+        ButterKnife.bind(this, root);
         perMileTextView.setCharacterList(getListForPerMiles());
         timeToSoberTextView.setCharacterList(getListForPerMiles());
         return root;

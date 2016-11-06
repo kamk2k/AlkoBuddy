@@ -10,13 +10,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "com.kamk2k.alkobuddy"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -31,18 +31,20 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'de.greenrobot:eventbus:2.4.0'
     debugCompile 'com.facebook.stetho:stetho:1.3.1'
     debugCompile 'com.uphyca:stetho_realm:0.9.0'
-    compile files('libs/butterknife-6.1.0.jar')
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'io.realm:android-adapters:1.3.0'
     compile 'com.robinhood.ticker:ticker:1.1.0'
 
-    apt 'com.google.dagger:dagger-compiler:2.2'
-    compile 'com.google.dagger:dagger:2.2'
+    apt 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.google.dagger:dagger:2.5'
     provided 'javax.annotation:jsr250-api:1.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
@@ -61,7 +63,7 @@ dependencies {
     testCompile 'org.robolectric:shadows-support-v4:3.1.2'
 
     //Dependencies for Espresso
-    androidTestCompile 'com.android.support:appcompat-v7:24.1.1'
+    androidTestCompile 'com.android.support:appcompat-v7:25.0.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

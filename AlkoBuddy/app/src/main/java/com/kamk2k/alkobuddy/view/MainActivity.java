@@ -1,30 +1,34 @@
 package com.kamk2k.alkobuddy.view;
 
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
-import com.kamk2k.alkobuddy.presenter.dagger.MainActivityModule;
 import com.kamk2k.alkobuddy.presenter.dagger.MainActivityComponent;
+import com.kamk2k.alkobuddy.presenter.dagger.MainActivityModule;
 import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
 import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
 
 import javax.inject.Inject;
 
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class MainActivity extends MVPActivityView {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    @InjectView(R.id.pager)
+    @BindView(R.id.pager)
     ViewPager mViewPager;
+    @BindView(R.id.tabs)
+    TabLayout mTabLayout;
     @Inject
     MainActivityPresenter presenter;
     StatusToCreatePagerAdapter mFragmentPagerAdapter;
@@ -34,9 +38,9 @@ public class MainActivity extends MVPActivityView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        ButterKnife.bind(this);
         mViewPager.setAdapter(mFragmentPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
         presenter.onCreate();
     }
 

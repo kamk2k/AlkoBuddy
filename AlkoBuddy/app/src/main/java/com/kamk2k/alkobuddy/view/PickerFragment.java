@@ -15,8 +15,8 @@ import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import dagger.Lazy;
 
 
@@ -27,7 +27,7 @@ public class PickerFragment extends MVPFragmentView {
 
     @Inject
     Context mContext;
-    @InjectView(R.id.drinks_list)
+    @BindView(R.id.drinks_list)
     RecyclerView mDrinksRecyclerView;
     private RecyclerView.LayoutManager mDrinksLayoutManager;
     @Inject
@@ -51,7 +51,7 @@ public class PickerFragment extends MVPFragmentView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.picker_fragment, container, false);
-        ButterKnife.inject(this, root);
+        ButterKnife.bind(this, root);
 
 
         mDrinksRecyclerView.setHasFixedSize(true);
