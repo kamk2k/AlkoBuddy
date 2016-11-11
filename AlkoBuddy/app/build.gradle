@@ -34,6 +34,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta3'
     compile 'com.google.code.gson:gson:2.4'
     compile 'de.greenrobot:eventbus:2.4.0'
     debugCompile 'com.facebook.stetho:stetho:1.3.1'
@@ -42,6 +43,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'io.realm:android-adapters:1.3.0'
     compile 'com.robinhood.ticker:ticker:1.1.0'
+    compile 'org.adw.library:discrete-seekbar:1.0.1'
 
     apt 'com.google.dagger:dagger-compiler:2.5'
     compile 'com.google.dagger:dagger:2.5'
