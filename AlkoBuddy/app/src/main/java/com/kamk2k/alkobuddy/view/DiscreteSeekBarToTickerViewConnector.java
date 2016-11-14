@@ -66,4 +66,14 @@ public class DiscreteSeekBarToTickerViewConnector {
     public int getCurrentValue() {
         return currentValue;
     }
+
+    public void setCurrentValue(int value) {
+        if(value < 0 || value > maxValue) {
+            throw new IllegalArgumentException
+                    ("Trying to set value " + value + " out of the SeekBar range = [0, " + maxValue + "]");
+        } else {
+            currentValue = value;
+            discreteSeekBar.setProgress((int) (currentValue / progressStep));
+        }
+    }
 }

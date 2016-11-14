@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kamk2k.alkobuddy.R;
+import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.robinhood.ticker.TickerView;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by PC on 2015-02-23.
  */
-public class CreateDrinkFragment extends Fragment {
+public class CreateDrinkFragment extends Fragment implements CreateDrinkView {
 
 
     @BindView(R.id.beerView)
@@ -79,5 +80,23 @@ public class CreateDrinkFragment extends Fragment {
         vodkaSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(vodkaVolumeSeekBar, vodkaVolume, 10.0f, 100);
         customVolumeSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customVolumeSeekBar, customVolume, 10.0f, 500);
         customPercentageSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customPerCentSeekBar, customPerCent, 5.0f, 100);
+
+        showDrink(DrinkItem.generateMock());
+    }
+
+    @Override
+    public void showLoading() {
+        // TODO: 14.11.16 implement loading
+    }
+
+    @Override
+    public void showDrink(DrinkItem drinkItem) {
+        drinkName.setText(drinkItem.getName());
+
+        beerSeekBarConnector.setCurrentValue(drinkItem.getBeerVolume());
+        wineSeekBarConnector.setCurrentValue(drinkItem.getWineVolume());
+        vodkaSeekBarConnector.setCurrentValue(drinkItem.getVodkaVolume());
+        customVolumeSeekBarConnector.setCurrentValue(drinkItem.getCustomVolume());
+        customPercentageSeekBarConnector.setCurrentValue((int) (100 * drinkItem.getCustomPercentage()));
     }
 }
