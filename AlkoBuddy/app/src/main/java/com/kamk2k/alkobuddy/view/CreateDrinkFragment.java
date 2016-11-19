@@ -1,7 +1,6 @@
 package com.kamk2k.alkobuddy.view;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,14 @@ import android.widget.TextView;
 
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
+import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenter;
+import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
 import com.robinhood.ticker.TickerView;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,9 +25,9 @@ import butterknife.ButterKnife;
 /**
  * Created by PC on 2015-02-23.
  */
-public class CreateDrinkFragment extends Fragment implements CreateDrinkView {
+public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkView {
 
-
+    // TODO: 15.11.16 add new drink and delete button
     @BindView(R.id.beerView)
     ImageView beerView;
     @BindView(R.id.beer_title)
@@ -63,6 +67,9 @@ public class CreateDrinkFragment extends Fragment implements CreateDrinkView {
     DiscreteSeekBarToTickerViewConnector customVolumeSeekBarConnector;
     DiscreteSeekBarToTickerViewConnector customPercentageSeekBarConnector;
 
+    @Inject
+    CreateDrinkPresenter presenter;
+
     public CreateDrinkFragment() {
     }
 
@@ -82,6 +89,12 @@ public class CreateDrinkFragment extends Fragment implements CreateDrinkView {
         customPercentageSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customPerCentSeekBar, customPerCent, 5.0f, 100);
 
         showDrink(DrinkItem.generateMock());
+    }
+
+    @Override
+    public void injectFragment(ApplicationComponent component) {
+        component.inject(this);
+        presenter.setMVPView(this);
     }
 
     @Override

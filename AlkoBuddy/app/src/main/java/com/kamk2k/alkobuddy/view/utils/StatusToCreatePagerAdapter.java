@@ -14,6 +14,9 @@ import javax.inject.Inject;
  */
 public class StatusToCreatePagerAdapter extends FragmentPagerAdapter {
 
+    public static final int STATUS_FRAGMENT_POSITION = 0;
+    public static final int CREATE_DRINK_FRAGMENT_POSITION = 1;
+
     StatusFragment mStatusFragment = new StatusFragment();
     CreateDrinkFragment mCreateDrinkFragment = new CreateDrinkFragment();
 
@@ -24,9 +27,9 @@ public class StatusToCreatePagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case 0 :
+            case STATUS_FRAGMENT_POSITION :
                 return "Status";
-            case 1 :
+            case CREATE_DRINK_FRAGMENT_POSITION :
                 return "Create";
             default:
                 return "WTFFFFF!!!!";
@@ -36,9 +39,9 @@ public class StatusToCreatePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0 :
+            case STATUS_FRAGMENT_POSITION :
                 return mStatusFragment;
-            case 1 :
+            case CREATE_DRINK_FRAGMENT_POSITION :
                 return mCreateDrinkFragment;
             default:
                 return mStatusFragment;

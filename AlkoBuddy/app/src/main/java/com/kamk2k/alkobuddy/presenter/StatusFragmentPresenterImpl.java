@@ -26,7 +26,7 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
             .getDateTimeInstance();
 
     @Inject
-    public StatusFragmentPresenterImpl(Context context, UserAlcoState userState) {
+    public StatusFragmentPresenterImpl(UserAlcoState userState) {
         this.userState = userState;
     }
 

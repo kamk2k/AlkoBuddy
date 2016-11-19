@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends MVPActivityView {
+public class MainActivity extends MVPActivityView implements MainActivityView{
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -49,6 +49,25 @@ public class MainActivity extends MVPActivityView {
         mMainActivityComponent = component.plus(new MainActivityModule(this));
         mMainActivityComponent.inject(this);
         mFragmentPagerAdapter = mMainActivityComponent.getStatusToCreatePagerAdapter();
+        presenter.setMVPView(this);
+    }
+
+    @Override
+    public boolean isStatusFragmentDisplayed() {
+        if(mViewPager == null) {
+            return false;
+        } else {
+            return mViewPager.getCurrentItem() == StatusToCreatePagerAdapter.STATUS_FRAGMENT_POSITION;
+        }
+    }
+
+    @Override
+    public boolean isCreateDrinkFragmentDisplayed() {
+        if(mViewPager == null) {
+            return false;
+        } else {
+            return mViewPager.getCurrentItem() == StatusToCreatePagerAdapter.CREATE_DRINK_FRAGMENT_POSITION;
+        }
     }
 
     @Override
@@ -106,5 +125,4 @@ public class MainActivity extends MVPActivityView {
         super.onDestroy();
         presenter.onDestroy();
     }
-
 }

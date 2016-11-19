@@ -7,6 +7,8 @@ import android.os.Handler;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
+import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenter;
+import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenterImpl;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenterImpl;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
@@ -39,6 +41,7 @@ public class PresentersModule {
         return application.getApplicationContext();
     }
 
+
     @Singleton
     @Provides
     UserAlcoState provideUserAlcoState() {
@@ -47,8 +50,8 @@ public class PresentersModule {
 
     @Singleton
     @Provides
-    StatusFragmentPresenter provideStatusFragmentPresenter(Context context, UserAlcoState userAlcoState) {
-        return new StatusFragmentPresenterImpl(context, userAlcoState);
+    StatusFragmentPresenter provideStatusFragmentPresenter(UserAlcoState userAlcoState) {
+        return new StatusFragmentPresenterImpl(userAlcoState);
     }
 
     @Singleton
@@ -74,7 +77,14 @@ public class PresentersModule {
     @Singleton
     @Provides
     MainActivityPresenter provideMainActivityPresenter(UserStateChangeHandler userStateChangeHandler,
-                                                       Handler updateHandler) {
-        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler);
+                                                       Handler updateHandler, CreateDrinkPresenter createDrinkPresenter) {
+        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler, createDrinkPresenter);
     }
+
+    @Singleton
+    @Provides
+    CreateDrinkPresenter provideCreateDrinkPresenter() {
+        return new CreateDrinkPresenterImpl();
+    }
+
 }

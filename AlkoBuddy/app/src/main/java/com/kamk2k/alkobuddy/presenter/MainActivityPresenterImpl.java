@@ -1,12 +1,12 @@
 package com.kamk2k.alkobuddy.presenter;
 
 import android.os.Handler;
-import android.util.Log;
 
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
 import com.kamk2k.alkobuddy.presenter.logic.UserStateChangeHandler;
+import com.kamk2k.alkobuddy.view.MainActivityView;
 
 import java.util.Date;
 
@@ -26,10 +26,21 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     protected Handler updateHandler;
     private UpdateRunnable updateRunnable;
     private Realm realm;
+    private MainActivityView mainActivityView;
+    private CreateDrinkPresenter createDrinkPresenter;
+
+    @Override
+    public void setMVPView(MainActivityView mainActivityView) {
+        this.mainActivityView = mainActivityView;
+    }
 
     @Override
     public void drinkClicked(DrinkItem drinkItem) {
-        userStateChangeHandler.onDrink(drinkItem, new Date());
+        if(mainActivityView.isStatusFragmentDisplayed()) {
+            userStateChangeHandler.onDrink(drinkItem, new Date());
+        } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
+            createDrinkPresenter.onDrinkContentChanged(drinkItem);
+        }
     }
 
     @Override
@@ -45,9 +56,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     }
 
     @Inject
-    public MainActivityPresenterImpl(UserStateChangeHandler userStateChangeHandler, Handler updateHandler) {
+    public MainActivityPresenterImpl(UserStateChangeHandler userStateChangeHandler, Handler updateHandler, CreateDrinkPresenter createDrinkPresenter) {
         this.userStateChangeHandler = userStateChangeHandler;
         this.updateHandler = updateHandler;
+        this.createDrinkPresenter = createDrinkPresenter;
         realm = Realm.getDefaultInstance();
         updateRunnable = new UpdateRunnable();
         userStateChangeHandler.setUserState(UserStateProvider.getUserState());
