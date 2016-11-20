@@ -23,7 +23,7 @@ import dagger.Lazy;
 public class PickerFragment extends MVPFragmentView {
 
     private static final String TAG = PickerFragment.class.getSimpleName();
-    public static final int NUMBER_OF_GRID_COLUMS = 4;
+    public static final int NUMBER_OF_GRID_COLUMS = 2;
 
     @Inject
     Context mContext;
