@@ -63,7 +63,6 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
         }
     }
 
-    @Inject
     public DrinksAdapter(Context context, MainActivityPresenter mainActivityPresenter, OrderedRealmCollection<DrinkItem> data) {
         super(context, data, true);
         this.context = context;
@@ -106,7 +105,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
             addNewViewHolder.addNewItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO: 20.11.16 add new drink
+                    mainActivityPresenter.addNewDrinkClicked();
                 }
             });
         }

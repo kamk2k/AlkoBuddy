@@ -29,6 +29,10 @@ public class DrinkItem implements RealmModel, Parcelable {
         return new DrinkItem(1, "Piwo", 500, 0.08f, 0, 0, 0, 0, 0, 0);
     }
 
+    public static DrinkItem getDefaultItem(int id) {
+        return new DrinkItem(id, "Drink", 0, 0.06f, 0, 0.14f, 0, 0.40f, 0, 0.20f);
+    }
+
     public DrinkItem() {
     }
 

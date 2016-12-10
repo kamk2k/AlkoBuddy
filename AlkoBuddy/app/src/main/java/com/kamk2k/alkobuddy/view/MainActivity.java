@@ -20,6 +20,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter
+        .CREATE_DRINK_FRAGMENT_POSITION;
+import static com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter.STATUS_FRAGMENT_POSITION;
+
 
 public class MainActivity extends MVPActivityView implements MainActivityView{
 
@@ -57,7 +61,7 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         if(mViewPager == null) {
             return false;
         } else {
-            return mViewPager.getCurrentItem() == StatusToCreatePagerAdapter.STATUS_FRAGMENT_POSITION;
+            return mViewPager.getCurrentItem() == STATUS_FRAGMENT_POSITION;
         }
     }
 
@@ -66,7 +70,14 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         if(mViewPager == null) {
             return false;
         } else {
-            return mViewPager.getCurrentItem() == StatusToCreatePagerAdapter.CREATE_DRINK_FRAGMENT_POSITION;
+            return mViewPager.getCurrentItem() == CREATE_DRINK_FRAGMENT_POSITION;
+        }
+    }
+
+    @Override
+    public void switchToCreateFragment() {
+        if(mViewPager != null) {
+            mViewPager.setCurrentItem(CREATE_DRINK_FRAGMENT_POSITION);
         }
     }
 

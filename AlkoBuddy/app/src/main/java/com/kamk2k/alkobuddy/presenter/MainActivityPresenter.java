@@ -11,4 +11,5 @@ public interface MainActivityPresenter extends MVPActivityPresenter {
     void setMVPView(MainActivityView mainActivityView);
     void drinkClicked(DrinkItem drinkItem);
     void resetDrinkState();
+    void addNewDrinkClicked();
 }

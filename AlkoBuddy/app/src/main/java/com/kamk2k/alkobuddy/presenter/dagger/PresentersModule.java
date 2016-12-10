@@ -66,14 +66,6 @@ public class PresentersModule {
         return new Handler();
     }
 
-    @Provides
-    OrderedRealmCollection<DrinkItem> provideDrinkItemsData() {
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<DrinkItem> results = realm.where(DrinkItem.class).findAll();
-        realm.close();
-        return results;
-    }
-
     @Singleton
     @Provides
     MainActivityPresenter provideMainActivityPresenter(UserStateChangeHandler userStateChangeHandler,

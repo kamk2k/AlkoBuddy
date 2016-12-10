@@ -1,6 +1,7 @@
 package com.kamk2k.alkobuddy.presenter;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
@@ -25,7 +26,6 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     // TODO: 23.07.16 delegate update handling to external class
     protected Handler updateHandler;
     private UpdateRunnable updateRunnable;
-    private Realm realm;
     private MainActivityView mainActivityView;
     private CreateDrinkPresenter createDrinkPresenter;
 
@@ -48,6 +48,30 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         userStateChangeHandler.resetUserState();
     }
 
+    @Override
+    public void addNewDrinkClicked() {
+        if(mainActivityView.isStatusFragmentDisplayed()) {
+            mainActivityView.switchToCreateFragment();
+            DrinkItem drinkItem = createEmptyDrinkItem();
+            createDrinkPresenter.onDrinkContentChanged(drinkItem);
+        } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
+            DrinkItem drinkItem = createEmptyDrinkItem();
+            createDrinkPresenter.onDrinkContentChanged(drinkItem);
+        }
+    }
+
+    @NonNull
+    private DrinkItem createEmptyDrinkItem() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        int nextID = (realm.where(DrinkItem.class).max("id").intValue()) + 1;
+        DrinkItem drinkItem = DrinkItem.getDefaultItem(nextID);
+        realm.copyToRealmOrUpdate(drinkItem);
+        realm.commitTransaction();
+        realm.close();
+        return drinkItem;
+    }
+
     private class UpdateRunnable implements Runnable {
         @Override
         public void run() {
@@ -60,23 +84,26 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         this.userStateChangeHandler = userStateChangeHandler;
         this.updateHandler = updateHandler;
         this.createDrinkPresenter = createDrinkPresenter;
-        realm = Realm.getDefaultInstance();
         updateRunnable = new UpdateRunnable();
         userStateChangeHandler.setUserState(UserStateProvider.getUserState());
     }
 
     public void loadUserStateFromRealm() {
+        Realm realm = Realm.getDefaultInstance();
         UserAlcoState state = realm.where(UserAlcoState.class).findFirst();
         if(state != null) {
             userStateChangeHandler.setUserState(realm.copyFromRealm(state));
         }
+        realm.close();
     }
 
     public void saveUserStateToRealm() {
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.delete(UserAlcoState.class);
         realm.copyToRealm(userStateChangeHandler.getUserState());
         realm.commitTransaction();
+        realm.close();
     }
 
     private void updateUserStateData() {
@@ -91,7 +118,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
 
     @Override
     public void onDestroy() {
-        realm.close();
+
     }
 
     @Override
