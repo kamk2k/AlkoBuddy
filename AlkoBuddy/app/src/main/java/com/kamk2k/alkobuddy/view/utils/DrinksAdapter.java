@@ -1,6 +1,7 @@
 package com.kamk2k.alkobuddy.view.utils;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,8 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     MainActivityPresenter mainActivityPresenter;
 
     public static class DrinkViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.card_view)
+        CardView cardView;
         @BindView(R.id.drink_image)
         ImageView drinkImage;
         @BindView(R.id.drink_name)
@@ -50,6 +53,8 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     }
 
     public static class AddNewViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.card_view)
+        CardView cardView;
         @BindView(R.id.add_new_item)
         LinearLayout addNewItem;
         @BindView(R.id.add_new_icon)
@@ -93,7 +98,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof DrinkViewHolder) {
             DrinkViewHolder drinkViewHolder = (DrinkViewHolder)holder;
-            drinkViewHolder.drinkImage.setOnClickListener(new View.OnClickListener() {
+            drinkViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     DrinkItem clickedDrink = getItem(position);
@@ -102,7 +107,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
             });
         } else if(holder instanceof AddNewViewHolder) {
             AddNewViewHolder addNewViewHolder = (AddNewViewHolder) holder;
-            addNewViewHolder.addNewItem.setOnClickListener(new View.OnClickListener() {
+            addNewViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mainActivityPresenter.addNewDrinkClicked();
