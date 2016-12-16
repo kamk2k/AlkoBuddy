@@ -1,11 +1,7 @@
 package com.kamk2k.alkobuddy.presenter;
 
-import android.util.Log;
-
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.view.CreateDrinkView;
-
-import javax.inject.Inject;
 
 /**
  * Created by kksiazek on 14.11.16.
@@ -26,10 +22,14 @@ public class CreateDrinkPresenterImpl implements CreateDrinkPresenter {
     }
 
     @Override
-    public void onDrinkContentChanged(DrinkItem drinkItem) {
-        // TODO: 19.11.16 split to 2 methods and new interface
+    public void changeSelectedDrink(DrinkItem drinkItem) {
         selectedDrink = drinkItem;
         createDrinkView.showDrink(drinkItem);
+    }
+
+    @Override
+    public DrinkItem getCurrentDrinkItem() {
+        return selectedDrink;
     }
 
     @Override

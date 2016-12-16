@@ -39,7 +39,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         if(mainActivityView.isStatusFragmentDisplayed()) {
             userStateChangeHandler.onDrink(drinkItem, new Date());
         } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
-            createDrinkPresenter.onDrinkContentChanged(drinkItem);
+            createDrinkPresenter.changeSelectedDrink(drinkItem);
         }
     }
 
@@ -53,10 +53,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         if(mainActivityView.isStatusFragmentDisplayed()) {
             mainActivityView.switchToCreateFragment();
             DrinkItem drinkItem = createEmptyDrinkItem();
-            createDrinkPresenter.onDrinkContentChanged(drinkItem);
+            createDrinkPresenter.changeSelectedDrink(drinkItem);
         } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
             DrinkItem drinkItem = createEmptyDrinkItem();
-            createDrinkPresenter.onDrinkContentChanged(drinkItem);
+            createDrinkPresenter.changeSelectedDrink(drinkItem);
         }
     }
 

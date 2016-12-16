@@ -10,5 +10,6 @@ import com.kamk2k.alkobuddy.view.CreateDrinkView;
 
 public interface CreateDrinkPresenter extends MVPFragmentPresenter{
     void setMVPView(CreateDrinkView mvpView);
-    void onDrinkContentChanged(DrinkItem drinkItem);
+    void changeSelectedDrink(DrinkItem drinkItem);
+    DrinkItem getCurrentDrinkItem();
 }

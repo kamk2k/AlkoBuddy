@@ -17,6 +17,11 @@ public class DiscreteSeekBarToTickerViewConnector {
     final float progressStep;
     final int maxValue;
     int currentValue;
+    OnValueChangedListener onValueChangedListener;
+
+    public interface OnValueChangedListener {
+        void onValueChanged(int value);
+    }
 
     private DiscreteSeekBar.OnProgressChangeListener seekbarChangeListener = new DiscreteSeekBar
             .OnProgressChangeListener() {
@@ -25,6 +30,9 @@ public class DiscreteSeekBarToTickerViewConnector {
             currentValue = (int) (value * progressStep);
             DiscreteSeekBarToTickerViewConnector.this.tickerView.setText(Integer.toString
                     (currentValue));
+            if(onValueChangedListener != null) {
+                onValueChangedListener.onValueChanged(currentValue);
+            }
         }
 
         @Override
@@ -75,5 +83,9 @@ public class DiscreteSeekBarToTickerViewConnector {
             currentValue = value;
             discreteSeekBar.setProgress((int) (currentValue / progressStep));
         }
+    }
+
+    public void setOnValueChangedListener(OnValueChangedListener onValueChangedListener) {
+        this.onValueChangedListener = onValueChangedListener;
     }
 }

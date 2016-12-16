@@ -1,6 +1,8 @@
 package com.kamk2k.alkobuddy.view;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * Created by PC on 2015-02-23.
@@ -79,8 +82,35 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
         View rootView = inflater.inflate(R.layout.create_drink_fragment, container, false);
         ButterKnife.bind(this, rootView);
         initializeSeekBarConnectors();
+        setNameChangeListener();
         return rootView;
     }
+
+    private void setNameChangeListener() {
+        drinkName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    presenter.getCurrentDrinkItem().setName(charSequence.toString());
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
     private void initializeSeekBarConnectors() {
         beerSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(beerVolumeSeekBar, beerVolume, 50.0f, 500);
         wineSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(wineVolumeSeekBar, wineVolume, 25.0f, 200);
@@ -88,6 +118,66 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
         customVolumeSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customVolumeSeekBar, customVolume, 10.0f, 500);
         customPercentageSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customPerCentSeekBar, customPerCent, 5.0f, 100);
 
+        beerSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    presenter.getCurrentDrinkItem().setBeerVolume(value);
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+        });
+        wineSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    presenter.getCurrentDrinkItem().setWineVolume(value);
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+        });
+        vodkaSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    presenter.getCurrentDrinkItem().setVodkaVolume(value);
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+        });
+        customVolumeSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    presenter.getCurrentDrinkItem().setCustomVolume(value);
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+        });
+        customPercentageSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    presenter.getCurrentDrinkItem().setCustomPercentage((float)value/100f);
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+        });
         showDrink(DrinkItem.generateMock());
     }
 
