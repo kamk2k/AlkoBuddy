@@ -111,6 +111,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         updateHandler.postDelayed(updateRunnable, UPDATE_DELAY);
     }
 
+    private void stopUpdatingUserState() {
+        updateHandler.removeCallbacks(updateRunnable);
+    }
+
     @Override
     public void onCreate() {
 
@@ -130,6 +134,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     @Override
     public void onStop() {
         saveUserStateToRealm();
+        stopUpdatingUserState();
     }
 
     @Override
