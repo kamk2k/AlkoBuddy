@@ -13,6 +13,10 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class DrinkItem implements RealmModel, Parcelable {
 
+    public static final float DEFAULT_BEER_PERCENTAGE = 0.05f;
+    public static final float DEFAULT_WINE_PERCENTAGE = 0.14f;
+    public static final float DEFAULT_VODKA_PERCENTAGE = 0.40f;
+
     @PrimaryKey
     private int id;
     private String name;
@@ -30,7 +34,8 @@ public class DrinkItem implements RealmModel, Parcelable {
     }
 
     public static DrinkItem getDefaultItem(int id) {
-        return new DrinkItem(id, "Drink", 0, 0.06f, 0, 0.14f, 0, 0.40f, 0, 0.20f);
+        return new DrinkItem(id, "Drink", 0, DEFAULT_BEER_PERCENTAGE, 0, DEFAULT_WINE_PERCENTAGE, 0,
+                DEFAULT_VODKA_PERCENTAGE, 0, 0.20f);
     }
 
     public DrinkItem() {
@@ -141,6 +146,12 @@ public class DrinkItem implements RealmModel, Parcelable {
         this.name = name;
     }
 
+    public float getDrinkStrength() {
+        int volume = beerVolume + wineVolume + vodkaVolume + customVolume;
+        float alcoVolume = (beerVolume * beerPercentage) + (wineVolume * winePercentage)
+                + (vodkaVolume * vodkaPercentage) + (customVolume * customPercentage);
+        return alcoVolume / (float) volume;
+    }
     @Override
     public int describeContents() {
         return 0;

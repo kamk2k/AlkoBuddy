@@ -15,8 +15,7 @@ import android.widget.TextView;
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
-
-import javax.inject.Inject;
+import com.kamk2k.alkobuddy.presenter.logic.AlcoholInDrinkCalculator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +31,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
 
     public static final int DRINK_ITEM_VIEW_TYPE = 1;
     public static final int ADD_NEW_ITEM_VIEW_TYPE = 2;
+    public static final float MAX_DRINK_STRENGTH_ALCO_WEIGHT_IN_G = 32f;
 
     Context context;
     MainActivityPresenter mainActivityPresenter;
@@ -98,6 +98,10 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof DrinkViewHolder) {
             DrinkViewHolder drinkViewHolder = (DrinkViewHolder)holder;
+            drinkViewHolder.drinkName.setText(getItem(position).getName());
+            drinkViewHolder.drinkStrengthRatingBar.setProgress(Math.round(drinkViewHolder
+                    .drinkStrengthRatingBar.getMax() * (AlcoholInDrinkCalculator.calculateAlcoholWeightInDrink(getItem(position)) /
+                    MAX_DRINK_STRENGTH_ALCO_WEIGHT_IN_G)));
             drinkViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
