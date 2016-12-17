@@ -83,6 +83,9 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
         ButterKnife.bind(this, rootView);
         initializeSeekBarConnectors();
         setNameChangeListener();
+        beerView.setOnClickListener(view -> {
+// TODO: 17.12.16 adding user image
+        });
         return rootView;
     }
 
@@ -118,64 +121,49 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
         customVolumeSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customVolumeSeekBar, customVolume, 10.0f, 500);
         customPercentageSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customPerCentSeekBar, customPerCent, 5.0f, 100);
 
-        beerSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    presenter.getCurrentDrinkItem().setBeerVolume(value);
-                    realm.commitTransaction();
-                    realm.close();
-                }
+        beerSeekBarConnector.setOnValueChangedListener(value -> {
+            if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                presenter.getCurrentDrinkItem().setBeerVolume(value);
+                realm.commitTransaction();
+                realm.close();
             }
         });
-        wineSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    presenter.getCurrentDrinkItem().setWineVolume(value);
-                    realm.commitTransaction();
-                    realm.close();
-                }
+        wineSeekBarConnector.setOnValueChangedListener(value -> {
+            if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                presenter.getCurrentDrinkItem().setWineVolume(value);
+                realm.commitTransaction();
+                realm.close();
             }
         });
-        vodkaSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    presenter.getCurrentDrinkItem().setVodkaVolume(value);
-                    realm.commitTransaction();
-                    realm.close();
-                }
+        vodkaSeekBarConnector.setOnValueChangedListener(value -> {
+            if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                presenter.getCurrentDrinkItem().setVodkaVolume(value);
+                realm.commitTransaction();
+                realm.close();
             }
         });
-        customVolumeSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    presenter.getCurrentDrinkItem().setCustomVolume(value);
-                    realm.commitTransaction();
-                    realm.close();
-                }
+        customVolumeSeekBarConnector.setOnValueChangedListener(value -> {
+            if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                presenter.getCurrentDrinkItem().setCustomVolume(value);
+                realm.commitTransaction();
+                realm.close();
             }
         });
-        customPercentageSeekBarConnector.setOnValueChangedListener(new DiscreteSeekBarToTickerViewConnector.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                if(presenter != null && presenter.getCurrentDrinkItem() != null) {
-                    Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    presenter.getCurrentDrinkItem().setCustomPercentage((float)value/100f);
-                    realm.commitTransaction();
-                    realm.close();
-                }
+        customPercentageSeekBarConnector.setOnValueChangedListener(value -> {
+            if(presenter != null && presenter.getCurrentDrinkItem() != null) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                presenter.getCurrentDrinkItem().setCustomPercentage((float)value/100f);
+                realm.commitTransaction();
+                realm.close();
             }
         });
         showDrink(DrinkItem.generateMock());
