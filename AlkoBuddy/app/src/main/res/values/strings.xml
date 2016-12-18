@@ -15,5 +15,6 @@
 
     <string name="sex_preference_key">sex_preference</string>
     <string name="weight_preference_key">weight_preference</string>
+    <string name="image_picker_title">Pick drink image</string>
 
 </resources>

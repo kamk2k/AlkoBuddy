@@ -7,6 +7,7 @@ repositories {
     maven {
         url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
     }
+    maven { url 'https://jitpack.io' }
 }
 
 android {
@@ -49,6 +50,9 @@ dependencies {
     compile 'io.realm:android-adapters:1.3.0'
     compile 'com.robinhood.ticker:ticker:1.1.0'
     compile 'org.adw.library:discrete-seekbar:1.0.1'
+    compile 'com.github.jkwiecien:EasyImage:1.3.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.yalantis:ucrop:2.2.0'
 
     apt 'com.google.dagger:dagger-compiler:2.5'
     compile 'com.google.dagger:dagger:2.5'
