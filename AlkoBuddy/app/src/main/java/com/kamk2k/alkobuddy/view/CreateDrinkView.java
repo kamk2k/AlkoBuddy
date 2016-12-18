@@ -10,4 +10,5 @@ import com.kamk2k.alkobuddy.view.utils.MVPView;
 public interface CreateDrinkView extends MVPView {
     void showLoading();
     void showDrink(DrinkItem drinkItem);
+    void showEmptyView();
 }

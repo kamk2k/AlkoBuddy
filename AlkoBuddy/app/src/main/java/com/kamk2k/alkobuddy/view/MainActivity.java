@@ -48,7 +48,14 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         ButterKnife.bind(this);
         mViewPager.setAdapter(mFragmentPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+        setRemoveModeSharedPrefValue(false);
         presenter.onCreate();
+    }
+
+    private void setRemoveModeSharedPrefValue(boolean b) {
+        SharedPreferences.Editor edit = getSharedPreferences(OPTIONS_SHARED_PREFERENCES, 0).edit();
+        edit.putBoolean(SHARED_PREF_IS_IN_REMOVE_MODE, b);
+        edit.commit();
     }
 
     @Override
@@ -107,9 +114,7 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
             presenter.resetDrinkState();
         } else if(id == R.id.action_remove) {
             item.setChecked(!item.isChecked());
-            SharedPreferences.Editor edit = getSharedPreferences(OPTIONS_SHARED_PREFERENCES, 0).edit();
-            edit.putBoolean(SHARED_PREF_IS_IN_REMOVE_MODE, item.isChecked());
-            edit.commit();
+            setRemoveModeSharedPrefValue(item.isChecked());
         }
 
         return super.onOptionsItemSelected(item);

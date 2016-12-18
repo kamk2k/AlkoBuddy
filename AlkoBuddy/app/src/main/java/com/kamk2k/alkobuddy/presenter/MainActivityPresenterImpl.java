@@ -52,8 +52,11 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
                 .findAll()
                 .deleteAllFromRealm();
         realm.commitTransaction();
-        // TODO: 18.12.16 when there are no drinks left
-        createDrinkPresenter.changeSelectedDrink(realm.where(DrinkItem.class).findFirst());
+        if(realm.where(DrinkItem.class).findAll().isEmpty()) {
+            createDrinkPresenter.changeSelectedDrink(null);
+        } else {
+            createDrinkPresenter.changeSelectedDrink(realm.where(DrinkItem.class).findFirst());
+        }
         realm.close();
     }
 
@@ -78,7 +81,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     private DrinkItem createEmptyDrinkItem() {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        int nextID = (realm.where(DrinkItem.class).max("id").intValue()) + 1;
+        int nextID = 1;
+        if(!realm.where(DrinkItem.class).findAll().isEmpty()) {
+            nextID = (realm.where(DrinkItem.class).max("id").intValue()) + 1;
+        }
         DrinkItem drinkItem = DrinkItem.getDefaultItem(nextID);
         realm.copyToRealmOrUpdate(drinkItem);
         realm.commitTransaction();

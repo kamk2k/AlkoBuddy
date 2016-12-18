@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.kamk2k.alkobuddy.R;
@@ -39,7 +40,10 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
 
     private static final String TAG = "CreateDrinkFragment";
 
-    // TODO: 15.11.16 add new drink and delete button
+    @BindView(R.id.empty_view)
+    TextView emptyView;
+    @BindView(R.id.content_view)
+    ScrollView contentView;
     @BindView(R.id.beerView)
     ImageView beerView;
     @BindView(R.id.beer_title)
@@ -84,7 +88,8 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     @Inject
     ImagePickerDelegate imagePickerDelegate;
 
-    private ImagePickerDelegate.OnCompleteListener onImagePickerCompleteListener = new ImagePickerDelegate.OnCompleteListener() {
+    private ImagePickerDelegate.OnCompleteListener onImagePickerCompleteListener = new
+            ImagePickerDelegate.OnCompleteListener() {
         @Override
         public void onImageReturned(Uri imageUri) {
             String imagePath = imageUri.getPath();
@@ -93,7 +98,8 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
             presenter.getCurrentDrinkItem().setImagePath(imagePath);
             realm.commitTransaction();
             realm.close();
-            Picasso.with(getContext()).load(new File(imagePath)).error(R.drawable.beer_icon).into(beerView);
+            Picasso.with(getContext()).load(new File(imagePath)).error(R.drawable.beer_icon).into
+                    (beerView);
         }
 
         @Override
@@ -110,6 +116,11 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.create_drink_fragment, container, false);
         ButterKnife.bind(this, rootView);
+        if(presenter.getCurrentDrinkItem() == null) {
+            showEmptyView();
+        } else {
+            showContentView();
+        }
         initializeSeekBarConnectors();
         setNameChangeListener();
         beerView.setOnClickListener(view -> {
@@ -146,11 +157,16 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     }
 
     private void initializeSeekBarConnectors() {
-        beerSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(beerVolumeSeekBar, beerVolume, 50.0f, 500);
-        wineSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(wineVolumeSeekBar, wineVolume, 25.0f, 200);
-        vodkaSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(vodkaVolumeSeekBar, vodkaVolume, 10.0f, 100);
-        customVolumeSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customVolumeSeekBar, customVolume, 10.0f, 500);
-        customPercentageSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(customPerCentSeekBar, customPerCent, 5.0f, 100);
+        beerSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(beerVolumeSeekBar,
+                beerVolume, 50.0f, 500);
+        wineSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(wineVolumeSeekBar,
+                wineVolume, 25.0f, 200);
+        vodkaSeekBarConnector = new DiscreteSeekBarToTickerViewConnector(vodkaVolumeSeekBar,
+                vodkaVolume, 10.0f, 100);
+        customVolumeSeekBarConnector = new DiscreteSeekBarToTickerViewConnector
+                (customVolumeSeekBar, customVolume, 10.0f, 500);
+        customPercentageSeekBarConnector = new DiscreteSeekBarToTickerViewConnector
+                (customPerCentSeekBar, customPerCent, 5.0f, 100);
 
         beerSeekBarConnector.setOnValueChangedListener(value -> {
             if(presenter != null && presenter.getCurrentDrinkItem() != null) {
@@ -192,7 +208,7 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
             if(presenter != null && presenter.getCurrentDrinkItem() != null) {
                 Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
-                presenter.getCurrentDrinkItem().setCustomPercentage((float)value/100f);
+                presenter.getCurrentDrinkItem().setCustomPercentage((float) value / 100f);
                 realm.commitTransaction();
                 realm.close();
             }
@@ -213,6 +229,7 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
 
     @Override
     public void showDrink(DrinkItem drinkItem) {
+        showContentView();
         drinkName.setText(drinkItem.getName());
         Picasso.with(getContext()).load(new File(drinkItem.getImagePath()))
                 .error(R.drawable.beer_icon).placeholder(R.drawable.beer_icon).into(beerView);
@@ -221,7 +238,19 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
         wineSeekBarConnector.setCurrentValue(drinkItem.getWineVolume());
         vodkaSeekBarConnector.setCurrentValue(drinkItem.getVodkaVolume());
         customVolumeSeekBarConnector.setCurrentValue(drinkItem.getCustomVolume());
-        customPercentageSeekBarConnector.setCurrentValue((int) (100 * drinkItem.getCustomPercentage()));
+        customPercentageSeekBarConnector.setCurrentValue((int) (100 * drinkItem
+                .getCustomPercentage()));
+    }
+
+    private void showContentView() {
+        emptyView.setVisibility(View.GONE);
+        contentView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        emptyView.setVisibility(View.VISIBLE);
+        contentView.setVisibility(View.GONE);
     }
 
     @Override

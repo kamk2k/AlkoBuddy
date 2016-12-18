@@ -23,8 +23,13 @@ public class CreateDrinkPresenterImpl implements CreateDrinkPresenter {
 
     @Override
     public void changeSelectedDrink(DrinkItem drinkItem) {
-        selectedDrink = drinkItem;
-        createDrinkView.showDrink(drinkItem);
+        if(drinkItem == null) {
+            selectedDrink = null;
+            createDrinkView.showEmptyView();
+        } else {
+            selectedDrink = drinkItem;
+            createDrinkView.showDrink(drinkItem);
+        }
     }
 
     @Override
