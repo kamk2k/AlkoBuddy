@@ -16,7 +16,8 @@
             android:layout_height="180dp"
             android:src="@drawable/beer_icon"
             app:layout_constraintLeft_toLeftOf="parent"
-            tools:layout_editor_absoluteY="0dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/drink_name"
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/beer_title"
@@ -24,10 +25,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:text="Beer"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/beerView"
-            app:layout_constraintTop_toBottomOf="@+id/drink_name"/>
+            android:layout_marginTop="8dp"/>
 
         <TextView
             android:id="@+id/wine_title"
@@ -70,15 +71,18 @@
             android:inputType="text"
             android:hint="Drink name"
             android:maxLength="25"
-            app:layout_constraintLeft_toRightOf="@+id/beerView"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_constraintTop_creator="1"/>
+            tools:layout_constraintTop_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"/>
 
         <com.robinhood.ticker.TickerView
             android:id="@+id/beer_volume"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="BEER"
             app:layout_constraintLeft_toLeftOf="@+id/beer_title"
             app:layout_constraintTop_toBottomOf="@+id/beer_title"/>
@@ -87,7 +91,7 @@
             android:id="@+id/wine_volume"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="WINE"
             app:layout_constraintLeft_toLeftOf="@+id/wine_title"
             app:layout_constraintTop_toBottomOf="@+id/wine_title"/>
@@ -96,7 +100,7 @@
             android:id="@+id/vodka_volume"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="VODKA"
             app:layout_constraintLeft_toLeftOf="@+id/vodka_title"
             app:layout_constraintTop_toBottomOf="@+id/vodka_title"/>
@@ -105,7 +109,7 @@
             android:id="@+id/custom_volume"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="OTHER"
             app:layout_constraintLeft_toLeftOf="@+id/custom_title"
             app:layout_constraintTop_toBottomOf="@+id/custom_title"/>
@@ -114,7 +118,7 @@
             android:id="@+id/custom_per_cent"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="OTHER"
             app:layout_constraintLeft_toLeftOf="@+id/custom_title"
             app:layout_constraintTop_toBottomOf="@+id/custom_volume"/>
