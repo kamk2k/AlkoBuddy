@@ -1,6 +1,7 @@
 package com.kamk2k.alkobuddy.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,8 @@ import static com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter.STATUS_
 public class MainActivity extends MVPActivityView implements MainActivityView{
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String OPTIONS_SHARED_PREFERENCES = "OptionsSharedPreferences";
+    public static final String SHARED_PREF_IS_IN_REMOVE_MODE = "isInRemoveMode";
 
     @BindView(R.id.pager)
     ViewPager mViewPager;
@@ -102,6 +105,11 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
             return true;
         } else if(id == R.id.action_reset) {
             presenter.resetDrinkState();
+        } else if(id == R.id.action_remove) {
+            item.setChecked(!item.isChecked());
+            SharedPreferences.Editor edit = getSharedPreferences(OPTIONS_SHARED_PREFERENCES, 0).edit();
+            edit.putBoolean(SHARED_PREF_IS_IN_REMOVE_MODE, item.isChecked());
+            edit.commit();
         }
 
         return super.onOptionsItemSelected(item);

@@ -44,6 +44,20 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     }
 
     @Override
+    public void drinkRemoveClicked(DrinkItem drinkItem) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.where(DrinkItem.class)
+                .equalTo(DrinkItem.ID_FIELD_NAME, drinkItem.getId())
+                .findAll()
+                .deleteAllFromRealm();
+        realm.commitTransaction();
+        // TODO: 18.12.16 when there are no drinks left
+        createDrinkPresenter.changeSelectedDrink(realm.where(DrinkItem.class).findFirst());
+        realm.close();
+    }
+
+    @Override
     public void resetDrinkState() {
         userStateChangeHandler.resetUserState();
     }

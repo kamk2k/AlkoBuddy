@@ -1,6 +1,7 @@
 package com.kamk2k.alkobuddy.view.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.logic.AlcoholInDrinkCalculator;
+import com.kamk2k.alkobuddy.view.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -39,6 +41,12 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     Context context;
     MainActivityPresenter mainActivityPresenter;
 
+    private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
+        if(key.equals(MainActivity.SHARED_PREF_IS_IN_REMOVE_MODE)) {
+            notifyDataSetChanged();
+        }
+    };
+
     public static class DrinkViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.card_view)
         CardView cardView;
@@ -48,6 +56,8 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
         TextView drinkName;
         @BindView(R.id.drink_strength_rating_bar)
         RatingBar drinkStrengthRatingBar;
+        @BindView(R.id.remove_icon)
+        ImageView removeIcon;
 
         public DrinkViewHolder(View view) {
             super(view);
@@ -75,6 +85,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
         super(context, data, true);
         this.context = context;
         this.mainActivityPresenter = mainActivityPresenter;
+        registerRemoveModeChangeListener(context);
     }
 
     @Override
@@ -109,14 +120,32 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
             Picasso.with(context).load(new File(itemToDisplay.getImagePath()))
                     .error(R.drawable.beer_icon).placeholder(R.drawable.beer_icon)
                     .into(drinkViewHolder.drinkImage);
+            if(isInRemoveMode()) {
+                drinkViewHolder.removeIcon.setVisibility(View.VISIBLE);
+            } else {
+                drinkViewHolder.removeIcon.setVisibility(View.GONE);
+            }
             drinkViewHolder.cardView.setOnClickListener(v -> {
-                DrinkItem clickedDrink = itemToDisplay;
-                mainActivityPresenter.drinkClicked(clickedDrink);
+                if(isInRemoveMode()) {
+                    mainActivityPresenter.drinkRemoveClicked(itemToDisplay);
+                } else {
+                    mainActivityPresenter.drinkClicked(itemToDisplay);
+                }
             });
         } else if(holder instanceof AddNewViewHolder) {
             AddNewViewHolder addNewViewHolder = (AddNewViewHolder) holder;
             addNewViewHolder.cardView.setOnClickListener(view -> mainActivityPresenter.addNewDrinkClicked());
         }
+    }
+
+    private boolean isInRemoveMode() {
+        return context.getSharedPreferences(MainActivity.OPTIONS_SHARED_PREFERENCES, 0)
+                .getBoolean(MainActivity.SHARED_PREF_IS_IN_REMOVE_MODE, false);
+    }
+
+    private void registerRemoveModeChangeListener(Context context) {
+        context.getSharedPreferences(MainActivity.OPTIONS_SHARED_PREFERENCES, 0)
+                .registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.kamk2k.alkobuddy.view.MainActivityView;
 public interface MainActivityPresenter extends MVPActivityPresenter {
     void setMVPView(MainActivityView mainActivityView);
     void drinkClicked(DrinkItem drinkItem);
+    void drinkRemoveClicked(DrinkItem drinkItem);
     void resetDrinkState();
     void addNewDrinkClicked();
 }

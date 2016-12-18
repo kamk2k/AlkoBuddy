@@ -18,6 +18,8 @@ public class DrinkItem implements RealmModel, Parcelable {
     public static final float DEFAULT_VODKA_PERCENTAGE = 0.40f;
     public static final String DEFAULT_IMAGE_PATH = "";
 
+    public static final String ID_FIELD_NAME = "id";
+
     @PrimaryKey
     private int id;
     private String name;
