@@ -88,8 +88,12 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
         @Override
         public void onImageReturned(Uri imageUri) {
             String imagePath = imageUri.getPath();
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            presenter.getCurrentDrinkItem().setImagePath(imagePath);
+            realm.commitTransaction();
+            realm.close();
             Picasso.with(getContext()).load(new File(imagePath)).error(R.drawable.beer_icon).into(beerView);
-            // TODO: 18.12.16 adding image path to DrinkItem
         }
 
         @Override
@@ -210,6 +214,8 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     @Override
     public void showDrink(DrinkItem drinkItem) {
         drinkName.setText(drinkItem.getName());
+        Picasso.with(getContext()).load(new File(drinkItem.getImagePath()))
+                .error(R.drawable.beer_icon).placeholder(R.drawable.beer_icon).into(beerView);
 
         beerSeekBarConnector.setCurrentValue(drinkItem.getBeerVolume());
         wineSeekBarConnector.setCurrentValue(drinkItem.getWineVolume());

@@ -16,10 +16,12 @@ public class DrinkItem implements RealmModel, Parcelable {
     public static final float DEFAULT_BEER_PERCENTAGE = 0.05f;
     public static final float DEFAULT_WINE_PERCENTAGE = 0.14f;
     public static final float DEFAULT_VODKA_PERCENTAGE = 0.40f;
+    public static final String DEFAULT_IMAGE_PATH = "";
 
     @PrimaryKey
     private int id;
     private String name;
+    private String imagePath;
     private int beerVolume;
     private float beerPercentage;
     private int wineVolume;
@@ -30,22 +32,23 @@ public class DrinkItem implements RealmModel, Parcelable {
     private float customPercentage;
 
     public static DrinkItem generateMock() {
-        return new DrinkItem(1, "Piwo", 500, 0.08f, 0, 0, 0, 0, 0, 0);
+        return new DrinkItem(1, "Piwo", DEFAULT_IMAGE_PATH, 500, 0.08f, 0, 0, 0, 0, 0, 0);
     }
 
     public static DrinkItem getDefaultItem(int id) {
-        return new DrinkItem(id, "Drink", 0, DEFAULT_BEER_PERCENTAGE, 0, DEFAULT_WINE_PERCENTAGE, 0,
+        return new DrinkItem(id, "Drink", DEFAULT_IMAGE_PATH, 0, DEFAULT_BEER_PERCENTAGE, 0, DEFAULT_WINE_PERCENTAGE, 0,
                 DEFAULT_VODKA_PERCENTAGE, 0, 0.20f);
     }
 
     public DrinkItem() {
     }
 
-    public DrinkItem(int id, String name, int beerVolume, float beerPercentage, int wineVolume,
+    public DrinkItem(int id, String name, String imagePath, int beerVolume, float beerPercentage, int wineVolume,
                      float winePercentage, int vodkaVolume, float vodkaPercentage, int customVolume,
                      float customPercentage) {
         this.id = id;
         this.name = name;
+        this.imagePath = imagePath;
         this.beerVolume = beerVolume;
         this.beerPercentage = beerPercentage;
         this.wineVolume = wineVolume;
@@ -144,6 +147,14 @@ public class DrinkItem implements RealmModel, Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public float getDrinkStrength() {

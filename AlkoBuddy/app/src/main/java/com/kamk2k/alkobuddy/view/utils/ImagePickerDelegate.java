@@ -30,7 +30,7 @@ public class ImagePickerDelegate {
     public static final int COMPRESS_QUALITY = 75;
     public static final Bitmap.CompressFormat COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final String IMAGE_CACHE_DIRECTORY_PATH = "DrinkImages";
-    public static final String IMAGE_CACHE_FILE_NAME_TEMPLATE = "drink_image_%d";
+    public static final String IMAGE_CACHE_FILE_NAME_TEMPLATE = "drink_image_%d.jpeg";
 
     private OnCompleteListener onCompleteListener;
 
@@ -88,6 +88,8 @@ public class ImagePickerDelegate {
         Context context = fragment.getContext();
 
         File drinkImageFile = getFileForDrink(context, drinkId);
+        if(drinkImageFile.exists())
+            drinkImageFile.delete();
 
         UCrop.Options options = new UCrop.Options();
         Bitmap.CompressFormat compressFormat = COMPRESS_FORMAT;

@@ -16,6 +16,9 @@ import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.logic.AlcoholInDrinkCalculator;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,25 +101,21 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof DrinkViewHolder) {
             DrinkViewHolder drinkViewHolder = (DrinkViewHolder)holder;
-            drinkViewHolder.drinkName.setText(getItem(position).getName());
+            DrinkItem itemToDisplay = getItem(position);
+            drinkViewHolder.drinkName.setText(itemToDisplay.getName());
             drinkViewHolder.drinkStrengthRatingBar.setProgress(Math.round(drinkViewHolder
-                    .drinkStrengthRatingBar.getMax() * (AlcoholInDrinkCalculator.calculateAlcoholWeightInDrink(getItem(position)) /
+                    .drinkStrengthRatingBar.getMax() * (AlcoholInDrinkCalculator.calculateAlcoholWeightInDrink(itemToDisplay) /
                     MAX_DRINK_STRENGTH_ALCO_WEIGHT_IN_G)));
-            drinkViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DrinkItem clickedDrink = getItem(position);
-                    mainActivityPresenter.drinkClicked(clickedDrink);
-                }
+            Picasso.with(context).load(new File(itemToDisplay.getImagePath()))
+                    .error(R.drawable.beer_icon).placeholder(R.drawable.beer_icon)
+                    .into(drinkViewHolder.drinkImage);
+            drinkViewHolder.cardView.setOnClickListener(v -> {
+                DrinkItem clickedDrink = itemToDisplay;
+                mainActivityPresenter.drinkClicked(clickedDrink);
             });
         } else if(holder instanceof AddNewViewHolder) {
             AddNewViewHolder addNewViewHolder = (AddNewViewHolder) holder;
-            addNewViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mainActivityPresenter.addNewDrinkClicked();
-                }
-            });
+            addNewViewHolder.cardView.setOnClickListener(view -> mainActivityPresenter.addNewDrinkClicked());
         }
     }
 
