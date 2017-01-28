@@ -100,8 +100,7 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
     }
 
     private void updatePerMileInfo() {
-        String perMileText = String.format("%.2f", userState.getCurrentPerMile());
-        statusView.displayPerMileText(perMileText);
+        statusView.displayPerMile(userState.getCurrentPerMile());
     }
 
     @NonNull

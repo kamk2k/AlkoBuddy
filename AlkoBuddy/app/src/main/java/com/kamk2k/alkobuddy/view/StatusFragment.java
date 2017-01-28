@@ -1,10 +1,13 @@
 package com.kamk2k.alkobuddy.view;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 
+import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
@@ -23,6 +26,7 @@ import rm.com.clocks.ClockImageView;
 public class StatusFragment extends MVPFragmentView implements StatusView {
 
     public static final String TAG = StatusFragment.class.getSimpleName();
+    public static final float MAX_CIRCLE_PROGRESS_VALUE = 5f;
 
     @BindView(R.id.promil_text_field)
     TickerView perMileTextView;
@@ -30,6 +34,8 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     TickerView timeToSoberTextView;
     @BindView(R.id.clock_view)
     ClockImageView clockImageView;
+    @BindView(R.id.circle_progress)
+    CircleProgress circleProgress;
 
     @Inject
     StatusFragmentPresenter presenter;
@@ -38,8 +44,15 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     }
 
     @Override
-    public void displayPerMileText(String perMileText) {
-        perMileTextView.setText(perMileText);
+    public void displayPerMile(float perMile) {
+        int progress = (int) Math.min((perMile * 100) / MAX_CIRCLE_PROGRESS_VALUE, 100);
+        ObjectAnimator progressAnimator;
+        // TODO: 28.01.17 change to ValueAnimator
+        progressAnimator = ObjectAnimator.ofInt(circleProgress, "progress", circleProgress.getProgress(), progress);
+        progressAnimator.setDuration(600);
+        progressAnimator.setInterpolator(new OvershootInterpolator(5f));
+        progressAnimator.start();
+        perMileTextView.setText(String.format("%.2f ", perMile) + getString(R.string.promil));
     }
 
     @Override
@@ -71,7 +84,7 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
         final int indexOf0 = (int) '0';
         final int start = 32;
         final int end = 256;
-        final char[] charList = new char[end - start + 1];
+        final char[] charList = new char[end - start + 2];
         for (int i = start; i < indexOf0; i++) {
             charList[i - start] = (char) i;
         }
@@ -79,6 +92,7 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
         for (int i = indexOf0 + 1; i < end + 1; i++) {
             charList[i - start] = (char) (i - 1);
         }
+        charList[charList.length - 1] = '‰';
         return charList;
     }
 
