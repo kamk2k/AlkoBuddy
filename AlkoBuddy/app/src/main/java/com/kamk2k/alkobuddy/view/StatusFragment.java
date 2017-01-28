@@ -9,13 +9,13 @@ import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
-import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rm.com.clocks.ClockImageView;
 
 /**
  * Created by PC on 2015-02-23.
@@ -28,6 +28,9 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     TickerView perMileTextView;
     @BindView(R.id.time_to_sober_text_field)
     TickerView timeToSoberTextView;
+    @BindView(R.id.clock_view)
+    ClockImageView clockImageView;
+
     @Inject
     StatusFragmentPresenter presenter;
 
@@ -42,6 +45,16 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     @Override
     public void displayTimeToSoberText(String timeToSoberText) {
         timeToSoberTextView.setText(timeToSoberText);
+    }
+
+    @Override
+    public void displaySoberTime(int hours, int minutes) {
+        clockImageView.animateToTime(hours, minutes);
+    }
+
+    @Override
+    public void displayOver24hSoberTime() {
+        clockImageView.animateIndeterminate();
     }
 
     @Override

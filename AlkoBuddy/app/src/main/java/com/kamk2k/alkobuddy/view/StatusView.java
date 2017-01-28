@@ -8,4 +8,6 @@ import com.kamk2k.alkobuddy.view.utils.MVPView;
 public interface StatusView extends MVPView{
     void displayPerMileText(String perMileText);
     void displayTimeToSoberText(String timeToSoberText);
+    void displaySoberTime(int hours, int minutes);
+    void displayOver24hSoberTime();
 }

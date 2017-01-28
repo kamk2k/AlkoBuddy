@@ -18,5 +18,7 @@
     <string name="weight_preference_key">weight_preference</string>
     <string name="image_picker_title">Pick drink image</string>
     <string name="no_drink_selected">No drink selected</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="more_than_a_day">more than a day</string>
 
 </resources>

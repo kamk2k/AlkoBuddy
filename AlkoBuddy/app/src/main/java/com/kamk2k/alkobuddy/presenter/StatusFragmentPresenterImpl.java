@@ -4,12 +4,15 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.view.StatusView;
 
-import java.text.DateFormat;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.Days;
+
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -20,14 +23,15 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
 
     private static final String TAG = StatusFragmentPresenterImpl.class.getSimpleName();
 
+    private Context context;
     protected UserAlcoState userState;
     private StatusView statusView;
-    public static final DateFormat DISPLAYED_TO_SOBER_DATE_FORMAT = DateFormat
-            .getDateTimeInstance();
+    public static final String DISPLAYED_SOBER_TIME_FORMAT = "HH:mm";
 
     @Inject
-    public StatusFragmentPresenterImpl(UserAlcoState userState) {
+    public StatusFragmentPresenterImpl(UserAlcoState userState, Context context) {
         this.userState = userState;
+        this.context = context;
     }
 
     @Override
@@ -45,26 +49,66 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
         }
     }
 
-    //TODO text formattin
     private void update() {
         Log.d(TAG, "update()");
+        updatePerMileInfo();
+        updateTimeToSoberInfo();
+    }
+
+    private void updateTimeToSoberInfo() {
+        DateTime dateToSober = getDateToSober();
+        DateTime now = new DateTime(new Date());
+
+        displaySoberClockTime(dateToSober, now);
+        displaySoberTextTime(dateToSober, now);
+    }
+
+    private void displaySoberTextTime(DateTime dateToSober, DateTime now) {
+        String timeToSoberText = getTimeToSoberText(dateToSober, now);
+        statusView.displayTimeToSoberText(timeToSoberText);
+    }
+
+    private void displaySoberClockTime(DateTime dateToSober, DateTime now) {
+        if(willSoberDayAfterTomorrow(dateToSober, now)) {
+            statusView.displayOver24hSoberTime();
+        } else {
+            int soberHour = dateToSober.get(DateTimeFieldType.hourOfDay());
+            int soberMinute = dateToSober.get(DateTimeFieldType.minuteOfHour());
+            statusView.displaySoberTime(soberHour, soberMinute);
+        }
+    }
+
+    private boolean willSoberDayAfterTomorrow(DateTime dateToSober, DateTime now) {
+        int daysBetween = Days.daysBetween(now.withTimeAtStartOfDay(), dateToSober
+                .withTimeAtStartOfDay()).getDays();
+        if(daysBetween <= 1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private String getTimeToSoberText(DateTime dateToSober, DateTime now) {
+        int daysBetween = Days.daysBetween(now.withTimeAtStartOfDay(), dateToSober.withTimeAtStartOfDay()).getDays();
+        if(daysBetween == 0) {
+            return dateToSober.toLocalTime().toString(DISPLAYED_SOBER_TIME_FORMAT);
+        } else if(daysBetween == 1) {
+            return dateToSober.toLocalTime().toString(DISPLAYED_SOBER_TIME_FORMAT) + " " + context.getString(R.string.tomorrow);
+        } else {
+            return context.getString(R.string.more_than_a_day);
+        }
+    }
+
+    private void updatePerMileInfo() {
         String perMileText = String.format("%.2f", userState.getCurrentPerMile());
-        Date dateToSober = getDateToSober();
-        // TODO: 02.10.16 clean it!
-        long toSoberIntervalInMs = dateToSober.getTime() - new Date().getTime();
-        final long hr = TimeUnit.MILLISECONDS.toHours(toSoberIntervalInMs);
-        final long min = TimeUnit.MILLISECONDS.toMinutes(toSoberIntervalInMs - TimeUnit.HOURS.toMillis(hr));
-        String intervalText = String.format("%d h : %02d min", hr, min);
-        String timeToSoberText = DISPLAYED_TO_SOBER_DATE_FORMAT.format(dateToSober);
         statusView.displayPerMileText(perMileText);
-        statusView.displayTimeToSoberText(intervalText);
     }
 
     @NonNull
-    private Date getDateToSober() {
+    private DateTime getDateToSober() {
         Date date = new Date();
         date.setTime(date.getTime() + userState.getTimeToSoberInMs());
-        return date;
+        return new DateTime(date);
     }
 
     @Override

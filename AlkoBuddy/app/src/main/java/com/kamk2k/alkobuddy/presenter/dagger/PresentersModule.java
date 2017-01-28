@@ -50,8 +50,8 @@ public class PresentersModule {
 
     @Singleton
     @Provides
-    StatusFragmentPresenter provideStatusFragmentPresenter(UserAlcoState userAlcoState) {
-        return new StatusFragmentPresenterImpl(userAlcoState);
+    StatusFragmentPresenter provideStatusFragmentPresenter(UserAlcoState userAlcoState, Context context) {
+        return new StatusFragmentPresenterImpl(userAlcoState, context);
     }
 
     @Singleton
