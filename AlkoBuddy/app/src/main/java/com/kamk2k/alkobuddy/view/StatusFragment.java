@@ -1,16 +1,17 @@
 package com.kamk2k.alkobuddy.view;
 
-import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.view.utils.CircleProgressColorAnimationListener;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
 import com.robinhood.ticker.TickerView;
 
@@ -40,18 +41,15 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     @Inject
     StatusFragmentPresenter presenter;
 
+    private ValueAnimator.AnimatorUpdateListener circleProgressAnimationListener;
+
     public StatusFragment() {
     }
 
     @Override
     public void displayPerMile(float perMile) {
         int progress = (int) Math.min((perMile * 100) / MAX_CIRCLE_PROGRESS_VALUE, 100);
-        ObjectAnimator progressAnimator;
-        // TODO: 28.01.17 change to ValueAnimator
-        progressAnimator = ObjectAnimator.ofInt(circleProgress, "progress", circleProgress.getProgress(), progress);
-        progressAnimator.setDuration(600);
-        progressAnimator.setInterpolator(new OvershootInterpolator(5f));
-        progressAnimator.start();
+        changeCircleProgressWithAnimation(progress);
         perMileTextView.setText(String.format("%.2f ", perMile) + getString(R.string.promil));
     }
 
@@ -70,11 +68,20 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
         clockImageView.animateIndeterminate();
     }
 
+    private void changeCircleProgressWithAnimation(int progress) {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(circleProgress.getProgress(), progress);
+        valueAnimator.setInterpolator(new AnticipateOvershootInterpolator(5f));
+        valueAnimator.addUpdateListener(circleProgressAnimationListener);
+        valueAnimator.setDuration(600);
+        valueAnimator.start();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.status_fragment, container, false);
         ButterKnife.bind(this, root);
+        circleProgressAnimationListener = new CircleProgressColorAnimationListener(circleProgress);
         perMileTextView.setCharacterList(getListForPerMiles());
         timeToSoberTextView.setCharacterList(getListForPerMiles());
         return root;
