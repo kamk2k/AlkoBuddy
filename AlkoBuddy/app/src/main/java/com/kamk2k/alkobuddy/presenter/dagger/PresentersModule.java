@@ -69,8 +69,9 @@ public class PresentersModule {
     @Singleton
     @Provides
     MainActivityPresenter provideMainActivityPresenter(UserStateChangeHandler userStateChangeHandler,
-                                                       Handler updateHandler, CreateDrinkPresenter createDrinkPresenter) {
-        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler, createDrinkPresenter);
+                                                       Handler updateHandler, CreateDrinkPresenter createDrinkPresenter,
+                                                       Context context) {
+        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler, createDrinkPresenter, context);
     }
 
     @Singleton

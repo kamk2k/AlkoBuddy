@@ -1,8 +1,12 @@
 package com.kamk2k.alkobuddy.presenter;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
@@ -28,6 +32,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     private UpdateRunnable updateRunnable;
     private MainActivityView mainActivityView;
     private CreateDrinkPresenter createDrinkPresenter;
+    private Context context;
 
     @Override
     public void setMVPView(MainActivityView mainActivityView) {
@@ -77,6 +82,18 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         }
     }
 
+    @Override
+    public void updateUserDataFromPreferences(SharedPreferences sharedPreferences) {
+        userStateChangeHandler.getUserState().setWeight(Integer.parseInt(sharedPreferences.getString(context.getString(R.string.weight_preference_key), "70")));
+        String sex = sharedPreferences.getString(context.getString(R.string.sex_preference_key), context.getString(R.string.male));
+        if(sex.equals(context.getString(R.string.male))) {
+            userStateChangeHandler.getUserState().setSex(UserAlcoState.SEX_MALE);
+        } else if(sex.equals(context.getString(R.string.female))) {
+            userStateChangeHandler.getUserState().setSex(UserAlcoState.SEX_FEMALE);
+        }
+        userStateChangeHandler.processAlcohol(new Date());
+    }
+
     @NonNull
     private DrinkItem createEmptyDrinkItem() {
         Realm realm = Realm.getDefaultInstance();
@@ -100,10 +117,12 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     }
 
     @Inject
-    public MainActivityPresenterImpl(UserStateChangeHandler userStateChangeHandler, Handler updateHandler, CreateDrinkPresenter createDrinkPresenter) {
+    public MainActivityPresenterImpl(UserStateChangeHandler userStateChangeHandler, Handler updateHandler,
+                                     CreateDrinkPresenter createDrinkPresenter, Context context) {
         this.userStateChangeHandler = userStateChangeHandler;
         this.updateHandler = updateHandler;
         this.createDrinkPresenter = createDrinkPresenter;
+        this.context = context;
         updateRunnable = new UpdateRunnable();
         userStateChangeHandler.setUserState(UserStateProvider.getUserState());
     }

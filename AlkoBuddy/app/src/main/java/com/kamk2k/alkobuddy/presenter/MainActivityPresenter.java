@@ -1,5 +1,7 @@
 package com.kamk2k.alkobuddy.presenter;
 
+import android.content.SharedPreferences;
+
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.utils.MVPActivityPresenter;
 import com.kamk2k.alkobuddy.view.MainActivityView;
@@ -13,4 +15,5 @@ public interface MainActivityPresenter extends MVPActivityPresenter {
     void drinkRemoveClicked(DrinkItem drinkItem);
     void resetDrinkState();
     void addNewDrinkClicked();
+    void updateUserDataFromPreferences(SharedPreferences sharedPreferences);
 }
