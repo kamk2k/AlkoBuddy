@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnticipateOvershootInterpolator;
+import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.kamk2k.alkobuddy.R;
@@ -37,6 +38,8 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     ClockImageView clockImageView;
     @BindView(R.id.circle_progress)
     CircleProgress circleProgress;
+    @BindView(R.id.time_to_sober_additional_text)
+    TextView timeToSoberAdditionalTextView;
 
     @Inject
     StatusFragmentPresenter presenter;
@@ -54,8 +57,23 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     }
 
     @Override
-    public void displayTimeToSoberText(String timeToSoberText) {
+    public void displayTodayTimeToSoberText(String timeToSoberText) {
+        timeToSoberAdditionalTextView.setVisibility(View.GONE);
         timeToSoberTextView.setText(timeToSoberText);
+    }
+
+    @Override
+    public void displayTomorrowTimeToSoberText(String timeToSoberText) {
+        timeToSoberAdditionalTextView.setVisibility(View.VISIBLE);
+        timeToSoberAdditionalTextView.setText(R.string.tomorrow);
+        timeToSoberTextView.setText(timeToSoberText);
+    }
+
+    @Override
+    public void displayLaterThanTomorrowTimeToSoberText(String timeToSoberText) {
+        timeToSoberAdditionalTextView.setVisibility(View.VISIBLE);
+        timeToSoberAdditionalTextView.setText(R.string.more_than_a_day);
+        timeToSoberTextView.setText("--:--");
     }
 
     @Override

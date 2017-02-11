@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.view.StatusView;
 
@@ -64,12 +63,18 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
     }
 
     private void displaySoberTextTime(DateTime dateToSober, DateTime now) {
-        String timeToSoberText = getTimeToSoberText(dateToSober, now);
-        statusView.displayTimeToSoberText(timeToSoberText);
+        int daysBetween = Days.daysBetween(now.withTimeAtStartOfDay(), dateToSober.withTimeAtStartOfDay()).getDays();
+        if(daysBetween == 0) {
+            statusView.displayTodayTimeToSoberText(dateToSober.toLocalTime().toString(DISPLAYED_SOBER_TIME_FORMAT));
+        } else if(daysBetween == 1) {
+            statusView.displayTomorrowTimeToSoberText(dateToSober.toLocalTime().toString(DISPLAYED_SOBER_TIME_FORMAT));
+        } else {
+            statusView.displayLaterThanTomorrowTimeToSoberText(dateToSober.toLocalTime().toString(DISPLAYED_SOBER_TIME_FORMAT));
+        }
     }
 
     private void displaySoberClockTime(DateTime dateToSober, DateTime now) {
-        if(willSoberDayAfterTomorrow(dateToSober, now)) {
+        if(willSoberLaterThanTomorrow(dateToSober, now)) {
             statusView.displayOver24hSoberTime();
         } else {
             int soberHour = dateToSober.get(DateTimeFieldType.hourOfDay());
@@ -78,24 +83,13 @@ public class StatusFragmentPresenterImpl implements StatusFragmentPresenter {
         }
     }
 
-    private boolean willSoberDayAfterTomorrow(DateTime dateToSober, DateTime now) {
+    private boolean willSoberLaterThanTomorrow(DateTime dateToSober, DateTime now) {
         int daysBetween = Days.daysBetween(now.withTimeAtStartOfDay(), dateToSober
                 .withTimeAtStartOfDay()).getDays();
         if(daysBetween <= 1) {
             return false;
         } else {
             return true;
-        }
-    }
-
-    private String getTimeToSoberText(DateTime dateToSober, DateTime now) {
-        int daysBetween = Days.daysBetween(now.withTimeAtStartOfDay(), dateToSober.withTimeAtStartOfDay()).getDays();
-        if(daysBetween == 0) {
-            return dateToSober.toLocalTime().toString(DISPLAYED_SOBER_TIME_FORMAT);
-        } else if(daysBetween == 1) {
-            return dateToSober.toLocalTime().toString(DISPLAYED_SOBER_TIME_FORMAT) + " " + context.getString(R.string.tomorrow);
-        } else {
-            return context.getString(R.string.more_than_a_day);
         }
     }
 

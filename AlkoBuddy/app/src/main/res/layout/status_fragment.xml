@@ -46,6 +46,15 @@
         app:layout_constraintRight_toRightOf="@+id/clock_view"
         app:layout_constraintLeft_toLeftOf="@+id/clock_view"/>
 
+    <TextView
+        android:id="@+id/time_to_sober_additional_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tomorrow"
+        app:layout_constraintTop_toBottomOf="@+id/time_to_sober_text_field"
+        app:layout_constraintRight_toRightOf="@+id/clock_view"
+        app:layout_constraintLeft_toLeftOf="@+id/clock_view"/>
+
     <rm.com.clocks.ClockImageView
         android:id="@+id/clock_view"
         android:layout_width="128dp"

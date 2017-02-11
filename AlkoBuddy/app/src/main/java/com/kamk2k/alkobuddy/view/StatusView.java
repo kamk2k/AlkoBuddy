@@ -7,7 +7,9 @@ import com.kamk2k.alkobuddy.view.utils.MVPView;
  */
 public interface StatusView extends MVPView{
     void displayPerMile(float perMile);
-    void displayTimeToSoberText(String timeToSoberText);
+    void displayTodayTimeToSoberText(String timeToSoberText);
+    void displayTomorrowTimeToSoberText(String timeToSoberText);
+    void displayLaterThanTomorrowTimeToSoberText(String timeToSoberText);
     void displaySoberTime(int hours, int minutes);
     void displayOver24hSoberTime();
 }
