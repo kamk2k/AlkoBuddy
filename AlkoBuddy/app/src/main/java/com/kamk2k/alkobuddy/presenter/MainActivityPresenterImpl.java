@@ -11,6 +11,7 @@ import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
 import com.kamk2k.alkobuddy.presenter.logic.UserStateChangeHandler;
 import com.kamk2k.alkobuddy.view.MainActivityView;
+import com.kamk2k.alkobuddy.view.utils.DrinkListItemSelector;
 
 import java.util.Date;
 
@@ -26,10 +27,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     private static final int UPDATE_DELAY = 10000;
 
     protected UserStateChangeHandler userStateChangeHandler;
-    // TODO: 23.07.16 delegate update handling to external class
     protected Handler updateHandler;
     private UpdateRunnable updateRunnable;
     private MainActivityView mainActivityView;
+    private DrinkListItemSelector drinkListItemSelector;
     private CreateDrinkPresenter createDrinkPresenter;
     private Context context;
 
@@ -39,11 +40,17 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     }
 
     @Override
+    public void setDrinkListItemSelector(DrinkListItemSelector drinkListItemSelector) {
+        this.drinkListItemSelector = drinkListItemSelector;
+    }
+
+    @Override
     public void drinkClicked(DrinkItem drinkItem) {
         if(mainActivityView.isStatusFragmentDisplayed()) {
             userStateChangeHandler.onDrink(drinkItem, new Date());
         } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
             createDrinkPresenter.changeSelectedDrink(drinkItem);
+            selectItemOnList(drinkItem);
         }
     }
 
@@ -78,6 +85,25 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
             DrinkItem drinkItem = createEmptyDrinkItem();
             createDrinkPresenter.selectNewDrink(drinkItem);
+            selectItemOnList(drinkItem);
+        }
+    }
+
+    @Override
+    public void clearDrinkListSelection() {
+        if(drinkListItemSelector != null) {
+            drinkListItemSelector.clearSelection();
+        }
+    }
+
+    @Override
+    public void selectDisplayedDrinkOnList() {
+        selectItemOnList(createDrinkPresenter.getCurrentDrinkItem());
+    }
+
+    private void selectItemOnList(DrinkItem drinkItem) {
+        if(drinkListItemSelector != null && drinkItem != null) {
+            drinkListItemSelector.selectItem(drinkItem);
         }
     }
 

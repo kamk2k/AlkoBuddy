@@ -30,16 +30,18 @@ import io.realm.RealmRecyclerViewAdapter;
 /**
  * Created by PC on 2015-02-23.
  */
-public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerView.ViewHolder> {
+public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerView.ViewHolder> implements DrinkListItemSelector {
 
     private static final String TAG = "DrinksAdapter";
 
     public static final int DRINK_ITEM_VIEW_TYPE = 1;
-    public static final int ADD_NEW_ITEM_VIEW_TYPE = 2;
+    public static final int SELECTED_DRINK_VIEW_TYPE = 2;
+    public static final int ADD_NEW_ITEM_VIEW_TYPE = 3;
     public static final float MAX_DRINK_STRENGTH_ALCO_WEIGHT_IN_G = 32f;
 
     Context context;
     MainActivityPresenter mainActivityPresenter;
+    private int selectedDrinkPosition = -1;
 
     private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
         if(key.equals(MainActivity.SHARED_PREF_IS_IN_REMOVE_MODE)) {
@@ -85,6 +87,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
         super(context, data, true);
         this.context = context;
         this.mainActivityPresenter = mainActivityPresenter;
+        mainActivityPresenter.setDrinkListItemSelector(this);
         registerRemoveModeChangeListener(context);
     }
 
@@ -93,9 +96,13 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
         View v;
         switch(viewType) {
             case DRINK_ITEM_VIEW_TYPE :
-                View view = LayoutInflater.from(parent.getContext())
+                v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.picker_drink_item, parent, false);
-                return new DrinkViewHolder(view);
+                return new DrinkViewHolder(v);
+            case SELECTED_DRINK_VIEW_TYPE :
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.picker_selected_drink_item, parent, false);
+                return new DrinkViewHolder(v);
             case ADD_NEW_ITEM_VIEW_TYPE :
                 v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.picker_add_new_item, parent, false);
@@ -149,9 +156,23 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     }
 
     @Override
+    public void selectItem(DrinkItem drinkItem) {
+        selectedDrinkPosition = getData().indexOf(drinkItem);
+        notifyItemChanged(selectedDrinkPosition);
+    }
+
+    @Override
+    public void clearSelection() {
+        selectedDrinkPosition = -1;
+        notifyDataSetChanged();
+    }
+
+    @Override
     public int getItemViewType(int position) {
         if(position == getItemCount() - 1) {
             return ADD_NEW_ITEM_VIEW_TYPE;
+        } else if(position == selectedDrinkPosition) {
+            return SELECTED_DRINK_VIEW_TYPE;
         } else {
             return DRINK_ITEM_VIEW_TYPE;
         }

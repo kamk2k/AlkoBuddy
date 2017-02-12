@@ -42,12 +42,33 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
     StatusToCreatePagerAdapter mFragmentPagerAdapter;
     private MainActivityComponent mMainActivityComponent;
 
+    private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int
+                positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            if(isStatusFragmentDisplayed()) {
+                presenter.clearDrinkListSelection();
+            } else if(isCreateDrinkFragmentDisplayed()) {
+                presenter.selectDisplayedDrinkOnList();
+            }
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mViewPager.setAdapter(mFragmentPagerAdapter);
+        mViewPager.addOnPageChangeListener(pageChangeListener);
         mTabLayout.setupWithViewPager(mViewPager);
         setRemoveModeSharedPrefValue(false);
         presenter.onCreate();
