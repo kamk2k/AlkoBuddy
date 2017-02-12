@@ -3,7 +3,6 @@ package com.kamk2k.alkobuddy.presenter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.kamk2k.alkobuddy.R;
@@ -75,10 +74,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
         if(mainActivityView.isStatusFragmentDisplayed()) {
             mainActivityView.switchToCreateFragment();
             DrinkItem drinkItem = createEmptyDrinkItem();
-            createDrinkPresenter.changeSelectedDrink(drinkItem);
+            createDrinkPresenter.selectNewDrink(drinkItem);
         } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
             DrinkItem drinkItem = createEmptyDrinkItem();
-            createDrinkPresenter.changeSelectedDrink(drinkItem);
+            createDrinkPresenter.selectNewDrink(drinkItem);
         }
     }
 

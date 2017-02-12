@@ -3,6 +3,8 @@ package com.kamk2k.alkobuddy.presenter;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.view.CreateDrinkView;
 
+import io.realm.Realm;
+
 /**
  * Created by kksiazek on 14.11.16.
  */
@@ -30,6 +32,18 @@ public class CreateDrinkPresenterImpl implements CreateDrinkPresenter {
             selectedDrink = drinkItem;
             createDrinkView.showDrink(drinkItem);
         }
+    }
+
+    @Override
+    public void selectNewDrink(DrinkItem drinkItem) {
+        Realm realm = Realm.getDefaultInstance();
+        if(drinkItem != null) {
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(drinkItem);
+            realm.commitTransaction();
+        }
+        changeSelectedDrink(realm.where(DrinkItem.class).equalTo(DrinkItem.ID_FIELD_NAME, drinkItem.getId()).findFirst());
+        realm.close();
     }
 
     @Override
