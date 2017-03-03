@@ -141,7 +141,10 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
             });
         } else if(holder instanceof AddNewViewHolder) {
             AddNewViewHolder addNewViewHolder = (AddNewViewHolder) holder;
-            addNewViewHolder.cardView.setOnClickListener(view -> mainActivityPresenter.addNewDrinkClicked());
+            addNewViewHolder.cardView.setOnClickListener(view -> {
+                mainActivityPresenter.addNewDrinkClicked();
+                selectedDrinkPosition = getItemCount() - 1;
+            });
         }
     }
 
