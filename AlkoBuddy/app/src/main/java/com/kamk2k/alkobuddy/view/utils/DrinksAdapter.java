@@ -84,7 +84,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
     }
 
     public DrinksAdapter(Context context, MainActivityPresenter mainActivityPresenter, OrderedRealmCollection<DrinkItem> data) {
-        super(context, data, true);
+        super(data, true);
         this.context = context;
         this.mainActivityPresenter = mainActivityPresenter;
         mainActivityPresenter.setDrinkListItemSelector(this);

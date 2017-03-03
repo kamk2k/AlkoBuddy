@@ -27,7 +27,8 @@ public class App extends Application {
     public void onCreate() {
         INSTANCE = this;
         super.onCreate();
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this)
+        Realm.init(getApplicationContext());
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
                 .name(BASE_REALM_NAME)
                 .deleteRealmIfMigrationNeeded()
                 .schemaVersion(REALM_SCHEMA_VERSION)
