@@ -24,6 +24,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6fce218d53083d5ce3dfb7f7d7cafe52defc360b" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

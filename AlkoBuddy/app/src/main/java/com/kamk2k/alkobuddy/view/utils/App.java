@@ -2,6 +2,7 @@ package com.kamk2k.alkobuddy.view.utils;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.kamk2k.alkobuddy.BaseRealmModule;
 import com.kamk2k.alkobuddy.model.DrinkItem;
@@ -10,6 +11,7 @@ import com.kamk2k.alkobuddy.presenter.dagger.DaggerApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.PresentersModule;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -48,6 +50,7 @@ public class App extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
+        Fabric.with(this, new Crashlytics());
         mApplicationComponent = DaggerApplicationComponent
                 .builder()
                 .presentersModule(new PresentersModule(this))
