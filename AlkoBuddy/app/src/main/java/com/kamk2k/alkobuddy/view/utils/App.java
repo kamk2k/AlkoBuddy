@@ -14,6 +14,7 @@ import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import jonathanfinerty.once.Once;
 
 /**
  * Created by PC on 2015-11-21.
@@ -29,6 +30,7 @@ public class App extends Application {
     public void onCreate() {
         INSTANCE = this;
         super.onCreate();
+        Once.initialise(this);
         Realm.init(getApplicationContext());
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
                 .name(BASE_REALM_NAME)

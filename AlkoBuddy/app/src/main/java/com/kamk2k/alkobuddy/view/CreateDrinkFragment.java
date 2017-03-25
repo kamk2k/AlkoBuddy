@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.view.utils.ImagePickerDelegate;
+import com.kamk2k.alkobuddy.view.utils.IntroTipsViewDelegate;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
 import com.robinhood.ticker.TickerView;
 import com.squareup.picasso.Picasso;
@@ -26,12 +28,15 @@ import com.squareup.picasso.Picasso;
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import jonathanfinerty.once.Once;
 
 /**
  * Created by PC on 2015-02-23.
@@ -39,6 +44,7 @@ import io.realm.Realm;
 public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkView {
 
     private static final String TAG = "CreateDrinkFragment";
+    public static final String SHOW_EDIT_FRAGMENT_INTRO = "SHOW_EDIT_FRAGMENT_INTRO";
 
     @BindView(R.id.empty_view)
     TextView emptyView;
@@ -76,6 +82,9 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     DiscreteSeekBar customVolumeSeekBar;
     @BindView(R.id.custom_per_cent_seek_bar)
     DiscreteSeekBar customPerCentSeekBar;
+    @BindView(R.id.tooltip_button)
+    ImageView tooltipButton;
+    private View rootView;
 
     DiscreteSeekBarToTickerViewConnector beerSeekBarConnector;
     DiscreteSeekBarToTickerViewConnector wineSeekBarConnector;
@@ -88,6 +97,8 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     @Inject
     ImagePickerDelegate imagePickerDelegate;
 
+    @Inject
+    IntroTipsViewDelegate introTipsViewDelegate;
     private ImagePickerDelegate.OnCompleteListener onImagePickerCompleteListener = new
             ImagePickerDelegate.OnCompleteListener() {
         @Override
@@ -114,7 +125,7 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.create_drink_fragment, container, false);
+        rootView = inflater.inflate(R.layout.create_drink_fragment, container, false);
         ButterKnife.bind(this, rootView);
         if(presenter.getCurrentDrinkItem() == null) {
             showEmptyView();
@@ -128,7 +139,33 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
                     .addOnCompleteListener(onImagePickerCompleteListener)
                     .startImagePicker(this);
         });
+        tooltipButton.setOnClickListener(view -> showIntroTooltips());
         return rootView;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+            if (!Once.beenDone(Once.THIS_APP_INSTALL, SHOW_EDIT_FRAGMENT_INTRO)) {
+                showIntroTooltips();
+                Once.markDone(SHOW_EDIT_FRAGMENT_INTRO);
+            }
+        }
+    }
+
+    private void showIntroTooltips() {
+        View[] anchorsArray = {drinkName, beerView, wineVolumeSeekBar, rootView};
+        List<View> anchors = Arrays.asList(anchorsArray);
+
+        Integer[] textsArray = {R.string.tooltip_drink_name, R.string.tooltip_drink_image,
+                R.string.tooltip_drink_edit_seekbars, R.string.tooltip_picker_in_edit};
+        List<Integer> texts = Arrays.asList(textsArray);
+
+        Integer[] gravityArray = {Gravity.RIGHT, Gravity.BOTTOM, Gravity.BOTTOM, Gravity.BOTTOM};
+        List<Integer> gravity = Arrays.asList(gravityArray);
+
+        introTipsViewDelegate.viewIntroTips(getContext(), anchors, texts, gravity);
     }
 
     private void setNameChangeListener() {
@@ -256,7 +293,9 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imagePickerDelegate.handleActivityResult(getActivity(), this, requestCode, resultCode, data,
-                presenter.getCurrentDrinkItem().getId());
+        if(presenter.getCurrentDrinkItem() != null) {
+            imagePickerDelegate.handleActivityResult(getActivity(), this, requestCode, resultCode, data,
+                    presenter.getCurrentDrinkItem().getId());
+        }
     }
 }

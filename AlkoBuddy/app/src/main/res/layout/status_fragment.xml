@@ -4,9 +4,6 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              android:paddingBottom="@dimen/activity_vertical_margin"
-                                             android:paddingLeft="@dimen/activity_horizontal_margin"
-                                             android:paddingRight="@dimen/activity_horizontal_margin"
-                                             android:paddingTop="@dimen/activity_vertical_margin"
                                              tools:context=".MainActivity$PlaceholderFragment">
 
     <com.github.lzyzsd.circleprogress.CircleProgress
@@ -19,9 +16,9 @@
         app:circle_text_color="@android:color/transparent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
 
     <com.robinhood.ticker.TickerView
@@ -60,8 +57,8 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_centerInParent="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         app:clockColor="@color/accent"
         app:frameWidth="regular"
         app:hours="16"
@@ -72,4 +69,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="8dp"/>
+
+    <ImageView
+        android:id="@+id/tooltip_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:src="@drawable/ic_info_outline_accent_24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

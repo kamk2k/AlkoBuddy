@@ -20,5 +20,15 @@
     <string name="no_drink_selected">No drink selected</string>
     <string name="tomorrow">tomorrow</string>
     <string name="more_than_a_day">more than a day</string>
+    <string name="tooltip_time_to_sober">Here you can see \n when you will get sober</string>
+    <string name="tooltip_per_mile">Here is your alcohol \n in blood content</string>
+    <string name="tooltip_tab_bar">Swipe right or click Create \n to go to drink editor</string>
+    <string name="tooltip_picker_in_status">Press drinks that you have drank \n or add new type
+        of drink</string>
+
+    <string name="tooltip_drink_name">Enter your drink name here</string>
+    <string name="tooltip_drink_image">Click to change drink image</string>
+    <string name="tooltip_drink_edit_seekbars">Here you can change \n your drink content</string>
+    <string name="tooltip_picker_in_edit">Press drink to change it</string>
 
 </resources>

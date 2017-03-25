@@ -224,4 +224,13 @@
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/tooltip_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:padding="4dp"
+        android:src="@drawable/ic_info_outline_accent_24dp"/>
+
 </FrameLayout>
