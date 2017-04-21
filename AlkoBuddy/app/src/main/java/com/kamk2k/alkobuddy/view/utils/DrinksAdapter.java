@@ -17,6 +17,7 @@ import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.logic.AlcoholInDrinkCalculator;
+import com.kamk2k.alkobuddy.presenter.utils.AnalyticsLogger;
 import com.kamk2k.alkobuddy.view.MainActivity;
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +42,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
 
     Context context;
     MainActivityPresenter mainActivityPresenter;
+    AnalyticsLogger analyticsLogger;
     private int selectedDrinkPosition = -1;
 
     private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
@@ -83,10 +85,12 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
         }
     }
 
-    public DrinksAdapter(Context context, MainActivityPresenter mainActivityPresenter, OrderedRealmCollection<DrinkItem> data) {
+    public DrinksAdapter(Context context, MainActivityPresenter mainActivityPresenter,
+                         OrderedRealmCollection<DrinkItem> data, AnalyticsLogger mAnalyticsLogger) {
         super(data, true);
         this.context = context;
         this.mainActivityPresenter = mainActivityPresenter;
+        this.analyticsLogger = mAnalyticsLogger;
         mainActivityPresenter.setDrinkListItemSelector(this);
         registerRemoveModeChangeListener(context);
     }
@@ -138,12 +142,14 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
                 } else {
                     mainActivityPresenter.drinkClicked(itemToDisplay);
                 }
+                analyticsLogger.logEvent(AnalyticsLogger.DRINK_CLICKED_EVENT);
             });
         } else if(holder instanceof AddNewViewHolder) {
             AddNewViewHolder addNewViewHolder = (AddNewViewHolder) holder;
             addNewViewHolder.cardView.setOnClickListener(view -> {
                 mainActivityPresenter.addNewDrinkClicked();
                 selectedDrinkPosition = getItemCount() - 1;
+                analyticsLogger.logEvent(AnalyticsLogger.ADD_NEW_DRINK_CLICKED_EVENT);
             });
         }
     }

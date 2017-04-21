@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
-import com.kamk2k.alkobuddy.model.DrinkItem;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
 import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenter;
@@ -19,9 +19,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.OrderedRealmCollection;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by PC on 2015-11-21.
@@ -41,6 +38,11 @@ public class PresentersModule {
         return application.getApplicationContext();
     }
 
+    @Singleton
+    @Provides
+    FirebaseAnalytics provideFirebaseAnalytics(Context context) {
+        return FirebaseAnalytics.getInstance(context);
+    }
 
     @Singleton
     @Provides

@@ -14,6 +14,7 @@ import com.github.lzyzsd.circleprogress.CircleProgress;
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.presenter.utils.AnalyticsLogger;
 import com.kamk2k.alkobuddy.view.utils.CircleProgressColorAnimationListener;
 import com.kamk2k.alkobuddy.view.utils.IntroTipsViewDelegate;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
@@ -55,6 +56,8 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
     StatusFragmentPresenter presenter;
     @Inject
     IntroTipsViewDelegate introTipsViewDelegate;
+    @Inject
+    AnalyticsLogger analyticsLogger;
 
     private ValueAnimator.AnimatorUpdateListener circleProgressAnimationListener;
     private View rootView;
@@ -119,7 +122,10 @@ public class StatusFragment extends MVPFragmentView implements StatusView {
             showIntroTooltips();
             Once.markDone(SHOW_STATUS_FRAGMENT_INTRO);
         }
-        tooltipButton.setOnClickListener(view -> showIntroTooltips());
+        tooltipButton.setOnClickListener(view -> {
+            showIntroTooltips();
+            analyticsLogger.logEvent(AnalyticsLogger.TOOLTIP_CLICKED_EVENT);
+        });
         return rootView;
     }
 

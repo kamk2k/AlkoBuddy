@@ -12,6 +12,7 @@ import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.presenter.utils.AnalyticsLogger;
 import com.kamk2k.alkobuddy.view.utils.DrinksAdapter;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
 
@@ -29,13 +30,15 @@ public class PickerFragment extends MVPFragmentView {
     public static final int NUMBER_OF_GRID_COLUMS = 2;
 
     @Inject
-    Context mContext;
+    Context context;
     @Inject
     MainActivityPresenter mainActivityPresenter;
+    @Inject
+    AnalyticsLogger analyticsLogger;
     @BindView(R.id.drinks_list)
-    RecyclerView mDrinksRecyclerView;
+    RecyclerView drinksRecyclerView;
     Realm realm;
-    private RecyclerView.LayoutManager mDrinksLayoutManager;
+    private RecyclerView.LayoutManager drinksLayoutManager;
     DrinksAdapter drinksAdapter;
 
     public PickerFragment() {
@@ -66,17 +69,17 @@ public class PickerFragment extends MVPFragmentView {
         ButterKnife.bind(this, root);
         initiDrinksAdapter();
 
-        mDrinksRecyclerView.setHasFixedSize(true);
-        mDrinksLayoutManager = new GridLayoutManager(mContext, NUMBER_OF_GRID_COLUMS);
-        mDrinksRecyclerView.setLayoutManager(mDrinksLayoutManager);
+        drinksRecyclerView.setHasFixedSize(true);
+        drinksLayoutManager = new GridLayoutManager(context, NUMBER_OF_GRID_COLUMS);
+        drinksRecyclerView.setLayoutManager(drinksLayoutManager);
 
-        mDrinksRecyclerView.setAdapter(drinksAdapter);
+        drinksRecyclerView.setAdapter(drinksAdapter);
         return root;
     }
 
     private void initiDrinksAdapter() {
         RealmResults<DrinkItem> results = realm.where(DrinkItem.class).findAll();
-        drinksAdapter = new DrinksAdapter(mContext, mainActivityPresenter, results);
+        drinksAdapter = new DrinksAdapter(context, mainActivityPresenter, results, analyticsLogger);
     }
 
 }

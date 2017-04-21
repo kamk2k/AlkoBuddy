@@ -19,6 +19,7 @@ import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
 import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
+import com.kamk2k.alkobuddy.presenter.utils.AnalyticsLogger;
 import com.kamk2k.alkobuddy.view.utils.ImagePickerDelegate;
 import com.kamk2k.alkobuddy.view.utils.IntroTipsViewDelegate;
 import com.kamk2k.alkobuddy.view.utils.MVPFragmentView;
@@ -96,6 +97,8 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     CreateDrinkPresenter presenter;
     @Inject
     ImagePickerDelegate imagePickerDelegate;
+    @Inject
+    AnalyticsLogger analyticsLogger;
 
     @Inject
     IntroTipsViewDelegate introTipsViewDelegate;
@@ -139,7 +142,10 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
                     .addOnCompleteListener(onImagePickerCompleteListener)
                     .startImagePicker(this);
         });
-        tooltipButton.setOnClickListener(view -> showIntroTooltips());
+        tooltipButton.setOnClickListener(view -> {
+            showIntroTooltips();
+            analyticsLogger.logEvent(AnalyticsLogger.TOOLTIP_CLICKED_EVENT);
+        });
         return rootView;
     }
 

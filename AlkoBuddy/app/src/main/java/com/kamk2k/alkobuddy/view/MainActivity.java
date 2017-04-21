@@ -14,6 +14,7 @@ import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.MainActivityComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.MainActivityModule;
+import com.kamk2k.alkobuddy.presenter.utils.AnalyticsLogger;
 import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
 import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
 
@@ -39,8 +40,10 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
     TabLayout mTabLayout;
     @Inject
     MainActivityPresenter presenter;
-    StatusToCreatePagerAdapter mFragmentPagerAdapter;
-    private MainActivityComponent mMainActivityComponent;
+    @Inject
+    AnalyticsLogger analyticsLogger;
+    StatusToCreatePagerAdapter statusToCreatePagerAdapter;
+    private MainActivityComponent mainActivityComponent;
 
     private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -50,6 +53,11 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
 
         @Override
         public void onPageSelected(int position) {
+            if(position == STATUS_FRAGMENT_POSITION) {
+                analyticsLogger.logEvent(AnalyticsLogger.STATUS_SCREEN_DISPLAYED_EVENT);
+            } else if(position == CREATE_DRINK_FRAGMENT_POSITION) {
+                analyticsLogger.logEvent(AnalyticsLogger.EDIT_SCREEN_DISPLAYED_EVENT);
+            }
         }
 
         @Override
@@ -67,7 +75,7 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mViewPager.setAdapter(mFragmentPagerAdapter);
+        mViewPager.setAdapter(statusToCreatePagerAdapter);
         mViewPager.addOnPageChangeListener(pageChangeListener);
         mTabLayout.setupWithViewPager(mViewPager);
         setRemoveModeSharedPrefValue(false);
@@ -82,9 +90,9 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
 
     @Override
     public void injectActivity(ApplicationComponent component) {
-        mMainActivityComponent = component.plus(new MainActivityModule(this));
-        mMainActivityComponent.inject(this);
-        mFragmentPagerAdapter = mMainActivityComponent.getStatusToCreatePagerAdapter();
+        mainActivityComponent = component.plus(new MainActivityModule(this));
+        mainActivityComponent.inject(this);
+        statusToCreatePagerAdapter = mainActivityComponent.getStatusToCreatePagerAdapter();
         presenter.setMVPView(this);
     }
 
@@ -131,12 +139,15 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+            analyticsLogger.logEvent(AnalyticsLogger.SETTINGS_OPTION_CLICKED_EVENT);
             return true;
         } else if(id == R.id.action_reset) {
             presenter.resetDrinkState();
+            analyticsLogger.logEvent(AnalyticsLogger.RESET_OPTION_CLICKED_EVENT);
         } else if(id == R.id.action_remove) {
             item.setChecked(!item.isChecked());
             setRemoveModeSharedPrefValue(item.isChecked());
+            analyticsLogger.logEvent(AnalyticsLogger.REMOVE_OPTION_CLICKED_EVENT);
         }
 
         return super.onOptionsItemSelected(item);
