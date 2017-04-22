@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/bottom_fragment"
-        android:name="com.kamk2k.alkobuddy.view.PickerFragment"
+        android:name="com.corellidev.alcotester.view.PickerFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

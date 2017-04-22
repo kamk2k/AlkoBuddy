@@ -3,5 +3,5 @@
     android:id="@+id/drinks_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kamk2k.alkobuddy.view.PickerFragment">
+    tools:context="com.corellidev.alcotester.view.PickerFragment">
 </android.support.v7.widget.RecyclerView>

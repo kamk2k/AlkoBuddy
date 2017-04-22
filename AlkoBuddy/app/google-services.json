@@ -36,6 +36,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288334737827:android:36ca0bbabeb5749a",
+        "android_client_info": {
+          "package_name": "com.corellidev.alcotester"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288334737827-5nilfcjatq0i4p7mgf3kv575p4meeasf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsrVNXIQAnzS9UQ5WMhZZ9JL2HRQUseuM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
