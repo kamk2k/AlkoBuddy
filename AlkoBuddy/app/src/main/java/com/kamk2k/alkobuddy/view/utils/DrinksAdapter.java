@@ -129,7 +129,7 @@ public class DrinksAdapter extends RealmRecyclerViewAdapter<DrinkItem, RecyclerV
                     .drinkStrengthRatingBar.getMax() * (AlcoholInDrinkCalculator.calculateAlcoholWeightInDrink(itemToDisplay) /
                     MAX_DRINK_STRENGTH_ALCO_WEIGHT_IN_G)));
             Picasso.with(context).load(new File(itemToDisplay.getImagePath()))
-                    .error(R.drawable.beer_icon).placeholder(R.drawable.beer_icon)
+                    .error(R.drawable.ic_drink_placeholder).placeholder(R.drawable.ic_drink_placeholder)
                     .into(drinkViewHolder.drinkImage);
             if(isInRemoveMode()) {
                 drinkViewHolder.removeIcon.setVisibility(View.VISIBLE);

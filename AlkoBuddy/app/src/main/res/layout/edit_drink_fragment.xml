@@ -29,11 +29,11 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/beerView"
+                android:id="@+id/add_photo"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_marginTop="4dp"
-                android:src="@drawable/beer_icon"
+                android:src="@drawable/ic_add_photo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/drink_name"/>
 
@@ -45,7 +45,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Beer"
-                app:layout_constraintLeft_toRightOf="@+id/beerView"
+                app:layout_constraintLeft_toRightOf="@+id/add_photo"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Wine"
-                app:layout_constraintLeft_toRightOf="@+id/beerView"
+                app:layout_constraintLeft_toRightOf="@+id/add_photo"
                 app:layout_constraintTop_toBottomOf="@+id/beer_volume"/>
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Vodka"
-                app:layout_constraintLeft_toRightOf="@+id/beerView"
+                app:layout_constraintLeft_toRightOf="@+id/add_photo"
                 app:layout_constraintTop_toBottomOf="@+id/wine_volume"/>
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Custom"
-                app:layout_constraintLeft_toRightOf="@+id/beerView"
+                app:layout_constraintLeft_toRightOf="@+id/add_photo"
                 app:layout_constraintTop_toBottomOf="@+id/vodka_volume"/>
 
             <EditText

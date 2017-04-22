@@ -51,8 +51,8 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
     TextView emptyView;
     @BindView(R.id.content_view)
     ScrollView contentView;
-    @BindView(R.id.beerView)
-    ImageView beerView;
+    @BindView(R.id.add_photo)
+    ImageView addPhotoView;
     @BindView(R.id.beer_title)
     TextView beerTitle;
     @BindView(R.id.wine_title)
@@ -112,8 +112,8 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
             presenter.getCurrentDrinkItem().setImagePath(imagePath);
             realm.commitTransaction();
             realm.close();
-            Picasso.with(getContext()).load(new File(imagePath)).error(R.drawable.beer_icon).into
-                    (beerView);
+            Picasso.with(getContext()).load(new File(imagePath)).error(R.drawable.ic_add_photo).into
+                    (addPhotoView);
         }
 
         @Override
@@ -137,7 +137,7 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
         }
         initializeSeekBarConnectors();
         setNameChangeListener();
-        beerView.setOnClickListener(view -> {
+        addPhotoView.setOnClickListener(view -> {
             imagePickerDelegate
                     .addOnCompleteListener(onImagePickerCompleteListener)
                     .startImagePicker(this);
@@ -161,7 +161,7 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
     }
 
     private void showIntroTooltips() {
-        View[] anchorsArray = {drinkName, beerView, wineVolumeSeekBar, rootView};
+        View[] anchorsArray = {drinkName, addPhotoView, wineVolumeSeekBar, rootView};
         List<View> anchors = Arrays.asList(anchorsArray);
 
         Integer[] textsArray = {R.string.tooltip_drink_name, R.string.tooltip_drink_image,
@@ -275,7 +275,7 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
         showContentView();
         drinkName.setText(drinkItem.getName());
         Picasso.with(getContext()).load(new File(drinkItem.getImagePath()))
-                .error(R.drawable.beer_icon).placeholder(R.drawable.beer_icon).into(beerView);
+                .error(R.drawable.ic_add_photo).placeholder(R.drawable.ic_add_photo).into(addPhotoView);
 
         beerSeekBarConnector.setCurrentValue(drinkItem.getBeerVolume());
         wineSeekBarConnector.setCurrentValue(drinkItem.getWineVolume());
