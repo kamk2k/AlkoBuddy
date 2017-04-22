@@ -1,7 +1,7 @@
 package com.kamk2k.alkobuddy.presenter;
 
 import com.kamk2k.alkobuddy.model.DrinkItem;
-import com.kamk2k.alkobuddy.view.CreateDrinkView;
+import com.kamk2k.alkobuddy.view.EditDrinkView;
 
 import io.realm.Realm;
 
@@ -9,28 +9,28 @@ import io.realm.Realm;
  * Created by kksiazek on 14.11.16.
  */
 
-public class CreateDrinkPresenterImpl implements CreateDrinkPresenter {
+public class EditDrinkPresenterImpl implements EditDrinkPresenter {
 
     private DrinkItem selectedDrink;
 
-    private CreateDrinkView createDrinkView;
+    private EditDrinkView editDrinkView;
 
-    public CreateDrinkPresenterImpl() {
+    public EditDrinkPresenterImpl() {
     }
 
     @Override
-    public void setMVPView(CreateDrinkView mvpView) {
-        this.createDrinkView = mvpView;
+    public void setMVPView(EditDrinkView mvpView) {
+        this.editDrinkView = mvpView;
     }
 
     @Override
     public void changeSelectedDrink(DrinkItem drinkItem) {
         if(drinkItem == null) {
             selectedDrink = null;
-            createDrinkView.showEmptyView();
+            editDrinkView.showEmptyView();
         } else {
             selectedDrink = drinkItem;
-            createDrinkView.showDrink(drinkItem);
+            editDrinkView.showDrink(drinkItem);
         }
     }
 

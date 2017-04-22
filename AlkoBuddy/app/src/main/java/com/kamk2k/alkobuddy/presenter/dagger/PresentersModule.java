@@ -7,8 +7,8 @@ import android.os.Handler;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kamk2k.alkobuddy.model.UserAlcoState;
 import com.kamk2k.alkobuddy.model.UserStateProvider;
-import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenter;
-import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenterImpl;
+import com.kamk2k.alkobuddy.presenter.EditDrinkPresenter;
+import com.kamk2k.alkobuddy.presenter.EditDrinkPresenterImpl;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenter;
 import com.kamk2k.alkobuddy.presenter.MainActivityPresenterImpl;
 import com.kamk2k.alkobuddy.presenter.StatusFragmentPresenter;
@@ -71,15 +71,15 @@ public class PresentersModule {
     @Singleton
     @Provides
     MainActivityPresenter provideMainActivityPresenter(UserStateChangeHandler userStateChangeHandler,
-                                                       Handler updateHandler, CreateDrinkPresenter createDrinkPresenter,
+                                                       Handler updateHandler, EditDrinkPresenter editDrinkPresenter,
                                                        Context context) {
-        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler, createDrinkPresenter, context);
+        return new MainActivityPresenterImpl(userStateChangeHandler, updateHandler, editDrinkPresenter, context);
     }
 
     @Singleton
     @Provides
-    CreateDrinkPresenter provideCreateDrinkPresenter() {
-        return new CreateDrinkPresenterImpl();
+    EditDrinkPresenter provideCreateDrinkPresenter() {
+        return new EditDrinkPresenterImpl();
     }
 
 }

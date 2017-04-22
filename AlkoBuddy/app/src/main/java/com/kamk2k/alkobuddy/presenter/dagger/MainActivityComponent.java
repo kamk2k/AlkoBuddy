@@ -1,7 +1,7 @@
 package com.kamk2k.alkobuddy.presenter.dagger;
 
 import com.kamk2k.alkobuddy.view.MainActivity;
-import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
+import com.kamk2k.alkobuddy.view.utils.StatusToEditPagerAdapter;
 
 import dagger.Subcomponent;
 
@@ -12,5 +12,5 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {MainActivityModule.class})
 public interface MainActivityComponent {
     void inject(MainActivity mainActivity);
-    StatusToCreatePagerAdapter getStatusToCreatePagerAdapter();
+    StatusToEditPagerAdapter getStatusToEditPagerAdapter();
 }

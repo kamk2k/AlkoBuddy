@@ -5,6 +5,6 @@ package com.kamk2k.alkobuddy.view;
  */
 public interface MainActivityView {
     boolean isStatusFragmentDisplayed();
-    boolean isCreateDrinkFragmentDisplayed();
-    void switchToCreateFragment();
+    boolean isEditDrinkFragmentDisplayed();
+    void switchToEditFragment();
 }

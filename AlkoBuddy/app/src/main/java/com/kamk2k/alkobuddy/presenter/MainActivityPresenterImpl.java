@@ -31,7 +31,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     private UpdateRunnable updateRunnable;
     private MainActivityView mainActivityView;
     private DrinkListItemSelector drinkListItemSelector;
-    private CreateDrinkPresenter createDrinkPresenter;
+    private EditDrinkPresenter editDrinkPresenter;
     private Context context;
 
     @Override
@@ -48,8 +48,8 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     public void drinkClicked(DrinkItem drinkItem) {
         if(mainActivityView.isStatusFragmentDisplayed()) {
             userStateChangeHandler.onDrink(drinkItem, new Date());
-        } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
-            createDrinkPresenter.changeSelectedDrink(drinkItem);
+        } else if(mainActivityView.isEditDrinkFragmentDisplayed()) {
+            editDrinkPresenter.changeSelectedDrink(drinkItem);
             selectItemOnList(drinkItem);
         }
     }
@@ -64,9 +64,9 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
                 .deleteAllFromRealm();
         realm.commitTransaction();
         if(realm.where(DrinkItem.class).findAll().isEmpty()) {
-            createDrinkPresenter.changeSelectedDrink(null);
+            editDrinkPresenter.changeSelectedDrink(null);
         } else {
-            createDrinkPresenter.changeSelectedDrink(realm.where(DrinkItem.class).findFirst());
+            editDrinkPresenter.changeSelectedDrink(realm.where(DrinkItem.class).findFirst());
         }
         realm.close();
     }
@@ -79,12 +79,12 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
     @Override
     public void addNewDrinkClicked() {
         if(mainActivityView.isStatusFragmentDisplayed()) {
-            mainActivityView.switchToCreateFragment();
+            mainActivityView.switchToEditFragment();
             DrinkItem drinkItem = createEmptyDrinkItem();
-            createDrinkPresenter.selectNewDrink(drinkItem);
-        } else if(mainActivityView.isCreateDrinkFragmentDisplayed()) {
+            editDrinkPresenter.selectNewDrink(drinkItem);
+        } else if(mainActivityView.isEditDrinkFragmentDisplayed()) {
             DrinkItem drinkItem = createEmptyDrinkItem();
-            createDrinkPresenter.selectNewDrink(drinkItem);
+            editDrinkPresenter.selectNewDrink(drinkItem);
             selectItemOnList(drinkItem);
         }
     }
@@ -98,7 +98,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
 
     @Override
     public void selectDisplayedDrinkOnList() {
-        selectItemOnList(createDrinkPresenter.getCurrentDrinkItem());
+        selectItemOnList(editDrinkPresenter.getCurrentDrinkItem());
     }
 
     private void selectItemOnList(DrinkItem drinkItem) {
@@ -143,10 +143,10 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
 
     @Inject
     public MainActivityPresenterImpl(UserStateChangeHandler userStateChangeHandler, Handler updateHandler,
-                                     CreateDrinkPresenter createDrinkPresenter, Context context) {
+                                     EditDrinkPresenter editDrinkPresenter, Context context) {
         this.userStateChangeHandler = userStateChangeHandler;
         this.updateHandler = updateHandler;
-        this.createDrinkPresenter = createDrinkPresenter;
+        this.editDrinkPresenter = editDrinkPresenter;
         this.context = context;
         updateRunnable = new UpdateRunnable();
         userStateChangeHandler.setUserState(UserStateProvider.getUserState());

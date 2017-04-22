@@ -16,16 +16,16 @@ import com.kamk2k.alkobuddy.presenter.dagger.MainActivityComponent;
 import com.kamk2k.alkobuddy.presenter.dagger.MainActivityModule;
 import com.kamk2k.alkobuddy.presenter.utils.AnalyticsLogger;
 import com.kamk2k.alkobuddy.view.utils.MVPActivityView;
-import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
+import com.kamk2k.alkobuddy.view.utils.StatusToEditPagerAdapter;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter
-        .CREATE_DRINK_FRAGMENT_POSITION;
-import static com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter.STATUS_FRAGMENT_POSITION;
+import static com.kamk2k.alkobuddy.view.utils.StatusToEditPagerAdapter
+        .EDIT_DRINK_FRAGMENT_POSITION;
+import static com.kamk2k.alkobuddy.view.utils.StatusToEditPagerAdapter.STATUS_FRAGMENT_POSITION;
 
 
 public class MainActivity extends MVPActivityView implements MainActivityView{
@@ -35,14 +35,14 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
     public static final String SHARED_PREF_IS_IN_REMOVE_MODE = "isInRemoveMode";
 
     @BindView(R.id.pager)
-    ViewPager mViewPager;
+    ViewPager viewPager;
     @BindView(R.id.tabs)
-    TabLayout mTabLayout;
+    TabLayout tabLayout;
     @Inject
     MainActivityPresenter presenter;
     @Inject
     AnalyticsLogger analyticsLogger;
-    StatusToCreatePagerAdapter statusToCreatePagerAdapter;
+    StatusToEditPagerAdapter statusToEditPagerAdapter;
     private MainActivityComponent mainActivityComponent;
 
     private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -55,7 +55,7 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         public void onPageSelected(int position) {
             if(position == STATUS_FRAGMENT_POSITION) {
                 analyticsLogger.logEvent(AnalyticsLogger.STATUS_SCREEN_DISPLAYED_EVENT);
-            } else if(position == CREATE_DRINK_FRAGMENT_POSITION) {
+            } else if(position == EDIT_DRINK_FRAGMENT_POSITION) {
                 analyticsLogger.logEvent(AnalyticsLogger.EDIT_SCREEN_DISPLAYED_EVENT);
             }
         }
@@ -64,7 +64,7 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         public void onPageScrollStateChanged(int state) {
             if(isStatusFragmentDisplayed()) {
                 presenter.clearDrinkListSelection();
-            } else if(isCreateDrinkFragmentDisplayed()) {
+            } else if(isEditDrinkFragmentDisplayed()) {
                 presenter.selectDisplayedDrinkOnList();
             }
         }
@@ -75,9 +75,9 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mViewPager.setAdapter(statusToCreatePagerAdapter);
-        mViewPager.addOnPageChangeListener(pageChangeListener);
-        mTabLayout.setupWithViewPager(mViewPager);
+        viewPager.setAdapter(statusToEditPagerAdapter);
+        viewPager.addOnPageChangeListener(pageChangeListener);
+        tabLayout.setupWithViewPager(viewPager);
         setRemoveModeSharedPrefValue(false);
         presenter.onCreate();
     }
@@ -92,32 +92,32 @@ public class MainActivity extends MVPActivityView implements MainActivityView{
     public void injectActivity(ApplicationComponent component) {
         mainActivityComponent = component.plus(new MainActivityModule(this));
         mainActivityComponent.inject(this);
-        statusToCreatePagerAdapter = mainActivityComponent.getStatusToCreatePagerAdapter();
+        statusToEditPagerAdapter = mainActivityComponent.getStatusToEditPagerAdapter();
         presenter.setMVPView(this);
     }
 
     @Override
     public boolean isStatusFragmentDisplayed() {
-        if(mViewPager == null) {
+        if(viewPager == null) {
             return false;
         } else {
-            return mViewPager.getCurrentItem() == STATUS_FRAGMENT_POSITION;
+            return viewPager.getCurrentItem() == STATUS_FRAGMENT_POSITION;
         }
     }
 
     @Override
-    public boolean isCreateDrinkFragmentDisplayed() {
-        if(mViewPager == null) {
+    public boolean isEditDrinkFragmentDisplayed() {
+        if(viewPager == null) {
             return false;
         } else {
-            return mViewPager.getCurrentItem() == CREATE_DRINK_FRAGMENT_POSITION;
+            return viewPager.getCurrentItem() == EDIT_DRINK_FRAGMENT_POSITION;
         }
     }
 
     @Override
-    public void switchToCreateFragment() {
-        if(mViewPager != null) {
-            mViewPager.setCurrentItem(CREATE_DRINK_FRAGMENT_POSITION);
+    public void switchToEditFragment() {
+        if(viewPager != null) {
+            viewPager.setCurrentItem(EDIT_DRINK_FRAGMENT_POSITION);
         }
     }
 

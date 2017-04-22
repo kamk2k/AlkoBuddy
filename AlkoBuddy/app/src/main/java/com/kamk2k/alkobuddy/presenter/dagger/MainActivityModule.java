@@ -3,7 +3,7 @@ package com.kamk2k.alkobuddy.presenter.dagger;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-import com.kamk2k.alkobuddy.view.utils.StatusToCreatePagerAdapter;
+import com.kamk2k.alkobuddy.view.utils.StatusToEditPagerAdapter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,7 +25,7 @@ public class MainActivityModule {
 
     @ActivityScope
     @Provides
-    StatusToCreatePagerAdapter provideStatusToCreatePagerAdapter() {
-        return new StatusToCreatePagerAdapter(mFragmentManager);
+    StatusToEditPagerAdapter provideStatusToCreatePagerAdapter() {
+        return new StatusToEditPagerAdapter(mFragmentManager);
     }
 }

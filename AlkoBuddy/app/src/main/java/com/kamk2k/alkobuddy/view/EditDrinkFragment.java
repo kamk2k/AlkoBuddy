@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.kamk2k.alkobuddy.R;
 import com.kamk2k.alkobuddy.model.DrinkItem;
-import com.kamk2k.alkobuddy.presenter.CreateDrinkPresenter;
+import com.kamk2k.alkobuddy.presenter.EditDrinkPresenter;
 import com.kamk2k.alkobuddy.presenter.dagger.ApplicationComponent;
 import com.kamk2k.alkobuddy.presenter.utils.AnalyticsLogger;
 import com.kamk2k.alkobuddy.view.utils.ImagePickerDelegate;
@@ -42,9 +42,9 @@ import jonathanfinerty.once.Once;
 /**
  * Created by PC on 2015-02-23.
  */
-public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkView {
+public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView {
 
-    private static final String TAG = "CreateDrinkFragment";
+    private static final String TAG = "EditDrinkFragment";
     public static final String SHOW_EDIT_FRAGMENT_INTRO = "SHOW_EDIT_FRAGMENT_INTRO";
 
     @BindView(R.id.empty_view)
@@ -94,7 +94,7 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
     DiscreteSeekBarToTickerViewConnector customPercentageSeekBarConnector;
 
     @Inject
-    CreateDrinkPresenter presenter;
+    EditDrinkPresenter presenter;
     @Inject
     ImagePickerDelegate imagePickerDelegate;
     @Inject
@@ -122,13 +122,13 @@ public class CreateDrinkFragment extends MVPFragmentView implements CreateDrinkV
         }
     };
 
-    public CreateDrinkFragment() {
+    public EditDrinkFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.create_drink_fragment, container, false);
+        rootView = inflater.inflate(R.layout.edit_drink_fragment, container, false);
         ButterKnife.bind(this, rootView);
         if(presenter.getCurrentDrinkItem() == null) {
             showEmptyView();
