@@ -37,12 +37,9 @@ public class App extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .schemaVersion(REALM_SCHEMA_VERSION)
                 .modules(new BaseRealmModule())
-                .initialData(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        // TODO: 09.08.16 make generator for default drinks
-                        realm.copyToRealm(DrinkItem.generateMock());
-                    }
+                .initialData(realm -> {
+                    // TODO: 2017-04-22 provide drink photos
+                    generateInitialDrinks(realm);
                 })
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
@@ -57,6 +54,29 @@ public class App extends Application {
                 .builder()
                 .presentersModule(new PresentersModule(this))
                 .build();
+    }
+
+    private void generateInitialDrinks(Realm realm) {
+        String largeBeerImgPath = "";
+        String smallBeerImgPath = "";
+        String wineGlassImgPath = "";
+        String vodkaShotImgPath = "";
+        DrinkItem largeBeer = new DrinkItem(0, "Large beer", largeBeerImgPath, 500,
+                DrinkItem.DEFAULT_BEER_PERCENTAGE, 0, DrinkItem.DEFAULT_WINE_PERCENTAGE,
+                0, DrinkItem.DEFAULT_VODKA_PERCENTAGE, 0, 0f);
+        DrinkItem smallBeer = new DrinkItem(1, "Small beer", smallBeerImgPath, 330,
+                DrinkItem.DEFAULT_BEER_PERCENTAGE, 0, DrinkItem.DEFAULT_WINE_PERCENTAGE,
+                1, DrinkItem.DEFAULT_VODKA_PERCENTAGE, 0, 0f);
+        DrinkItem wineGlass = new DrinkItem(2, "Glass of wine", wineGlassImgPath, 0,
+                DrinkItem.DEFAULT_BEER_PERCENTAGE, 200, DrinkItem.DEFAULT_WINE_PERCENTAGE,
+                0, DrinkItem.DEFAULT_VODKA_PERCENTAGE, 0, 0f);
+        DrinkItem vodkaShot = new DrinkItem(3, "Vodka shot", vodkaShotImgPath, 0,
+                DrinkItem.DEFAULT_BEER_PERCENTAGE, 0, DrinkItem.DEFAULT_WINE_PERCENTAGE,
+                50, DrinkItem.DEFAULT_VODKA_PERCENTAGE, 0, 0f);
+        realm.copyToRealmOrUpdate(largeBeer);
+        realm.copyToRealmOrUpdate(smallBeer);
+        realm.copyToRealmOrUpdate(wineGlass);
+        realm.copyToRealmOrUpdate(vodkaShot);
     }
 
     public static Application getApplication() {

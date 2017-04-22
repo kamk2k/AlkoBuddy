@@ -13,7 +13,7 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class DrinkItem implements RealmModel, Parcelable {
 
-    public static final float DEFAULT_BEER_PERCENTAGE = 0.05f;
+    public static final float DEFAULT_BEER_PERCENTAGE = 0.06f;
     public static final float DEFAULT_WINE_PERCENTAGE = 0.14f;
     public static final float DEFAULT_VODKA_PERCENTAGE = 0.40f;
     public static final String DEFAULT_IMAGE_PATH = "";
