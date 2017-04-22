@@ -2,12 +2,14 @@ package com.corellidev.alcotester.view.utils;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 import com.corellidev.alcotester.BaseRealmModule;
 import com.corellidev.alcotester.model.DrinkItem;
 import com.corellidev.alcotester.presenter.dagger.ApplicationComponent;
 import com.corellidev.alcotester.presenter.dagger.DaggerApplicationComponent;
 import com.corellidev.alcotester.presenter.dagger.PresentersModule;
-import com.crashlytics.android.Crashlytics;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -41,6 +43,11 @@ public class App extends Application {
                 })
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
         Fabric.with(this, new Crashlytics());
         mApplicationComponent = DaggerApplicationComponent
                 .builder()
