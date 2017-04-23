@@ -37,7 +37,6 @@ public class PickerFragment extends MVPFragmentView {
     AnalyticsLogger analyticsLogger;
     @BindView(R.id.drinks_list)
     RecyclerView drinksRecyclerView;
-    Realm realm;
     private RecyclerView.LayoutManager drinksLayoutManager;
     DrinksAdapter drinksAdapter;
 
@@ -48,13 +47,6 @@ public class PickerFragment extends MVPFragmentView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        realm = Realm.getDefaultInstance();
-    }
-
-    @Override
-    public void onDestroy() {
-        realm.close();
-        super.onDestroy();
     }
 
     @Override
@@ -78,7 +70,7 @@ public class PickerFragment extends MVPFragmentView {
     }
 
     private void initiDrinksAdapter() {
-        RealmResults<DrinkItem> results = realm.where(DrinkItem.class).findAll();
+        RealmResults<DrinkItem> results = Realm.getDefaultInstance().where(DrinkItem.class).findAll();
         drinksAdapter = new DrinksAdapter(context, mainActivityPresenter, results, analyticsLogger);
     }
 
