@@ -149,17 +149,6 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
         return rootView;
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser) {
-            if (!Once.beenDone(Once.THIS_APP_INSTALL, SHOW_EDIT_FRAGMENT_INTRO)) {
-                showIntroTooltips();
-                Once.markDone(SHOW_EDIT_FRAGMENT_INTRO);
-            }
-        }
-    }
-
     private void showIntroTooltips() {
         View[] anchorsArray = {drinkName, addPhotoView, wineVolumeSeekBar, rootView};
         List<View> anchors = Arrays.asList(anchorsArray);
@@ -256,7 +245,6 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
                 realm.close();
             }
         });
-        showDrink(DrinkItem.generateMock());
     }
 
     @Override
@@ -283,6 +271,14 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
         customVolumeSeekBarConnector.setCurrentValue(drinkItem.getCustomVolume());
         customPercentageSeekBarConnector.setCurrentValue((int) (100 * drinkItem
                 .getCustomPercentage()));
+        showTooltips();
+    }
+
+    private void showTooltips() {
+        if (!Once.beenDone(Once.THIS_APP_INSTALL, SHOW_EDIT_FRAGMENT_INTRO)) {
+            showIntroTooltips();
+            Once.markDone(SHOW_EDIT_FRAGMENT_INTRO);
+        }
     }
 
     private void showContentView() {
