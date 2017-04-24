@@ -56,7 +56,7 @@ public class ImagePickerDelegate {
         EasyImage.handleActivityResult(requestCode, resultCode, data, activity, new DefaultCallback() {
             @Override
             public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
-                //Some error handlingcontext.getFilesDir().get
+                Log.e(TAG, "EasyImage error = " + e.toString());
             }
 
             @Override

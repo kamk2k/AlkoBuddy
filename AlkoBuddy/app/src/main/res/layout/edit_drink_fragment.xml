@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         android:textColor="@color/accent"
         android:textSize="26dp"
         android:textStyle="italic|bold"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/content_view"
@@ -32,10 +31,12 @@
                 android:id="@+id/add_photo"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_add_photo"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/drink_name"/>
+                app:layout_constraintTop_toBottomOf="@+id/drink_name" />
 
             <TextView
                 android:id="@+id/beer_title"
@@ -44,9 +45,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Beer"
+                android:text="@string/beer"
+                android:textColor="@color/accent"
                 app:layout_constraintLeft_toRightOf="@+id/add_photo"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/wine_title"
@@ -55,9 +57,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Wine"
+                android:text="@string/wine"
+                android:textColor="@color/accent"
                 app:layout_constraintLeft_toRightOf="@+id/add_photo"
-                app:layout_constraintTop_toBottomOf="@+id/beer_volume"/>
+                app:layout_constraintTop_toBottomOf="@+id/beer_volume" />
 
             <TextView
                 android:id="@+id/vodka_title"
@@ -66,9 +69,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Vodka"
+                android:text="@string/vodka"
+                android:textColor="@color/accent"
                 app:layout_constraintLeft_toRightOf="@+id/add_photo"
-                app:layout_constraintTop_toBottomOf="@+id/wine_volume"/>
+                app:layout_constraintTop_toBottomOf="@+id/wine_volume" />
 
             <TextView
                 android:id="@+id/custom_title"
@@ -77,9 +81,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Custom"
+                android:text="@string/custom"
+                android:textColor="@color/accent"
                 app:layout_constraintLeft_toRightOf="@+id/add_photo"
-                app:layout_constraintTop_toBottomOf="@+id/vodka_volume"/>
+                app:layout_constraintTop_toBottomOf="@+id/vodka_volume" />
 
             <EditText
                 android:id="@+id/drink_name"
@@ -94,59 +99,99 @@
                 android:textColor="@android:color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_constraintTop_creator="1"/>
+                tools:layout_constraintTop_creator="1" />
 
             <com.robinhood.ticker.TickerView
                 android:id="@+id/beer_volume"
-                android:layout_width="50dp"
+                android:layout_width="25dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="4dp"
+                android:minEms="3"
                 android:text="BEER"
                 app:layout_constraintLeft_toLeftOf="@+id/beer_title"
-                app:layout_constraintTop_toBottomOf="@+id/beer_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/beer_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ml"
+                app:layout_constraintLeft_toRightOf="@+id/beer_volume"
+                app:layout_constraintTop_toTopOf="@+id/beer_volume" />
 
             <com.robinhood.ticker.TickerView
                 android:id="@+id/wine_volume"
-                android:layout_width="50dp"
+                android:layout_width="25dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="4dp"
+                android:minEms="3"
                 android:text="WINE"
                 app:layout_constraintLeft_toLeftOf="@+id/wine_title"
-                app:layout_constraintTop_toBottomOf="@+id/wine_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/wine_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ml"
+                app:layout_constraintLeft_toRightOf="@+id/wine_volume"
+                app:layout_constraintTop_toTopOf="@+id/wine_volume" />
 
             <com.robinhood.ticker.TickerView
                 android:id="@+id/vodka_volume"
-                android:layout_width="50dp"
+                android:layout_width="25dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="4dp"
+                android:minEms="3"
                 android:text="VODKA"
                 app:layout_constraintLeft_toLeftOf="@+id/vodka_title"
-                app:layout_constraintTop_toBottomOf="@+id/vodka_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/vodka_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ml"
+                app:layout_constraintLeft_toRightOf="@+id/vodka_volume"
+                app:layout_constraintTop_toTopOf="@+id/vodka_volume" />
 
             <com.robinhood.ticker.TickerView
                 android:id="@+id/custom_volume"
-                android:layout_width="50dp"
+                android:layout_width="25dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="4dp"
+                android:minEms="3"
                 android:text="OTHER"
                 app:layout_constraintLeft_toLeftOf="@+id/custom_title"
-                app:layout_constraintTop_toBottomOf="@+id/custom_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/custom_title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ml"
+                app:layout_constraintLeft_toRightOf="@+id/custom_volume"
+                app:layout_constraintTop_toTopOf="@+id/custom_volume" />
 
             <com.robinhood.ticker.TickerView
                 android:id="@+id/custom_per_cent"
-                android:layout_width="50dp"
+                android:layout_width="25dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="4dp"
+                android:minEms="3"
                 android:text="OTHER"
                 app:layout_constraintLeft_toLeftOf="@+id/custom_title"
-                app:layout_constraintTop_toBottomOf="@+id/custom_volume"/>
+                app:layout_constraintTop_toBottomOf="@+id/custom_volume" />4
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" %"
+                app:layout_constraintLeft_toRightOf="@+id/custom_per_cent"
+                app:layout_constraintTop_toTopOf="@+id/custom_per_cent" />
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                 android:id="@+id/beer_volume_seek_bar"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 app:dsb_indicatorColor="@color/accent"
@@ -155,14 +200,14 @@
                 app:layout_constraintBottom_toBottomOf="@+id/beer_volume"
                 app:layout_constraintLeft_toRightOf="@+id/beer_volume"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/beer_volume"/>
+                app:layout_constraintTop_toTopOf="@+id/beer_volume" />
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                 android:id="@+id/wine_volume_seek_bar"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 app:dsb_indicatorColor="@color/accent"
@@ -171,14 +216,14 @@
                 app:layout_constraintBottom_toBottomOf="@+id/wine_volume"
                 app:layout_constraintLeft_toRightOf="@+id/wine_volume"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/wine_volume"/>
+                app:layout_constraintTop_toTopOf="@+id/wine_volume" />
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                 android:id="@+id/vodka_volume_seek_bar"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 app:dsb_indicatorColor="@color/accent"
@@ -187,7 +232,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/vodka_volume"
                 app:layout_constraintLeft_toRightOf="@+id/vodka_volume"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/vodka_volume"/>
+                app:layout_constraintTop_toTopOf="@+id/vodka_volume" />
 
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
@@ -195,7 +240,7 @@
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 app:dsb_indicatorColor="@color/accent"
@@ -204,14 +249,14 @@
                 app:layout_constraintBottom_toBottomOf="@+id/custom_volume"
                 app:layout_constraintLeft_toRightOf="@+id/custom_volume"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/custom_volume"/>
+                app:layout_constraintTop_toTopOf="@+id/custom_volume" />
 
             <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                 android:id="@+id/custom_per_cent_seek_bar"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
                 app:dsb_indicatorColor="@color/accent"
@@ -220,7 +265,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/custom_per_cent"
                 app:layout_constraintLeft_toRightOf="@+id/custom_per_cent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/custom_per_cent"/>
+                app:layout_constraintTop_toTopOf="@+id/custom_per_cent" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
@@ -231,6 +276,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
         android:padding="4dp"
-        android:src="@drawable/ic_info_outline_accent_24dp"/>
+        android:src="@drawable/ic_info_outline_accent_24dp" />
 
 </FrameLayout>

@@ -30,5 +30,10 @@
     <string name="tooltip_drink_image">Click to change drink image</string>
     <string name="tooltip_drink_edit_seekbars">Here you can change \n your drink content</string>
     <string name="tooltip_picker_in_edit">Press drink to change it</string>
+    <string name="ml"> ml</string>
+    <string name="beer">Beer</string>
+    <string name="wine">Wine</string>
+    <string name="vodka">Vodka</string>
+    <string name="custom">Custom</string>
 
 </resources>
