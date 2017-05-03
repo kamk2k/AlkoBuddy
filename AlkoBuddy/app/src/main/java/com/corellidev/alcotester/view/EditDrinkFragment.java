@@ -283,12 +283,14 @@ public class EditDrinkFragment extends MVPFragmentView implements EditDrinkView 
 
     private void showContentView() {
         emptyView.setVisibility(View.GONE);
+        tooltipButton.setVisibility(View.VISIBLE);
         contentView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showEmptyView() {
         emptyView.setVisibility(View.VISIBLE);
+        tooltipButton.setVisibility(View.GONE);
         contentView.setVisibility(View.GONE);
     }
 
